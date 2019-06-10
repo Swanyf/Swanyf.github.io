@@ -198,7 +198,7 @@
 
 5.返回的结果可能会有重复，需要客户端去重复，这点非常重要;
 
-6.单次返回的结果是空的并不意味着遍历结束，而要看返回的游标值是否为零</code></pre><h4 id="scan命令格式"><a href="#scan命令格式" class="headerlink" title="scan命令格式"></a>scan命令格式</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scan cursor [Match oattern] [Count count]</span><br></pre></td></tr></table></figure>
+6.单次返回的结果是空的并不意味着遍历结束，而要看返回的游标值是否为零</code></pre><h4 id="scan命令格式"><a href="#scan命令格式" class="headerlink" title="scan命令格式"></a>scan命令格式</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">$ scan cursor [Match oattern] [Count count]</span><br></pre></td></tr></table></figure>
 
 <h4 id="命令解释"><a href="#命令解释" class="headerlink" title="命令解释"></a>命令解释</h4><p><font color="#EE6A50">scan 游标 MATCH &lt;返回和给定模式相匹配的元素&gt; count 每次迭代所返回的元素数量</font></p>
 <pre><code>1.SCAN命令是增量的循环，每次调用只会返回一小部分的元素。所以不会让Redis假死；
