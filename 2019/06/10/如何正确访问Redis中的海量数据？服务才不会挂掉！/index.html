@@ -135,13 +135,13 @@
 <!--only post-->
 
 
-<img class="wechat-title-img" src="null/img/gril.jpg">
+<img class="wechat-title-img" src="null/img/girl.jpg">
 
 
 <style>
     
     header.intro-header {
-        background-image: url('/img/gril.jpg?imageView2/1/w/1400/h/400/interlace/1/q/90')
+        background-image: url('/img/girl.jpg?imageView2/1/w/1400/h/400/interlace/1/q/90')
     }
 
     
@@ -203,10 +203,10 @@
 <h4 id="命令解释"><a href="#命令解释" class="headerlink" title="命令解释"></a>命令解释</h4><p>scan 游标 MATCH &lt;返回和给定模式相匹配的元素&gt; count 每次迭代所返回的元素数量</p>
 <pre><code>1.SCAN命令是增量的循环，每次调用只会返回一小部分的元素。所以不会让Redis假死；
 
-2.SCAN命令返回的是一个游标，从0开始遍历，到0结束遍历；</code></pre><h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><img src="微信图片_20190610094913.jpg">
+2.SCAN命令返回的是一个游标，从0开始遍历，到0结束遍历；</code></pre><h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><img src="/img/微信图片_20190610094913.jpg">
 
 <p>从0开始遍历，返回了游标6，又返回了数据，继续scan遍历，就要从6开始</p>
-<img src="/微信图片_20190610094917.jpg">
+<img src="/img/微信图片_20190610094917.jpg">
 
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这个是面试经常会问到的，也是我们小伙伴在工作的过程经常用的，一般数据量不大的时候，不会有什么问题，但数据量多的时候，你的操作方式不对，你的绩效就会被扣哦。</p>
 
