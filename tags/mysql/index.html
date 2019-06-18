@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        标签｜Swan&#39;s blog
+        Swan&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/tags/">
+    <link rel="canonical" href="http://yoursite.com/tags/mysql/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -43,7 +43,7 @@
 <!-- hack iOS CSS :active style -->
 <body ontouchstart="" class="animated fadeIn">
 <!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="false" data-istags="false
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="false" data-istags="true
 " data-ishome="false">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -131,98 +131,144 @@
 </script>
 
 <!-- Main Content -->
-<style>
-    .intro-header .site-heading {
-        margin: 50px;
-    }
-    
-    header.intro-header {
-        background-image: url('/img/2.jpg?imageView2/1/w/1400/h/400/interlace/1/q/90')
-    }
-    
-</style>
+
 
 <!-- Page Header -->
-<header class="intro-header">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading text-center">
-                    <h1>标签</h1>
-                    <span class="subheading">没有梦想 何必远方</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-
-<!-- Main Content -->
-<div class="container">
+<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 visible-xs-block visible-sm-block">
     <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <!-- 标签云 -->
-            <div id="tag_cloud" class="tags">
-                
-                <a href="#mysql" title="mysql" rel="1">mysql</a>
-                
-                <a href="#redis" title="redis" rel="1">redis</a>
-                
-                <a href="#java" title="java" rel="1">java</a>
-                
+        <header class="intro-header">
+            <div class="container">
+                <div class="site-heading text-center">
+                    <div class="about-me">
+                        <!--移动端头部显示-->
+                        <img src="/img/cat2.jpg">
+                        <h5><a href="/about/">swan</a></h5>
+                        <p>低调做人 高调做事</p>
+                    </div>
+                </div>
             </div>
+        </header>
+    </div>
+</div>
+<!-- Main Content -->
+<div class="container custom-haojen-container">
+    <!-- Post Container -->
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 post-container">
+            <!-- Main Content -->
 
-            <!-- 标签列表 -->
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="mysql">
-                    <span class="tag-text">mysql</span>
-                </span>
-                
-                <div class="post-preview">
-                    <a href="/2019/06/12/mysql：=和=的区别/">
-                        <h2 class="post-title">
-                            mysql := 和 = 的区别
-                        </h2>
+
+
+<div class="post-preview " style="background-image: url('/img/saas.jpg')">
+    <a href="/2019/06/12/mysql：=和=的区别/">
+        <h2 class="post-title">
+            mysql := 和 = 的区别
+        </h2>
+        <p class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-12
+        </p>
+        
+        <div class="post-content-preview">
+            <p>
+                =只有在set和update时才是和 := 一样，赋值的作用，其它都是等于的作用。鉴于此，用变量实现行号时，必须用:=
+:=不只在set和update时是赋值的作用，在select也是赋值的作用。
+总结如果明白了 = 和 := 的区别，那么也就理解了下边的现象。@num:=@num+1, := ..
+            </p>
+        </div>
+    </a>
+
+</div>
+
+<hr>
+
+
+
+
+<!-- 翻页 pager -->
+
+<ul class="pager">
+    
+    
+</ul>
+
+
+        </div>
+        <!-- Sidebar Container -->
+        <div class="
+                col-lg-3 col-lg-offset-0
+                col-md-3 col-md-offset-0
+                col-sm-12
+                col-xs-12
+                sidebar-container
+            ">
+
+            <!-- About Me -->
+            <section class="visible-md visible-lg" style="padding: 0 18px">
+                <div class="short-about">
+                    <!--侧边栏头像-->
+                    
+                    <img src="/img/cat2.jpg">
+                    
+                    <h5><a href="/about/">swan</a></h5>
+                    
+                    <p>低调做人 高调做事</p>
+                    
+                    <hr>
+                    <!-- SNS Link 社交 -->
+                    <ul class="list-inline">
                         
-                    </a>
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="redis">
-                    <span class="tag-text">redis</span>
-                </span>
-                
-                <div class="post-preview">
-                    <a href="/2019/06/10/如何正确访问Redis中的海量数据？服务才不会挂掉！/">
-                        <h2 class="post-title">
-                            如何正确访问Redis中的海量数据？服务才不会挂掉！
-                        </h2>
                         
-                    </a>
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="java">
-                    <span class="tag-text">java</span>
-                </span>
-                
-                <div class="post-preview">
-                    <a href="/2019/06/13/线程池由浅入深/">
-                        <h2 class="post-title">
-                            线程池由浅入深
-                        </h2>
                         
-                    </a>
+
+                        
+
+                        
+
+                        
+                        <li>
+                            <a target="_blank" href="https://github.com/Swanyf">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                        </span>
+                            </a>
+                        </li>
+                        
+
+                        
+                    </ul>
                 </div>
-                <hr>
+            </section>
+
+            <!-- Featured Tags  标签 -->
+            
+            <section>
+                <div class="tags">
+                    
+                    
+                    <a href="/tags/#mysql" title="mysql" rel="1">mysql</a>
+                    
+                    
+                    
+                    <a href="/tags/#redis" title="redis" rel="1">redis</a>
+                    
+                    
+                    
+                    <a href="/tags/#java" title="java" rel="1">java</a>
+                    
+                    
+                </div>
+            </section>
+            
+
+            
+            <hr>
+            <h5 style="text-align: center;">Friends</h5>
+            <ul class="list-inline" style="text-align: center;">
                 
-            </div>
+                <li><a href="https://www.antia1.top/" target="_blank">ANTIA</a></li>
+                
+            </ul>
             
 
         </div>
