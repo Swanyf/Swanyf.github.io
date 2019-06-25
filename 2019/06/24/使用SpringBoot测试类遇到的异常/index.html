@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        微信pay｜Swan&#39;s blog
+        使用SpringBoot测试类遇到的异常｜Swan&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/2019/06/18/微信pay/">
+    <link rel="canonical" href="http://yoursite.com/2019/06/24/使用SpringBoot测试类遇到的异常/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -152,17 +152,17 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>微信pay</h1>
+                    <h1>使用SpringBoot测试类遇到的异常</h1>
                     
                     <span class="meta">
                          作者 swan
                         <span>
-                          日期 2019-06-18
+                          日期 2019-06-24
                          </span>
                     </span>
                     <div class="tags text-center">
                         
-                        <a class="tag" href="/tags/#java" title="java">java</a>
+                        <a class="tag" href="/tags/#异常" title="异常">异常</a>
                         
                     </div>
                 </div>
@@ -171,7 +171,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            微信pay
+            使用SpringBoot测试类遇到的异常
         </span>
     </div>
 </header>
@@ -182,34 +182,20 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>微信支付官网开发文档<a href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1" target="_blank" rel="noopener">https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1</a></p>
-<h2 id="流程解析"><a href="#流程解析" class="headerlink" title="流程解析"></a>流程解析</h2><blockquote>
-<ol>
-<li>用户发起充值请求</li>
-<li>生成充值记录</li>
-<li>响应并展示二维码图片的页面</li>
-<li>页面加载生成二维码图片的请求</li>
-<li>调用pay的支付接口</li>
-<li>调用微信支付系统统一下单接口</li>
-<li>返回一个code_url</li>
-<li>将code_url值返回</li>
-<li>将code_url生成二维码图片</li>
-<li>将二维码相应给用户</li>
-</ol>
-</blockquote>
+                <h2 id="测试类启动失败"><a href="#测试类启动失败" class="headerlink" title="测试类启动失败"></a>测试类启动失败</h2><p>今天在测试一个方法的时候发现测试类启动报错，来看看报错的日志</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">java.lang.IllegalStateException: Unable to find a <span class="meta">@SpringBootConfiguration</span>, you need to use <span class="meta">@ContextConfiguration</span> or <span class="meta">@SpringBootTest</span>(classes=...) with your test</span><br><span class="line"></span><br><span class="line">	at org.springframework.util.Assert.state(Assert.java:<span class="number">70</span>)</span><br><span class="line">	at org.springframework.boot.test.context.SpringBootTestContextBootstrapper.getOrFindConfigurationClasses(SpringBootTestContextBootstrapper.java:<span class="number">202</span>)</span><br><span class="line">	at org.springframework.boot.test.context.SpringBootTestContextBootstrapper.processMergedContextConfiguration(SpringBootTestContextBootstrapper.java:<span class="number">137</span>)</span><br><span class="line">	at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:<span class="number">409</span>)</span><br><span class="line">	at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildDefaultMergedContextConfiguration(AbstractTestContextBootstrapper.java:<span class="number">323</span>)</span><br><span class="line">	at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:<span class="number">277</span>)</span><br><span class="line">	at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildTestContext(AbstractTestContextBootstrapper.java:<span class="number">112</span>)</span><br><span class="line">	at org.springframework.boot.test.context.SpringBootTestContextBootstrapper.buildTestContext(SpringBootTestContextBootstrapper.java:<span class="number">82</span>)</span><br><span class="line">	at org.springframework.test.context.TestContextManager.&lt;init&gt;(TestContextManager.java:<span class="number">120</span>)</span><br><span class="line">	at org.springframework.test.context.TestContextManager.&lt;init&gt;(TestContextManager.java:<span class="number">105</span>)</span><br><span class="line">	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTestContextManager(SpringJUnit4ClassRunner.java:<span class="number">152</span>)</span><br><span class="line">	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.&lt;init&gt;(SpringJUnit4ClassRunner.java:<span class="number">143</span>)</span><br><span class="line">	at org.springframework.test.context.junit4.SpringRunner.&lt;init&gt;(SpringRunner.java:<span class="number">49</span>)</span><br><span class="line">	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)</span><br><span class="line">	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:<span class="number">62</span>)</span><br><span class="line">	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:<span class="number">45</span>)</span><br><span class="line">	at java.lang.reflect.Constructor.newInstance(Constructor.java:<span class="number">423</span>)</span><br><span class="line">	at org.junit.internal.builders.AnnotatedBuilder.buildRunner(AnnotatedBuilder.java:<span class="number">104</span>)</span><br><span class="line">	at org.junit.internal.builders.AnnotatedBuilder.runnerForClass(AnnotatedBuilder.java:<span class="number">86</span>)</span><br><span class="line">	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:<span class="number">59</span>)</span><br><span class="line">	at org.junit.internal.builders.AllDefaultPossibilitiesBuilder.runnerForClass(AllDefaultPossibilitiesBuilder.java:<span class="number">26</span>)</span><br><span class="line">	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:<span class="number">59</span>)</span><br><span class="line">	at org.junit.internal.requests.ClassRequest.getRunner(ClassRequest.java:<span class="number">33</span>)</span><br><span class="line">	at org.junit.internal.requests.FilterRequest.getRunner(FilterRequest.java:<span class="number">36</span>)</span><br><span class="line">	at com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:<span class="number">49</span>)</span><br><span class="line">	at com.intellij.rt.execution.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:<span class="number">47</span>)</span><br><span class="line">	at com.intellij.rt.execution.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:<span class="number">242</span>)</span><br><span class="line">	at com.intellij.rt.execution.junit.JUnitStarter.main(JUnitStarter.java:<span class="number">70</span>)</span><br></pre></td></tr></table></figure>
+
+<p>定眼一看就一目了然，只需在类名加上俩个注解就Ok了<br><img src="/img/1561391084(1).png"></p>
+<p>##@Reference注入为null<br>先上图看看什么情况<br>&lt;img src=”/img/1561423349(1).png/&gt;<br>为什么在测试类获取的bean为null呢，经过一番摸索还是没有找到原因<br>未完待续…继续摸索…</p>
 
                 <hr>
                 
 
                 <ul class="pager">
                     
-                    <li class="previous">
-                        <a href="/2019/06/24/使用SpringBoot测试类遇到的异常/" data-toggle="tooltip" data-placement="top" title="使用SpringBoot测试类遇到的异常">&larr; Previous Post</a>
-                    </li>
-                    
                     
                     <li class="next">
-                        <a href="/2019/06/13/线程池由浅入深/" data-toggle="tooltip" data-placement="top" title="线程池由浅入深">Next Post &rarr;</a>
+                        <a href="/2019/06/18/微信pay/" data-toggle="tooltip" data-placement="top" title="微信pay">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -228,7 +214,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#流程解析"><span class="toc-text">流程解析</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#测试类启动失败"><span class="toc-text">测试类启动失败</span></a></li></ol>
                 </div>
             </div>
         </div>
@@ -250,7 +236,7 @@
                     </h5>
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/#java" title="java">java</a>
+                        <a class="tag" href="/tags/#异常" title="异常">异常</a>
                         
                     </div>
                 </section>
