@@ -80,7 +80,7 @@
                         
 							
                         <li>
-                            <a href="/my-works/">杂志</a>
+                            <a href="/tags/">标签</a>
                         </li>
 							
 						
@@ -88,7 +88,7 @@
                         
 							
                         <li>
-                            <a href="/tags/">标签</a>
+                            <a href="/my-works/">杂志</a>
                         </li>
 							
 						
@@ -183,14 +183,16 @@
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
                 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><h3 id="安装node-js"><a href="#安装node-js" class="headerlink" title="安装node.js"></a>安装node.js</h3><p>直接上nodejs下载链接&ensp;<a href="http://nodejs.cn/download/" target="_blank" rel="noopener">http://nodejs.cn/download/</a></p>
-<h3 id="安装cnpm"><a href="#安装cnpm" class="headerlink" title="安装cnpm"></a>安装cnpm</h3><p>注意：安装指令都需要加上&ensp;<font color="#EE6A50">-g</font>&ensp;表示全局安装<br>自带的npm镜像源速度太慢，这里安装cnpm选择淘宝镜像源,<code>npm install -g cnpm --registry=https://registry.npm.taobao.org</code></p>
+<h3 id="安装cnpm"><a href="#安装cnpm" class="headerlink" title="安装cnpm"></a>安装cnpm</h3><p>注意：安装指令都需要加上&ensp;<font color="#EE6A50">-g</font>&ensp;表示全局安装</p>
+<p>自带的npm镜像源速度太慢，这里安装cnpm选择淘宝镜像源,<code>npm install -g cnpm --registry=https://registry.npm.taobao.org</code></p>
 <p>使用<code>cnpm -v</code>查看是否安装成功</p>
-<h3 id="webpack打包"><a href="#webpack打包" class="headerlink" title="webpack打包"></a>webpack打包</h3><p>我这里使用的是idea，进入到idea的&ensp;T<font color="#EE6A50">Terminal</font>&ensp;命令行操作页面执行后续打包指令<br><img src="/img/KV@[_}W8{79ODP@F$R}IGFR.png"><br>使用之前安装的cnpm指令操作</p>
+<h3 id="webpack打包"><a href="#webpack打包" class="headerlink" title="webpack打包"></a>webpack打包</h3><p>我这里使用的是idea，进入到idea的&ensp;<font color="#EE6A50">Terminal</font>&ensp;命令行操作页面执行后续打包指令<br><img src="/img/KV@[_}W8{79ODP@F$R}IGFR.png"><br>打包之前cnpm指令操作</p>
 <ul>
 <li>初始化<code>cnpm init -y</code></li>
 <li>安装jquery<code>cnpm install jquery -S</code></li>
-<li>执行webpack命令会提示安装&ensp;<font color="#EE6A50">cebpack-cli</font>，所以我们要先安装webpack，<code>cnpm install webpack -g</code>，<code>cnpm install webpack-cli -g</code></li>
-<li>执行webpac打包命令<code>webpack 要打包的文件路径 -o 打包好后输出的路径</code></li>
+<li>执行webpack命令会提示安装&ensp;<font color="#EE6A50">cebpack-cli</font>，所以我们要先安装webpack，<code>cnpm install webpack -g</code>，再执行<code>cnpm install webpack-cli -g</code></li>
+<li><code>webpack -v</code>查看版本，如果version是4.0以上打包命令需要加&ensp;<font color="#EE6A50">-o</font>，否则会报错</li>
+<li>执行打包命令<code>webpack 要打包的文件路径 -o 打包好后输出的路径</code></li>
 <li>打包完成，改动代码需要重新执行webpack命令</li>
 </ul>
 
