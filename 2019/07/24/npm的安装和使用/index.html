@@ -80,7 +80,7 @@
                         
 							
                         <li>
-                            <a href="/my-works/">杂志</a>
+                            <a href="/tags/">标签</a>
                         </li>
 							
 						
@@ -88,7 +88,7 @@
                         
 							
                         <li>
-                            <a href="/tags/">标签</a>
+                            <a href="/my-works/">杂志</a>
                         </li>
 							
 						
@@ -135,13 +135,13 @@
 <!--only post-->
 
 
-<img class="wechat-title-img" src>
+<img class="wechat-title-img" src="null/img/and_then_comes_the_sun-wallpaper-1920x1080.jpg">
 
 
 <style>
     
     header.intro-header {
-        background-image: url('')
+        background-image: url('/img/and_then_comes_the_sun-wallpaper-1920x1080.jpg?imageView2/1/w/1400/h/400/interlace/1/q/90')
     }
 
     
@@ -162,6 +162,8 @@
                     </span>
                     <div class="tags text-center">
                         
+                        <a class="tag" href="/tags/#vue.js" title="vue.js">vue.js</a>
+                        
                     </div>
                 </div>
             </div>
@@ -180,7 +182,18 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <h2 id="npm安装"><a href="#npm安装" class="headerlink" title="npm安装"></a>npm安装</h2><p>选择淘宝镜像源<font color="#EE6A50">npm install -g cnpm –registry=<a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a></font><br>使用&nbsp;<font color="#EE6A50">cnpm -v</font>&nbsp;查看是否安装成功</p>
+                <p>由于npm速度太慢，所以我使用的是cnpm</p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><h3 id="安装node-js"><a href="#安装node-js" class="headerlink" title="安装node.js"></a>安装node.js</h3><p>直接上nodejs下载链接&ensp;<a href="http://nodejs.cn/download/" target="_blank" rel="noopener">http://nodejs.cn/download/</a></p>
+<h3 id="安装cnpm"><a href="#安装cnpm" class="headerlink" title="安装cnpm"></a>安装cnpm</h3><p>注意安装指令都需要加上&ensp;<font color="#EE6A50">-g</font>表示全局安装<br>自带的npm镜像源速度太慢，这里安装cnpm选择淘宝镜像源,<font color="#EE6A50">npm install -g cnpm –registry=<a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a></font></p>
+<p>使用&ensp;<font color="#EE6A50">cnpm -v</font>&ensp;查看是否安装成功</p>
+<h3 id="webpack打包"><a href="#webpack打包" class="headerlink" title="webpack打包"></a>webpack打包</h3><p>我这里使用的是idea，进入到idea的&ensp;Terminal&ensp;命令行操作页面执行后续打包指令<br><img src="/img/KV@[_}W8{79ODP@F$R}IGFR.png"><br>使用之前安装的cnpm指令操作</p>
+<ul>
+<li>初始化&ensp;<font color="#EE6A50">cnpm init -y</font></li>
+<li>安装jquery&ensp;<font color="#EE6A50">cnpm install jquery -S</font></li>
+<li>执行webpack命令会提示安装webpack-cli,所以我们要先安装webpack，<code>cnpm install webpack -g</code>，&ensp;<font color="#EE6A50">cnpm install webpack-cli -g</font></li>
+<li>执行webpack&ensp;<font color="#EE6A50">webpack 要打包的文件路径 -o 打包好后输出的路径</font></li>
+<li>打包完成，改动代码需要重新执行webpack命令</li>
+</ul>
 
                 <hr>
                 
@@ -208,7 +221,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#npm安装"><span class="toc-text">npm安装</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装cnpm"><span class="toc-text">安装cnpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack打包"><span class="toc-text">webpack打包</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
@@ -229,6 +242,8 @@
                         <a href="/tags/">FEATURED TAGS</a>
                     </h5>
                     <div class="tags">
+                        
+                        <a class="tag" href="/tags/#vue.js" title="vue.js">vue.js</a>
                         
                     </div>
                 </section>
