@@ -184,13 +184,33 @@
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
                 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><h3 id="安装node-js"><a href="#安装node-js" class="headerlink" title="安装node.js"></a>安装node.js</h3><p>直接上nodejs下载链接&ensp;<a href="http://nodejs.cn/download/" target="_blank" rel="noopener">http://nodejs.cn/download/</a></p>
 <h3 id="安装cnpm"><a href="#安装cnpm" class="headerlink" title="安装cnpm"></a>安装cnpm</h3><p>注意：安装指令都需要加上&ensp;<font color="#EE6A50">-g</font>&ensp;表示全局安装</p>
-<p>自带的npm镜像源速度太慢，这里安装cnpm选择淘宝镜像源，<figure class="highlight plain"><figcaption><span>install -g cnpm --registry</span></figcaption><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">使用``cnpm -v``查看是否安装成功</span><br><span class="line"></span><br><span class="line">### 1.通过webpack+指定路径打包</span><br><span class="line">我这里使用的是idea，进入到idea的&amp;ensp;&lt;font color=#EE6A50&gt;Terminal&lt;/font&gt;&amp;ensp;命令行操作页面执行后续打包指令</span><br><span class="line">&lt;img src=&quot;/img/KV@[_&#125;W8&#123;79ODP@F$R&#125;IGFR.png&quot;/&gt;</span><br><span class="line">打包之前cnpm指令操作</span><br><span class="line">+ 初始化``cnpm init -y``</span><br><span class="line">+ 安装jquery``cnpm install jquery -S``</span><br><span class="line">+ 执行webpack命令会提示安装&amp;ensp;&lt;font color=#EE6A50&gt;webpack-cli&lt;/font&gt;，所以我们要先安装webpack，``cnpm install webpack -g``，再执行``cnpm install webpack-cli -g``</span><br><span class="line">+ ``webpack -v``查看版本，如果version是4.0以上打包命令需要加&amp;ensp;&lt;font color=#EE6A50&gt;-o&lt;/font&gt;，否则会报错</span><br><span class="line">+ 执行打包命令``webpack 要打包的文件路径 -o 打包好后输出的路径``</span><br><span class="line">+ 打包完成，改动代码需要重新执行webpack命令</span><br><span class="line"></span><br><span class="line">### 通过js配置文件执行webpack命令打包</span><br><span class="line">+ 创建一个&amp;ensp;&lt;font color=#EE6A50&gt;webpack.config.js&lt;/font&gt;&amp;ensp;命名随意，加入以下指定代码，入口路径是当前从js文件冒泡查找要引入的js文件，注意路径的引用否则会提示路径错误的log信息</span><br></pre></td></tr></table></figure></p>
-<p>const path = require(‘path’);</p>
-<p>// 通过node中的模板操作，向外暴露了一个配置对象<br>module.exports = {<br>    // 入口，表示要使用webpack打包哪个文件<br>    entry: path.join(<strong>dirname,’./src/main.js’),<br>    // 出口<br>    output: {<br>        // 指定打包好的文件，输出到哪个目录去<br>        path: path.join(</strong>dirname, ‘./dist’),<br>        // 指定输出的文件名称<br>        filename: ‘build.js’<br>    }<br>}</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">### 启动服务器实时更新修改的内容</span><br><span class="line">在上述的配置文件中执行以下命令</span><br><span class="line">+ ``cnpm i webpack-dev-server -D``</span><br><span class="line">+ ``cnpm i webpack -D``</span><br><span class="line">+ ``cnpm i webpack-cli -D``</span><br><span class="line">+ ``cnpm i``</span><br><span class="line">此时package.json中会自动显示</span><br></pre></td></tr></table></figure>
+<p>自带的npm镜像源速度太慢，这里安装cnpm选择淘宝镜像源，<code>npm install -g cnpm --registry=https://registry.npm.taobao.org</code></p>
+<p>使用<code>cnpm -v</code>查看是否安装成功</p>
+<h3 id="1-通过webpack-指定路径打包"><a href="#1-通过webpack-指定路径打包" class="headerlink" title="1.通过webpack+指定路径打包"></a>1.通过webpack+指定路径打包</h3><p>我这里使用的是idea，进入到idea的&ensp;<font color="#EE6A50">Terminal</font>&ensp;命令行操作页面执行后续打包指令<br><img src="/img/KV@[_}W8{79ODP@F$R}IGFR.png"><br>打包之前cnpm指令操作</p>
+<ul>
+<li>初始化<code>cnpm init -y</code></li>
+<li>安装jquery<code>cnpm install jquery -S</code></li>
+<li>执行webpack命令会提示安装&ensp;<font color="#EE6A50">webpack-cli</font>，所以我们要先安装webpack，<code>cnpm install webpack -g</code>，再执行<code>cnpm install webpack-cli -g</code></li>
+<li><code>webpack -v</code>查看版本，如果version是4.0以上打包命令需要加&ensp;<font color="#EE6A50">-o</font>，否则会报错</li>
+<li>执行打包命令<code>webpack 要打包的文件路径 -o 打包好后输出的路径</code></li>
+<li>打包完成，改动代码需要重新执行webpack命令</li>
+</ul>
+<h3 id="通过js配置文件执行webpack命令打包"><a href="#通过js配置文件执行webpack命令打包" class="headerlink" title="通过js配置文件执行webpack命令打包"></a>通过js配置文件执行webpack命令打包</h3><ul>
+<li>创建一个&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;命名随意，加入以下指定代码，入口路径是当前从js文件冒泡查找要引入的js文件，注意路径的引用否则会提示路径错误的log信息<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const path = require(&apos;path&apos;);</span><br><span class="line"></span><br><span class="line">// 通过node中的模板操作，向外暴露了一个配置对象</span><br><span class="line">module.exports = &#123;</span><br><span class="line">    // 入口，表示要使用webpack打包哪个文件</span><br><span class="line">    entry: path.join(__dirname,&apos;./src/main.js&apos;),</span><br><span class="line">    // 出口</span><br><span class="line">    output: &#123;</span><br><span class="line">        // 指定打包好的文件，输出到哪个目录去</span><br><span class="line">        path: path.join(__dirname, &apos;./dist&apos;),</span><br><span class="line">        // 指定输出的文件名称</span><br><span class="line">        filename: &apos;build.js&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>“devDependencies”: {<br>    “webpack”: “^4.37.0”,<br>    “webpack-cli”: “^3.3.6”,<br>    “webpack-dev-server”: “^3.7.2”<br>}</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">我们在package.json中&amp;ensp;&lt;font color=#EE6A50&gt;scripts&lt;/font&gt;&amp;ensp;中新增脚本</span><br><span class="line">``` </span><br><span class="line">&quot;dev&quot;: &quot;webpack-dev-server&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="启动服务器实时更新修改的内容"><a href="#启动服务器实时更新修改的内容" class="headerlink" title="启动服务器实时更新修改的内容"></a>启动服务器实时更新修改的内容</h3><p>在上述的配置文件中执行以下命令</p>
+<ul>
+<li><code>cnpm i webpack-dev-server -D</code></li>
+<li><code>cnpm i webpack -D</code></li>
+<li><code>cnpm i webpack-cli -D</code></li>
+<li><code>cnpm i</code><br>此时package.json中会自动显示<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;devDependencies&quot;: &#123;</span><br><span class="line">    &quot;webpack&quot;: &quot;^4.37.0&quot;,</span><br><span class="line">    &quot;webpack-cli&quot;: &quot;^3.3.6&quot;,</span><br><span class="line">    &quot;webpack-dev-server&quot;: &quot;^3.7.2&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>我们在package.json中&ensp;<font color="#EE6A50">scripts</font>&ensp;中新增脚本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;dev&quot;: &quot;webpack-dev-server&quot;</span><br></pre></td></tr></table></figure>
 
 <p>再执行刚刚新添加的脚本</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cnpm run dev</span><br></pre></td></tr></table></figure>
@@ -223,7 +243,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装cnpm"><span class="toc-text">安装cnpm</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装cnpm"><span class="toc-text">安装cnpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过webpack-指定路径打包"><span class="toc-text">1.通过webpack+指定路径打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过js配置文件执行webpack命令打包"><span class="toc-text">通过js配置文件执行webpack命令打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#启动服务器实时更新修改的内容"><span class="toc-text">启动服务器实时更新修改的内容</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
