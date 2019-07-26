@@ -80,7 +80,7 @@
                         
 							
                         <li>
-                            <a href="/tags/">标签</a>
+                            <a href="/my-works/">杂志</a>
                         </li>
 							
 						
@@ -88,7 +88,7 @@
                         
 							
                         <li>
-                            <a href="/my-works/">杂志</a>
+                            <a href="/tags/">标签</a>
                         </li>
 							
 						
@@ -237,14 +237,14 @@
 <h3 id="使用插件从内存中加载-less文件"><a href="#使用插件从内存中加载-less文件" class="headerlink" title="使用插件从内存中加载.less文件"></a>使用插件从内存中加载.less文件</h3><ul>
 <li><code>cnpm i less -D</code></li>
 <li><code>cnpm i less-loader -D</code></li>
-<li>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;rules中加入配置插件的节点<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;test: /\.less&amp;/, user: [&apos;style-loader&apos;, &apos;css-loader&apos;, &apos;less-loader&apos;]&#125;</span><br></pre></td></tr></table></figure>
+<li>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;rules中加入配置插件的节点<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;<span class="attr">test</span>: <span class="regexp">/\.less&amp;/</span>, <span class="attr">user</span>: [<span class="string">'style-loader'</span>, <span class="string">'css-loader'</span>, <span class="string">'less-loader'</span>]&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h3 id="使用插件从内存中加载-scss"><a href="#使用插件从内存中加载-scss" class="headerlink" title="使用插件从内存中加载.scss"></a>使用插件从内存中加载.scss</h3><ul>
 <li><code>cnpm i node-sass -D</code></li>
 <li><code>cnpm i sass-loader -D</code></li>
-<li>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;rules中加入配置插件的节点<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;test: /\.sass&amp;/, user: [&apos;style-loader&apos;, &apos;css-loader&apos;, &apos;sass-loader&apos;]&#125;</span><br></pre></td></tr></table></figure>
+<li>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;rules中加入配置插件的节点<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;<span class="attr">test</span>: <span class="regexp">/\.sass&amp;/</span>, <span class="attr">user</span>: [<span class="string">'style-loader'</span>, <span class="string">'css-loader'</span>, <span class="string">'sass-loader'</span>]&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
