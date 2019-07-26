@@ -219,7 +219,7 @@
 <p>出现successfully就表示运行成功，如果是Failed需要检查路径是否正确<br><img src="/img/1564044354(1).png"></p>
 <h3 id="webpack-dev-server常用命令"><a href="#webpack-dev-server常用命令" class="headerlink" title="webpack-dev-server常用命令"></a>webpack-dev-server常用命令</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment">    --open -&gt; 执行run命令后默认打开浏览器</span></span><br><span class="line"><span class="comment">    --port 8081 -&gt; 指定浏览器端口</span></span><br><span class="line"><span class="comment">    --contentBase src -&gt; 默认打开src下的页面</span></span><br><span class="line"><span class="comment">    --hot -&gt; 异步加载页面js、异步打包修改的js</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">webpack-dev-server --open --port <span class="number">8081</span> --contentBase src --hot</span><br></pre></td></tr></table></figure>
 
-<h3 id="使用html-webpack-plugin插件配置启动页面"><a href="#使用html-webpack-plugin插件配置启动页面" class="headerlink" title="使用html-webpack-plugin插件配置启动页面"></a>使用html-webpack-plugin插件配置启动页面</h3><p>由于使用<code>--contentBase</code>需要指定默认启动目录，还需要修改script标签中的src属性，所以使用html-webpack-plugin插件配置启动页面</p>
+<h3 id="使用插件从内存中加载打包好的build-js文件"><a href="#使用插件从内存中加载打包好的build-js文件" class="headerlink" title="使用插件从内存中加载打包好的build.js文件"></a>使用插件从内存中加载打包好的build.js文件</h3><p>由于使用<code>--contentBase</code>需要指定默认启动目录，还需要修改script标签中的src属性，所以使用html-webpack-plugin插件配置启动页面</p>
 <p>之前加载页面是从磁盘中加载，使用该插件后从内存中加载</p>
 <ul>
 <li>运行<code>cnpm i html-webpack-plugin --save-dev</code>安装到开发依赖</li>
@@ -228,6 +228,12 @@
 </li>
 </ul>
 <p>重新启动项目后，不需要指定script标签也会自动引入打包好的build.js并渲染到页面<br><img src="/img/1564104960(1).png"></p>
+<h3 id="使用插件从内存中加载-css文件"><a href="#使用插件从内存中加载-css文件" class="headerlink" title="使用插件从内存中加载.css文件"></a>使用插件从内存中加载.css文件</h3><ul>
+<li>安装插件<code>cnpm i style-loader css-loader -D</code></li>
+<li>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;加入配置插件的节点<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">module</span>: &#123;   <span class="comment">// 该节点用于配置所有第三方模块加载器</span></span><br><span class="line">    rules: [    <span class="comment">// 正则表达式匹配所有.css结尾的文件</span></span><br><span class="line">        &#123;<span class="attr">test</span>: <span class="regexp">/\.css&amp;/</span>, <span class="attr">user</span>: [<span class="string">'style-loader'</span>, <span class="string">'css-loader'</span>]&#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
 
                 <hr>
                 
@@ -255,7 +261,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装cnpm"><span class="toc-text">安装cnpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过webpack-指定路径打包"><span class="toc-text">1. 通过webpack+指定路径打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-通过js配置文件执行webpack命令打包"><span class="toc-text">2. 通过js配置文件执行webpack命令打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-启动服务器实时更新修改的内容"><span class="toc-text">3. 启动服务器实时更新修改的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack-dev-server常用命令"><span class="toc-text">webpack-dev-server常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用html-webpack-plugin插件配置启动页面"><span class="toc-text">使用html-webpack-plugin插件配置启动页面</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装cnpm"><span class="toc-text">安装cnpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过webpack-指定路径打包"><span class="toc-text">1. 通过webpack+指定路径打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-通过js配置文件执行webpack命令打包"><span class="toc-text">2. 通过js配置文件执行webpack命令打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-启动服务器实时更新修改的内容"><span class="toc-text">3. 启动服务器实时更新修改的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack-dev-server常用命令"><span class="toc-text">webpack-dev-server常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载打包好的build-js文件"><span class="toc-text">使用插件从内存中加载打包好的build.js文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-css文件"><span class="toc-text">使用插件从内存中加载.css文件</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
