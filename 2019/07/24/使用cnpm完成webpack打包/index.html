@@ -258,7 +258,10 @@
 <img src="/img/1564122339(1).png">
 
 
-<h3 id="使用插件解析识别高级js语法"><a href="#使用插件解析识别高级js语法" class="headerlink" title="使用插件解析识别高级js语法"></a>使用插件解析识别高级js语法</h3><p>webpack默认只能处理一部人es6的语法，更高级的处理不了，需要借助第三方的loader加载器来帮助webpack处理。第三方loader把高级语法转为低级语法后，会把结果交给webpack打包到build.js</p>
+<h3 id="使用插件解析识别高级js语法"><a href="#使用插件解析识别高级js语法" class="headerlink" title="使用插件解析识别高级js语法"></a>使用插件解析识别高级js语法</h3><p>在入口函数main.js执行下面语法会报错</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> info = &#123;<span class="attr">name</span>: <span class="string">'swan'</span>, <span class="attr">age</span>: <span class="number">20</span>&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(Person.info);</span><br></pre></td></tr></table></figure>
+
+<p>webpack默认只能处理一部人es6的语法，更高级的处理不了，需要借助第三方的loader加载器来帮助webpack处理。第三方loader把高级语法转为低级语法后，会把结果交给webpack打包到build.js</p>
 <ul>
 <li><p><code>cnpm i babel-core babel-loader babel-plugin-transform-runtime -D</code></p>
 </li>
