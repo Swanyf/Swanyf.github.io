@@ -234,6 +234,13 @@
 
 </li>
 </ul>
+<h4 id="webpack处理第三方文件类型过程"><a href="#webpack处理第三方文件类型过程" class="headerlink" title="webpack处理第三方文件类型过程"></a>webpack处理第三方文件类型过程</h4><ul>
+<li>若要处理的文件不是js类型，回去配置文件中查找有无对应的第三方loader规则</li>
+<li>如有对应的规则就调用对应的loader处理该文件类型</li>
+<li>loader加载顺序是从后往前调用</li>
+<li>当最后一个loader调用完毕，会把处理结果直接交给webpack打包合并，最终输出到build.js中<img src="/img/A{9VPZYFA%_7U8VI0@M(8WL.png">
+</li>
+</ul>
 
                 <hr>
                 
@@ -261,7 +268,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装cnpm"><span class="toc-text">安装cnpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过webpack-指定路径打包"><span class="toc-text">1. 通过webpack+指定路径打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-通过js配置文件执行webpack命令打包"><span class="toc-text">2. 通过js配置文件执行webpack命令打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-启动服务器实时更新修改的内容"><span class="toc-text">3. 启动服务器实时更新修改的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack-dev-server常用命令"><span class="toc-text">webpack-dev-server常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载打包好的build-js文件"><span class="toc-text">使用插件从内存中加载打包好的build.js文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-css文件"><span class="toc-text">使用插件从内存中加载.css文件</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装cnpm"><span class="toc-text">安装cnpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过webpack-指定路径打包"><span class="toc-text">1. 通过webpack+指定路径打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-通过js配置文件执行webpack命令打包"><span class="toc-text">2. 通过js配置文件执行webpack命令打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-启动服务器实时更新修改的内容"><span class="toc-text">3. 启动服务器实时更新修改的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack-dev-server常用命令"><span class="toc-text">webpack-dev-server常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载打包好的build-js文件"><span class="toc-text">使用插件从内存中加载打包好的build.js文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-css文件"><span class="toc-text">使用插件从内存中加载.css文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#webpack处理第三方文件类型过程"><span class="toc-text">webpack处理第三方文件类型过程</span></a></li></ol></li></ol></li></ol>
                 </div>
             </div>
         </div>
