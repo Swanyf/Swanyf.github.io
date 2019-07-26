@@ -250,7 +250,7 @@
 </ul>
 <h3 id="使用插件处理url地址"><a href="#使用插件处理url地址" class="headerlink" title="使用插件处理url地址"></a>使用插件处理url地址</h3><ul>
 <li>webpack默认无法处理url地址，需安装插件<code>cnpm i url-loader file-loader -D</code></li>
-<li>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;rules中加入配置插件的节点<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/*</span><br><span class="line">    limit=xxx -&gt;表示指定图片的大小，如果比实际图片大小大图片名称会被编译成base64字符串，反之为解析后的图片名</span><br><span class="line">    name=[name].[ext] -&gt;表示使用原图片名称</span><br><span class="line">*/</span><br><span class="line">&#123;test: /\.(jpg|png|gif|bmp|jpeg)$/, use: &apos;url-loader?limit=15258&amp;name=[name].[ext]&apos;&#125;,</span><br></pre></td></tr></table></figure>
+<li>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;rules数组中加入配置插件的节点<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/*</span><br><span class="line">    limit=xxx -&gt;表示指定图片的大小，如果比实际图片大小大图片名称会被编译成base64字符串，反之为解析后的图片名</span><br><span class="line">    name=[name].[ext] -&gt;表示使用原图片名称</span><br><span class="line">*/</span><br><span class="line">&#123;test: /\.(jpg|png|gif|bmp|jpeg)$/, use: &apos;url-loader?limit=15258&amp;name=[name].[ext]&apos;&#125;,</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
@@ -258,6 +258,21 @@
 <img src="/img/1564122339(1).png">
 
 
+<h3 id="使用插件解析识别高级js语法"><a href="#使用插件解析识别高级js语法" class="headerlink" title="使用插件解析识别高级js语法"></a>使用插件解析识别高级js语法</h3><p>webpack默认只能处理一部人es6的语法，更高级的处理不了，需要借助第三方的loader加载器来帮助webpack处理。<br>第三方loader把高级语法转为低级语法后，会把结果交给webpack打包到build.js</p>
+<ul>
+<li><p><code>cnpm i babel-core babel-loader babel-plugin-transform-runtime -D</code></p>
+</li>
+<li><p><code>cnpm i babel-preset-env babel-preset-stage-0 -D</code></p>
+</li>
+<li><p>项目根目录中新建&ensp;<font color="#EE6A50">.babelrc</font>&ensp;的babel配置文件<br>该文件为json格式</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;presets&quot;: [&quot;env&quot;, &quot;stage-0&quot;],</span><br><span class="line">    &quot;plugins&quot;: [&quot;transform-runtime&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;rules数组中加入配置插件的匹配规则</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;<span class="attr">test</span>: <span class="regexp">/\.js$/</span>, <span class="attr">use</span>: <span class="string">'babel-loader'</span>, <span class="attr">exclude</span>: <span class="regexp">/node_modules/</span>&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>不排除node_module文件夹，babel会把其中所有第三方js文件都打包编译，会消耗cpu、打包速度很慢、且项目无法正常运行</p>
 <h4 id="webpack处理第三方文件类型过程"><a href="#webpack处理第三方文件类型过程" class="headerlink" title="webpack处理第三方文件类型过程"></a>webpack处理第三方文件类型过程</h4><ul>
 <li>若要处理的文件不是js类型，回去配置文件中查找有无对应的第三方loader规则</li>
 <li>如有对应的规则就调用对应的loader处理该文件类型</li>
@@ -292,7 +307,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装cnpm"><span class="toc-text">安装cnpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过webpack-指定路径打包"><span class="toc-text">1. 通过webpack+指定路径打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-通过js配置文件执行webpack命令打包"><span class="toc-text">2. 通过js配置文件执行webpack命令打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-启动服务器实时更新修改的内容"><span class="toc-text">3. 启动服务器实时更新修改的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack-dev-server常用命令"><span class="toc-text">webpack-dev-server常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载打包好的build-js文件"><span class="toc-text">使用插件从内存中加载打包好的build.js文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-css文件"><span class="toc-text">使用插件从内存中加载.css文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-less文件"><span class="toc-text">使用插件从内存中加载.less文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-scss"><span class="toc-text">使用插件从内存中加载.scss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件处理url地址"><span class="toc-text">使用插件处理url地址</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#webpack处理第三方文件类型过程"><span class="toc-text">webpack处理第三方文件类型过程</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装cnpm"><span class="toc-text">安装cnpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过webpack-指定路径打包"><span class="toc-text">1. 通过webpack+指定路径打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-通过js配置文件执行webpack命令打包"><span class="toc-text">2. 通过js配置文件执行webpack命令打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-启动服务器实时更新修改的内容"><span class="toc-text">3. 启动服务器实时更新修改的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack-dev-server常用命令"><span class="toc-text">webpack-dev-server常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载打包好的build-js文件"><span class="toc-text">使用插件从内存中加载打包好的build.js文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-css文件"><span class="toc-text">使用插件从内存中加载.css文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-less文件"><span class="toc-text">使用插件从内存中加载.less文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-scss"><span class="toc-text">使用插件从内存中加载.scss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件处理url地址"><span class="toc-text">使用插件处理url地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件解析识别高级js语法"><span class="toc-text">使用插件解析识别高级js语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#webpack处理第三方文件类型过程"><span class="toc-text">webpack处理第三方文件类型过程</span></a></li></ol></li></ol></li></ol>
                 </div>
             </div>
         </div>
