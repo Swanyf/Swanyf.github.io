@@ -22,7 +22,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/tags/java/">
+    <link rel="canonical" href="http://yoursite.com/page/2/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -43,8 +43,8 @@
 <!-- hack iOS CSS :active style -->
 <body ontouchstart="" class="animated fadeIn">
 <!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="false" data-istags="true
-" data-ishome="false">
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="false" data-istags="false
+" data-ishome="true">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header page-scroll">
@@ -133,6 +133,126 @@
 <!-- Main Content -->
 
 
+<style>
+
+    .custom-haojen-container .post-preview:nth-of-type(1),
+    .custom-haojen-container .post-preview-poetry:nth-of-type(1) {
+        text-align: center;
+        background-repeat: no-repeat;
+        border-radius: 3px;
+        background-size: cover;
+        padding: 0;
+        height: 300px;
+        display: table;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.16);
+    }
+
+    /*去掉诗歌的背景图片*/
+    .custom-haojen-container .post-preview-poetry:nth-of-type(1) {
+        background-image: none !important;
+        background-color: rgba(255, 248, 220, 0.5);
+    }
+
+    .custom-haojen-container .post-preview:nth-child(1) h2,
+    .custom-haojen-container .post-preview:nth-child(1) .post-meta,
+    .custom-haojen-container .post-preview:nth-child(1) .post-subtitle {
+        text-shadow: 0 0 40px rgba(0, 0, 0, 1);
+        letter-spacing: 1px;
+        color: #fff;
+        margin-top: 0;
+        padding-left: 60px;
+        padding-right: 60px;
+    }
+
+    .custom-haojen-container .post-preview:nth-child(1) .post-meta {
+        font-size: .9em;
+        font-weight: 300;
+        margin-top: 0;
+    }
+
+    .custom-haojen-container .post-preview-poetry:nth-child(1) .post-subtitle {
+        letter-spacing: 6px;
+        font-size: 18px;
+        font-family: unset;
+        font-weight: 400;
+        color: rgba(0, 0, 0, .75)
+    }
+
+    /*不显示摘要*/
+    .custom-haojen-container .post-preview:nth-child(1) .post-content-preview {
+        display: none
+    }
+
+    /*只第一个显示背景图片*/
+    .custom-haojen-container .post-preview:not(:nth-child(1)) {
+        background-image: none !important;
+    }
+
+    /*第一个分界线去掉*/
+    .custom-haojen-container hr:nth-of-type(1) {
+        display: none;
+    }
+
+    /*主题*/
+    .custom-haojen-container .post-preview:nth-of-type(1) > a {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    /*诗词标题*/
+    .custom-haojen-container .post-preview-poetry:nth-child(1) h2 {
+        font-size: 35px;
+        font-family: STKaiti;
+        color: rgba(0, 0, 0, .8);
+    }
+
+    .custom-haojen-container .post-preview-poetry:nth-of-type(1) .post-meta {
+        color: #0e2231;
+    }
+
+    @media (max-width: 768px) {
+        .custom-haojen-container .post-preview:nth-child(1) {
+            height: 240px;
+        }
+
+        .custom-haojen-container .post-preview-poetry:nth-child(1) h2 {
+            font-size: 28px !important;
+            margin-top: 0;
+        }
+
+        .custom-haojen-container .post-preview:nth-child(1) .post-subtitle {
+            font-size: 18px;
+            font-weight: 400;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .custom-haojen-container .post-preview:nth-of-type(1) > a {
+            padding: 20px
+        }
+    }
+
+    /*手机屏幕*/
+    @media (max-width: 400px) {
+        .custom-haojen-container .post-preview:nth-child(1) {
+            height: 195px;
+        }
+
+        .custom-haojen-container .post-preview-poetry:nth-child(1) h2 {
+            font-size: 20px !important;
+        }
+
+        .custom-haojen-container .post-preview:nth-child(1) .post-subtitle {
+            font-size: 16px;
+        }
+
+        .custom-haojen-container .post-preview:nth-child(1) a {
+            padding: 30px 20px;
+        }
+    }
+</style>
+
 <!-- Page Header -->
 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 visible-xs-block visible-sm-block">
     <div class="row">
@@ -159,50 +279,19 @@
 
 
 
-<div class="post-preview " style="background-image: url('')">
-    <a href="/2019/06/18/微信pay/">
+<div class="post-preview " style="background-image: url('/img/sea.jpg')">
+    <a href="/2019/06/10/如何正确访问Redis中的海量数据？服务才不会挂掉！/">
         <h2 class="post-title">
-            微信pay
+            如何正确访问Redis中的海量数据？服务才不会挂掉！
         </h2>
         <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-18
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-10
         </p>
         
         <div class="post-content-preview">
             <p>
-                微信支付官网开发文档https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1
-流程解析
-
-用户发起充值请求
-生成充值记录
-响应并展示二维码图片的页面
-页面加载生成二维码图片的请求
-调用pay的支付接口
-调用微信支付系统统一下单接口..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
-<div class="post-preview " style="background-image: url('/img/sj.jpg')">
-    <a href="/2019/06/13/线程池由浅入深/">
-        <h2 class="post-title">
-            线程池由浅入深
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-13
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                new Thread弊端1.new Thread 每次都会创建对象，性能差2.线程缺乏统一管理，可能无限制的新建线程，相互竞争，有可能占用过多系统资源导致死机或 OOM3.缺少更多功能，如更多执行、定期执行、线程中断，方法使用复杂
-线程池优点1.重用存在的线程，减少对象创建、消亡的开销，性能佳
-..
+                前言有时候我们需要知道线上的Redis的使用情况，尤其需要知道一些前缀的key值，让我们怎么去查看呢？并且通常情况下Redis里的数据都是海量的，那么我们访问Redis中的海量数据？如何避免事故产生！今天就给大家分享一个小知识点，希望大家轻喷。
+原因因为我们的用户token缓存是采用了【user..
             </p>
         </div>
     </a>
@@ -217,6 +306,10 @@
 <!-- 翻页 pager -->
 
 <ul class="pager">
+    
+    <li class="previous">
+        <a href="/">&larr; Newer Posts</a>
+    </li>
     
     
 </ul>
