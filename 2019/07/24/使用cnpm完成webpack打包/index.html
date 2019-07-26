@@ -80,7 +80,7 @@
                         
 							
                         <li>
-                            <a href="/my-works/">杂志</a>
+                            <a href="/tags/">标签</a>
                         </li>
 							
 						
@@ -88,7 +88,7 @@
                         
 							
                         <li>
-                            <a href="/tags/">标签</a>
+                            <a href="/my-works/">杂志</a>
                         </li>
 							
 						
@@ -230,27 +230,27 @@
 <p>重新启动项目后，不需要指定script标签也会自动引入打包好的build.js并渲染到页面<br><img src="/img/1564104960(1).png"></p>
 <h3 id="使用插件从内存中加载-css文件"><a href="#使用插件从内存中加载-css文件" class="headerlink" title="使用插件从内存中加载.css文件"></a>使用插件从内存中加载.css文件</h3><ul>
 <li>安装插件<code>cnpm i style-loader css-loader -D</code></li>
-<li>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;加入配置插件的节点<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">module: &#123;   // 该节点用于配置所有第三方模块加载器</span><br><span class="line">    rules: [    // 正则表达式匹配所有.css结尾的文件</span><br><span class="line">        &#123;test: /\.css&amp;/, user: [&apos;style-loader&apos;, &apos;css-loader&apos;]&#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;加入配置插件的节点与匹配规则<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">module: &#123;   // 该节点用于配置所有第三方模块加载器</span><br><span class="line">    rules: [    // 正则表达式匹配所有.css结尾的文件</span><br><span class="line">        &#123;test: /\.css&amp;/, user: [&apos;style-loader&apos;, &apos;css-loader&apos;]&#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h3 id="使用插件从内存中加载-less文件"><a href="#使用插件从内存中加载-less文件" class="headerlink" title="使用插件从内存中加载.less文件"></a>使用插件从内存中加载.less文件</h3><ul>
 <li><code>cnpm i less -D</code></li>
 <li><code>cnpm i less-loader -D</code></li>
-<li>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;rules中加入配置插件的节点<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;<span class="attr">test</span>: <span class="regexp">/\.less$/</span>, <span class="attr">user</span>: [<span class="string">'style-loader'</span>, <span class="string">'css-loader'</span>, <span class="string">'less-loader'</span>]&#125;</span><br></pre></td></tr></table></figure>
+<li>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;rules中加入配置插件的匹配规则<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;<span class="attr">test</span>: <span class="regexp">/\.less$/</span>, <span class="attr">user</span>: [<span class="string">'style-loader'</span>, <span class="string">'css-loader'</span>, <span class="string">'less-loader'</span>]&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h3 id="使用插件从内存中加载-scss"><a href="#使用插件从内存中加载-scss" class="headerlink" title="使用插件从内存中加载.scss"></a>使用插件从内存中加载.scss</h3><ul>
 <li><code>cnpm i node-sass -D</code></li>
 <li><code>cnpm i sass-loader -D</code></li>
-<li>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;rules中加入配置插件的节点<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;<span class="attr">test</span>: <span class="regexp">/\.sass$/</span>, <span class="attr">user</span>: [<span class="string">'style-loader'</span>, <span class="string">'css-loader'</span>, <span class="string">'sass-loader'</span>]&#125;</span><br></pre></td></tr></table></figure>
+<li>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;rules中加入配置插件的匹配规则<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;<span class="attr">test</span>: <span class="regexp">/\.sass$/</span>, <span class="attr">user</span>: [<span class="string">'style-loader'</span>, <span class="string">'css-loader'</span>, <span class="string">'sass-loader'</span>]&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h3 id="使用插件处理url地址"><a href="#使用插件处理url地址" class="headerlink" title="使用插件处理url地址"></a>使用插件处理url地址</h3><ul>
 <li>webpack默认无法处理url地址，需安装插件<code>cnpm i url-loader file-loader -D</code></li>
-<li>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;rules数组中加入配置插件的节点<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/*</span><br><span class="line">    limit=xxx -&gt;表示指定图片的大小，如果比实际图片大小大图片名称会被编译成base64字符串，反之为解析后的图片名</span><br><span class="line">    name=[name].[ext] -&gt;表示使用原图片名称</span><br><span class="line">*/</span><br><span class="line">&#123;test: /\.(jpg|png|gif|bmp|jpeg)$/, use: &apos;url-loader?limit=15258&amp;name=[name].[ext]&apos;&#125;,</span><br></pre></td></tr></table></figure>
+<li>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;rules数组中加入配置插件的匹配规则<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/*</span><br><span class="line">    limit=xxx -&gt;表示指定图片的大小，如果比实际图片大小大图片名称会被编译成base64字符串，反之为解析后的图片名</span><br><span class="line">    name=[name].[ext] -&gt;表示使用原图片名称</span><br><span class="line">*/</span><br><span class="line">&#123;test: /\.(jpg|png|gif|bmp|jpeg)$/, use: &apos;url-loader?limit=15258&amp;name=[name].[ext]&apos;&#125;,</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
@@ -258,14 +258,14 @@
 <img src="/img/1564122339(1).png">
 
 
-<h3 id="使用插件解析识别高级js语法"><a href="#使用插件解析识别高级js语法" class="headerlink" title="使用插件解析识别高级js语法"></a>使用插件解析识别高级js语法</h3><p>webpack默认只能处理一部人es6的语法，更高级的处理不了，需要借助第三方的loader加载器来帮助webpack处理。<br>第三方loader把高级语法转为低级语法后，会把结果交给webpack打包到build.js</p>
+<h3 id="使用插件解析识别高级js语法"><a href="#使用插件解析识别高级js语法" class="headerlink" title="使用插件解析识别高级js语法"></a>使用插件解析识别高级js语法</h3><p>webpack默认只能处理一部人es6的语法，更高级的处理不了，需要借助第三方的loader加载器来帮助webpack处理。第三方loader把高级语法转为低级语法后，会把结果交给webpack打包到build.js</p>
 <ul>
 <li><p><code>cnpm i babel-core babel-loader babel-plugin-transform-runtime -D</code></p>
 </li>
 <li><p><code>cnpm i babel-preset-env babel-preset-stage-0 -D</code></p>
 </li>
-<li><p>项目根目录中新建&ensp;<font color="#EE6A50">.babelrc</font>&ensp;的babel配置文件<br>该文件为json格式</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;presets&quot;: [&quot;env&quot;, &quot;stage-0&quot;],</span><br><span class="line">    &quot;plugins&quot;: [&quot;transform-runtime&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><p>项目根目录中新建&ensp;<font color="#EE6A50">.babelrc</font>&ensp;的babel配置文件该文件为json格式</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"presets"</span>: [<span class="string">"env"</span>, <span class="string">"stage-0"</span>],</span><br><span class="line">    <span class="string">"plugins"</span>: [<span class="string">"transform-runtime"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>在&ensp;<font color="#EE6A50">webpack.config.js</font>&ensp;中&ensp;<font color="#EE6A50">module.exports</font>&ensp;rules数组中加入配置插件的匹配规则</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;<span class="attr">test</span>: <span class="regexp">/\.js$/</span>, <span class="attr">use</span>: <span class="string">'babel-loader'</span>, <span class="attr">exclude</span>: <span class="regexp">/node_modules/</span>&#125;</span><br></pre></td></tr></table></figure>
