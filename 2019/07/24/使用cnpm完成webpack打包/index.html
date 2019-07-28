@@ -283,8 +283,29 @@
 <li>如有对应的规则就调用对应的loader处理该文件类型</li>
 <li>loader加载顺序是从后往前调用</li>
 <li>当最后一个loader调用完毕，会把处理结果直接交给webpack打包合并，最终输出到build.js中<img src="/img/aaa.png">
+
 </li>
 </ul>
+<h2 id="在webpack构建的项目使用vue开发"><a href="#在webpack构建的项目使用vue开发" class="headerlink" title="在webpack构建的项目使用vue开发"></a>在webpack构建的项目使用vue开发</h2><p>回顾在普通网页中使用vue</p>
+<ul>
+<li>通过script标签引入vue包</li>
+<li>在页面创建一个id为app的div容器</li>
+<li>通过<code>new Vue( )</code>得到vm实例</li>
+</ul>
+<p>在入口函数main.js中导包并创建vue实例</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import Vue from &apos;vue&apos;</span><br><span class="line"></span><br><span class="line">var vue = new Vue(&#123;</span><br><span class="line">    el: &apos;#app&apos;,</span><br><span class="line">    data: &#123;</span><br><span class="line">        msg: &apos;swan&apos;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>注意：<br>&ensp;<font color="red">注意：import的Vue默认引用的阉割版js，所以运行页面会报错，以下三种解决方式</font></p>
+<p>第一种方式<br>修改&ensp;<font color="#EE6A50">node_modules/vue/package.json</font>&ensp;中main的值为 &ensp;<font color="#EE6A50">“dist/vue.js”</font>&ensp;</p>
+<p>第二种方式</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import Vue from &apos;../node_modules/vue/dist/vue.js&apos;</span><br></pre></td></tr></table></figure>
+
+<p>第三种方式<br>在webpage.config.js的moudle.exports加入属性</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">resolve: &#123;</span><br><span class="line">    alias: &#123;</span><br><span class="line">        &quot;vue$&quot;: &quot;vue/dist&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后再入口函数main.js中加入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import Vue from &apos;vue&apos;</span><br></pre></td></tr></table></figure>
+
 
                 <hr>
                 
@@ -316,7 +337,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装cnpm"><span class="toc-text">安装cnpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过webpack-指定路径打包"><span class="toc-text">1. 通过webpack+指定路径打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-通过js配置文件执行webpack命令打包"><span class="toc-text">2. 通过js配置文件执行webpack命令打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-启动服务器实时更新修改的内容"><span class="toc-text">3. 启动服务器实时更新修改的内容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack命令与插件配置规则"><span class="toc-text">webpack命令与插件配置规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack-dev-server常用命令"><span class="toc-text">webpack-dev-server常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载打包好的build-js文件"><span class="toc-text">使用插件从内存中加载打包好的build.js文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-css文件"><span class="toc-text">使用插件从内存中加载.css文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-less文件"><span class="toc-text">使用插件从内存中加载.less文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-scss"><span class="toc-text">使用插件从内存中加载.scss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件处理url地址"><span class="toc-text">使用插件处理url地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件解析识别高级js语法"><span class="toc-text">使用插件解析识别高级js语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#webpack处理第三方文件类型过程"><span class="toc-text">webpack处理第三方文件类型过程</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装cnpm"><span class="toc-text">安装cnpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过webpack-指定路径打包"><span class="toc-text">1. 通过webpack+指定路径打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-通过js配置文件执行webpack命令打包"><span class="toc-text">2. 通过js配置文件执行webpack命令打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-启动服务器实时更新修改的内容"><span class="toc-text">3. 启动服务器实时更新修改的内容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack命令与插件配置规则"><span class="toc-text">webpack命令与插件配置规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack-dev-server常用命令"><span class="toc-text">webpack-dev-server常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载打包好的build-js文件"><span class="toc-text">使用插件从内存中加载打包好的build.js文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-css文件"><span class="toc-text">使用插件从内存中加载.css文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-less文件"><span class="toc-text">使用插件从内存中加载.less文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-scss"><span class="toc-text">使用插件从内存中加载.scss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件处理url地址"><span class="toc-text">使用插件处理url地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件解析识别高级js语法"><span class="toc-text">使用插件解析识别高级js语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#webpack处理第三方文件类型过程"><span class="toc-text">webpack处理第三方文件类型过程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在webpack构建的项目使用vue开发"><span class="toc-text">在webpack构建的项目使用vue开发</span></a></li></ol>
                 </div>
             </div>
         </div>
