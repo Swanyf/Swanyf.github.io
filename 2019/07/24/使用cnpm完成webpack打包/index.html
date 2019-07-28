@@ -295,7 +295,7 @@
 <p>在入口函数main.js中导包并创建vue实例</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import Vue from &apos;vue&apos;</span><br><span class="line"></span><br><span class="line">var vue = new Vue(&#123;</span><br><span class="line">    el: &apos;#app&apos;,</span><br><span class="line">    data: &#123;</span><br><span class="line">        msg: &apos;swan&apos;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<p>注意：<br>&ensp;<font color="red">注意：import的Vue默认引用的阉割版js，所以运行页面会报错，以下三种解决方式</font></p>
+<p>&ensp;<font color="red">注意：</font>import的Vue默认引用的阉割版js，所以运行页面会报错，以下三种解决方式</p>
 <p>第一种方式<br>修改&ensp;<font color="#EE6A50">node_modules/vue/package.json</font>&ensp;中main的值为 &ensp;<font color="#EE6A50">“dist/vue.js”</font>&ensp;</p>
 <p>第二种方式</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import Vue from &apos;../node_modules/vue/dist/vue.js&apos;</span><br></pre></td></tr></table></figure>
