@@ -80,7 +80,7 @@
                         
 							
                         <li>
-                            <a href="/tags/">标签</a>
+                            <a href="/my-works/">杂志</a>
                         </li>
 							
 						
@@ -88,7 +88,7 @@
                         
 							
                         <li>
-                            <a href="/my-works/">杂志</a>
+                            <a href="/tags/">标签</a>
                         </li>
 							
 						
@@ -321,9 +321,21 @@
 </li>
 <li><p>导入.vue文件，<code>import 组件名 from &#39;.vue相对路径&#39;</code></p>
 </li>
-<li><p>vue实例中使用&ensp;<font color="#EE6A50">render</font>属性调用组件</p>
+<li><p>vue实例中使用&ensp;<font color="#EE6A50">render</font>属性调用组件，html调用组件名实现渲染</p>
 </li>
 </ul>
+<h3 id="export-default和export处理数据"><a href="#export-default和export处理数据" class="headerlink" title="export default和export处理数据"></a>export default和export处理数据</h3><p>.vue文件script标签的组件中data必须是function</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    data() &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">	    msg: <span class="string">'swan'</span></span><br><span class="line">	&#125;;</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">        show() &#123;</span><br><span class="line"> 	    <span class="built_in">console</span>.log(<span class="string">'调用了login.vue中的show方法'</span>)</span><br><span class="line">	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><font color="#EE6A50">export default</font>&ensp;向外暴露成员，可以用任意变量名来接收，在一个模块中export default只允许向外暴露一次</li>
+<li>若要暴露多个成员，需要用<code>var</code>定义，<code>{}</code>形式接收，且变量名一致，可以用<code>as</code>声明<br><font color>eg：</font><br>新建test.js文件<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// 暴露成员</span><br><span class="line">export default &#123;</span><br><span class="line">    name: &apos;swan&apos;,</span><br><span class="line">    age: 20</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// or</span><br><span class="line">// var info = &#123;....&#125;;</span><br><span class="line">// export default info;</span><br><span class="line"></span><br><span class="line">export var info2 = &apos;swan&apos;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>在入口函数main.js中接收</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> hello, &#123;info2 <span class="keyword">as</span> xxx, ...&#125; <span class="keyword">from</span> <span class="string">'从main.js开始的相对路径test.js'</span></span><br></pre></td></tr></table></figure>
+
 
                 <hr>
                 
@@ -355,7 +367,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装cnpm"><span class="toc-text">安装cnpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过webpack-指定路径打包"><span class="toc-text">1. 通过webpack+指定路径打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-通过js配置文件执行webpack命令打包"><span class="toc-text">2. 通过js配置文件执行webpack命令打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-启动服务器实时更新修改的内容"><span class="toc-text">3. 启动服务器实时更新修改的内容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack命令与插件配置规则"><span class="toc-text">webpack命令与插件配置规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack-dev-server常用命令"><span class="toc-text">webpack-dev-server常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载打包好的build-js文件"><span class="toc-text">使用插件从内存中加载打包好的build.js文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-css文件"><span class="toc-text">使用插件从内存中加载.css文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-less文件"><span class="toc-text">使用插件从内存中加载.less文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-scss"><span class="toc-text">使用插件从内存中加载.scss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件处理url地址"><span class="toc-text">使用插件处理url地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件解析识别高级js语法"><span class="toc-text">使用插件解析识别高级js语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#webpack处理第三方文件类型过程"><span class="toc-text">webpack处理第三方文件类型过程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在webpack构建的项目使用vue开发"><span class="toc-text">在webpack构建的项目使用vue开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#引入vue包"><span class="toc-text">引入vue包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过-vue文件渲染组件"><span class="toc-text">通过.vue文件渲染组件</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装cnpm"><span class="toc-text">安装cnpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过webpack-指定路径打包"><span class="toc-text">1. 通过webpack+指定路径打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-通过js配置文件执行webpack命令打包"><span class="toc-text">2. 通过js配置文件执行webpack命令打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-启动服务器实时更新修改的内容"><span class="toc-text">3. 启动服务器实时更新修改的内容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack命令与插件配置规则"><span class="toc-text">webpack命令与插件配置规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack-dev-server常用命令"><span class="toc-text">webpack-dev-server常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载打包好的build-js文件"><span class="toc-text">使用插件从内存中加载打包好的build.js文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-css文件"><span class="toc-text">使用插件从内存中加载.css文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-less文件"><span class="toc-text">使用插件从内存中加载.less文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-scss"><span class="toc-text">使用插件从内存中加载.scss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件处理url地址"><span class="toc-text">使用插件处理url地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件解析识别高级js语法"><span class="toc-text">使用插件解析识别高级js语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#webpack处理第三方文件类型过程"><span class="toc-text">webpack处理第三方文件类型过程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在webpack构建的项目使用vue开发"><span class="toc-text">在webpack构建的项目使用vue开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#引入vue包"><span class="toc-text">引入vue包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过-vue文件渲染组件"><span class="toc-text">通过.vue文件渲染组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#export-default和export处理数据"><span class="toc-text">export default和export处理数据</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
