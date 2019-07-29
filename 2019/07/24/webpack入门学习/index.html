@@ -80,7 +80,7 @@
                         
 							
                         <li>
-                            <a href="/tags/">标签</a>
+                            <a href="/my-works/">杂志</a>
                         </li>
 							
 						
@@ -88,7 +88,7 @@
                         
 							
                         <li>
-                            <a href="/my-works/">杂志</a>
+                            <a href="/tags/">标签</a>
                         </li>
 							
 						
@@ -346,7 +346,8 @@
 <li>在导入vue之后加入<code>import VueRouter from &#39;vue-router&#39;</code></li>
 <li>手动装载VueRouter<code>Vue.use(Vuerouter)</code></li>
 </ul>
-
+<h3 id="vue文件使用样式"><a href="#vue文件使用样式" class="headerlink" title=".vue文件使用样式"></a>.vue文件使用样式</h3><p>在<style>标签中设置样式需要使用</p>
+</style></p>
                 <hr>
                 
 
@@ -377,7 +378,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装cnpm"><span class="toc-text">安装cnpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过webpack-指定路径打包"><span class="toc-text">1. 通过webpack+指定路径打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-通过js配置文件执行webpack命令打包"><span class="toc-text">2. 通过js配置文件执行webpack命令打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-启动服务器实时更新修改的内容"><span class="toc-text">3. 启动服务器实时更新修改的内容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack命令与插件配置规则"><span class="toc-text">webpack命令与插件配置规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack-dev-server常用命令"><span class="toc-text">webpack-dev-server常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载打包好的build-js文件"><span class="toc-text">使用插件从内存中加载打包好的build.js文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-css文件"><span class="toc-text">使用插件从内存中加载.css文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-less文件"><span class="toc-text">使用插件从内存中加载.less文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-scss"><span class="toc-text">使用插件从内存中加载.scss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件处理url地址"><span class="toc-text">使用插件处理url地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件解析识别高级js语法"><span class="toc-text">使用插件解析识别高级js语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#webpack处理第三方文件类型过程"><span class="toc-text">webpack处理第三方文件类型过程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在webpack构建的项目使用vue开发"><span class="toc-text">在webpack构建的项目使用vue开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#引入vue包"><span class="toc-text">引入vue包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加入第三方loader和配置规则"><span class="toc-text">加入第三方loader和配置规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过-vue文件渲染组件"><span class="toc-text">通过.vue文件渲染组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#export-default和export处理数据"><span class="toc-text">export default和export处理数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack使用vue路由"><span class="toc-text">webpack使用vue路由</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装cnpm"><span class="toc-text">安装cnpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过webpack-指定路径打包"><span class="toc-text">1. 通过webpack+指定路径打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-通过js配置文件执行webpack命令打包"><span class="toc-text">2. 通过js配置文件执行webpack命令打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-启动服务器实时更新修改的内容"><span class="toc-text">3. 启动服务器实时更新修改的内容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack命令与插件配置规则"><span class="toc-text">webpack命令与插件配置规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack-dev-server常用命令"><span class="toc-text">webpack-dev-server常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载打包好的build-js文件"><span class="toc-text">使用插件从内存中加载打包好的build.js文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-css文件"><span class="toc-text">使用插件从内存中加载.css文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-less文件"><span class="toc-text">使用插件从内存中加载.less文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件从内存中加载-scss"><span class="toc-text">使用插件从内存中加载.scss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件处理url地址"><span class="toc-text">使用插件处理url地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用插件解析识别高级js语法"><span class="toc-text">使用插件解析识别高级js语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#webpack处理第三方文件类型过程"><span class="toc-text">webpack处理第三方文件类型过程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在webpack构建的项目使用vue开发"><span class="toc-text">在webpack构建的项目使用vue开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#引入vue包"><span class="toc-text">引入vue包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加入第三方loader和配置规则"><span class="toc-text">加入第三方loader和配置规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过-vue文件渲染组件"><span class="toc-text">通过.vue文件渲染组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#export-default和export处理数据"><span class="toc-text">export default和export处理数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack使用vue路由"><span class="toc-text">webpack使用vue路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vue文件使用样式"><span class="toc-text">.vue文件使用样式</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
