@@ -207,7 +207,9 @@
 </li>
 <li><p>通过<code>this.$store.commit(&#39;myMethod&#39;, {id: 1, age: 20})</code>调用&ensp;<font color="#EE6A50">mutations</font>&ensp;中的方法，方法的参数列表只支持俩个参数：state状态、通过commit传递的参数，若要传递多个参数可以通过对象的方式传递</p>
 </li>
-<li><p>store中的state数据在对外提供时，推荐使用getters属性去包装，通过<code>this.$store.getters.myCount</code>调用<br>getters中的方法和组件中过滤器比较类似，都是没有修改原数据，在原数据的基础上进行包装提供给调用者。当state中的数据发生改变且getters引用的该数据，就会立即出发getters的重新请求值</p>
+<li><p>store中的state数据在对外提供时，推荐使用getters属性去包装，通过<code>this.$store.getters.myCount</code>调用</p>
+</li>
+<li><p>getters中的方法和组件中过滤器比较类似，都是没有修改原数据，在原数据的基础上进行包装提供给调用者。当state中的数据发生改变且getters引用的该数据，就会立即出发getters的重新请求值</p>
 </li>
 </ul>
 
