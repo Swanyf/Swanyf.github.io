@@ -191,6 +191,24 @@
 <h3 id="通过给路径命名传递"><a href="#通过给路径命名传递" class="headerlink" title="通过给路径命名传递"></a>通过给路径命名传递</h3><p>eg：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">toDemo(id) &#123;</span><br><span class="line">    this.$router.push(name: &apos;swan&apos;, params: &#123;id: id&#125;) // path可省略</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#123;path: &quot;/AAA/aaa/:id&quot;, component: 组件名称, name: &apos;swan&apos;&#125;</span><br></pre></td></tr></table></figure>
 
+<hr>
+<h2 id="vuex"><a href="#vuex" class="headerlink" title="vuex"></a>vuex</h2><p>Vue配套的公共数据管理工具，可以把一些共享的数据保存到vuex中，方便整个程序中的任何组件直接获取或修改公共数据，实现了各组件数据的共享与调用</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><ul>
+<li><p>安装<code>cnpm install vuex --save</code></p>
+</li>
+<li><p>引入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import Vue from &apos;vue&apos;</span><br><span class="line">import Vuex from &apos;vuex&apos;</span><br><span class="line"></span><br><span class="line">Vue.use(Vuex)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>入口函数<br>/* 
+  1.如果在模块化构建系统中，请确保在开头调用了 Vue.use(Vuex)<br>  2.若要操作store中的state值，只能通过调用mutations方法才能操作数据<br>  3.直接操作state的数据有可能会导致数据的错乱，且不能快速定位到错误原因，因为每个组件都可能有操作state数据的方法</p>
+</li>
+</ul>
+<p>*/<br>const store = new Vuex.Store({<br>  state: {<br>    count: 0<br>  },<br>  mutations: {<br>    increment (state) {<br>      state.count++<br>    },<br>    myMethod(state) {<br>      state.count -= 1<br>    }<br>  }<br>})</p>
+<ul>
+<li>通过<code>this.$store.state.xxx</code>来获取数据</li>
+<li>通过<code>this.$store.commit(&#39;myMethod&#39;)</code>调用&ensp;<font color="#EE6A50">mutations</font>&ensp;中的方法，方法的参数列表只支持俩个参数：state状态、通过commit传递的参数</li>
+</ul>
+<p>### </p>
 
                 <hr>
                 
@@ -218,7 +236,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#vue组件"><span class="toc-text">vue组件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用vue实例render方法渲染组件"><span class="toc-text">使用vue实例render方法渲染组件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#router路由"><span class="toc-text">router路由</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用js的形式进行路由导航"><span class="toc-text">使用js的形式进行路由导航</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#通过path属性传递"><span class="toc-text">通过path属性传递</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过给路径命名传递"><span class="toc-text">通过给路径命名传递</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#vue组件"><span class="toc-text">vue组件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用vue实例render方法渲染组件"><span class="toc-text">使用vue实例render方法渲染组件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#router路由"><span class="toc-text">router路由</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用js的形式进行路由导航"><span class="toc-text">使用js的形式进行路由导航</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#通过path属性传递"><span class="toc-text">通过path属性传递</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过给路径命名传递"><span class="toc-text">通过给路径命名传递</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vuex"><span class="toc-text">vuex</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用"><span class="toc-text">使用</span></a></li></ol></li></ol></li></ol>
                 </div>
             </div>
         </div>
