@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        Swan&#39;s blog
+        es6入门学习｜Swan&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/tags/mysql/">
+    <link rel="canonical" href="http://yoursite.com/2019/08/07/es6入门学习/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -43,7 +43,7 @@
 <!-- hack iOS CSS :active style -->
 <body ontouchstart="" class="animated fadeIn">
 <!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="false" data-istags="true
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="true" data-istags="false
 " data-ishome="false">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -132,172 +132,135 @@
 
 <!-- Main Content -->
 
+<!--only post-->
 
-<!-- Page Header -->
-<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 visible-xs-block visible-sm-block">
-    <div class="row">
-        <header class="intro-header">
-            <div class="container">
-                <div class="site-heading text-center">
-                    <div class="about-me">
-                        <!--移动端头部显示-->
-                        <img src="/img/微信图片_20190723103112.jpg">
-                        <h5><a href="/about/">swan</a></h5>
-                        <p>低调做人 高调做事</p>
+
+<img class="wechat-title-img" src="null/img/es6入门学习/1.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/img/es6入门学习/1.jpg?imageView2/1/w/1400/h/400/interlace/1/q/90')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>es6入门学习</h1>
+                    
+                    <span class="meta">
+                         作者 swan
+                        <span>
+                          日期 2019-08-07
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#javascript" title="javascript">javascript</a>
+                        
                     </div>
                 </div>
             </div>
-        </header>
+        </div>
     </div>
-</div>
-<!-- Main Content -->
-<div class="container custom-haojen-container">
-    <!-- Post Container -->
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 post-container">
-            <!-- Main Content -->
+    <div class="post-title-haojen">
+        <span>
+            es6入门学习
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h2 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    <span class="keyword">const</span> numbers = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>];</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*const numbersArr = numbers.map(function(num, i)  &#123; </span></span><br><span class="line"><span class="comment">        return `$&#123;i&#125;: $&#123;num * 0.1&#125;`;</span></span><br><span class="line"><span class="comment">    &#125;)*/</span></span><br><span class="line">    <span class="keyword">const</span> numbersArr = numbers.map(<span class="function">(<span class="params">num, i</span>) =&gt;</span> &#123;   <span class="comment">/* 箭头函数只有一个参数，()可以省略 */</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;i&#125;</span>: <span class="subst">$&#123;num * <span class="number">0.1</span>&#125;</span>`</span>;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> numbersArr2 = numbers.map(<span class="function"><span class="params">()</span> =&gt;</span> &#123;   <span class="comment">/* 箭头函数无参数，()不可以省略 */</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"hello"</span>;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> numbersArr3 = numbers.map(<span class="function"><span class="params">num</span> =&gt;</span> <span class="string">`<span class="subst">$&#123;num * <span class="number">0.1</span>&#125;</span>`</span>)  <span class="comment">/* 隐士返回，默认加return */</span></span><br><span class="line">    <span class="built_in">console</span>.log(numbersArr);    <span class="comment">/* ["0: 1", "1: 2", "2: 3", "3: 4", "4: 5"] */</span></span><br><span class="line">    <span class="built_in">console</span>.log(numbersArr2);   <span class="comment">/*  ["hello", "hello", "hello", "hello", "hello"] */</span></span><br><span class="line">    <span class="built_in">console</span>.log(numbersArr3);   <span class="comment">/*  ["1", "2", "3", "4", "5"] */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*************************************************************************************/</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*function get(name) &#123;</span></span><br><span class="line"><span class="comment">        console.log(`hello!$&#123;name&#125;`);</span></span><br><span class="line"><span class="comment">    &#125;*/</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">get</span> = name =&gt; &#123;<span class="built_in">console</span>.log(<span class="string">`hello!<span class="subst">$&#123;name&#125;</span>`</span>)&#125;;</span><br><span class="line">    <span class="keyword">get</span>('swan');    /* hello!swan */</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
 
 
+                <hr>
+                
 
-<div class="post-preview " style="background-image: url('/img/saas.jpg')">
-    <a href="/2019/06/12/mysql：=和=的区别/">
-        <h2 class="post-title">
-            mysql := 和 = 的区别
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-12
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                =只有在set和update时才是和 := 一样，赋值的作用，其它都是等于的作用。鉴于此，用变量实现行号时，必须用:=
-:=不只在set和update时是赋值的作用，在select也是赋值的作用。
-总结如果明白了 = 和 := 的区别，那么也就理解了下边的现象。@num:=@num+1, := ..
-            </p>
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/08/07/node-js入门学习/" data-toggle="tooltip" data-placement="top" title="node.js入门学习">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#箭头函数"><span class="toc-text">箭头函数</span></a></li></ol>
+                </div>
+            </div>
         </div>
-    </a>
 
-</div>
+        <div class="row">
+            <!-- Sidebar Container -->
 
-<hr>
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
 
-
-
-
-<!-- 翻页 pager -->
-
-<ul class="pager">
-    
-    
-</ul>
-
-
-        </div>
-        <!-- Sidebar Container -->
-        <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
-
-            <!-- About Me -->
-            <section class="visible-md visible-lg" style="padding: 0 18px">
-                <div class="short-about">
-                    <!--侧边栏头像-->
-                    
-                    <img src="/img/微信图片_20190723103112.jpg">
-                    
-                    <h5><a href="/about/">swan</a></h5>
-                    
-                    <p>低调做人 高调做事</p>
-                    
-                    <hr>
-                    <!-- SNS Link 社交 -->
-                    <ul class="list-inline">
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
                         
+                        <a class="tag" href="/tags/#javascript" title="javascript">javascript</a>
                         
-                        
+                    </div>
+                </section>
+                
 
+                <!-- Friends Blog -->
+                
+                <div style="margin-top: 20px;">
+                    <h5 class="text-center">FRIENDS</h5>
+                    <ul class="list-inline text-center">
                         
-
-                        
-
-                        
-                        <li>
-                            <a target="_blank" href="https://github.com/Swanyf">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                        </span>
-                            </a>
-                        </li>
-                        
-
+                        <li><a href="https://www.antia1.top/">ANTIA</a></li>
                         
                     </ul>
                 </div>
-            </section>
-
-            <!-- Featured Tags  标签 -->
-            
-            <section>
-                <div class="tags">
-                    
-                    
-                    <a href="/tags/#javascript" title="javascript" rel="1">javascript</a>
-                    
-                    
-                    
-                    <a href="/tags/#node.js" title="node.js" rel="1">node.js</a>
-                    
-                    
-                    
-                    <a href="/tags/#学习计划" title="学习计划" rel="1">学习计划</a>
-                    
-                    
-                    
-                    <a href="/tags/#mysql" title="mysql" rel="1">mysql</a>
-                    
-                    
-                    
-                    <a href="/tags/#java" title="java" rel="2">java</a>
-                    
-                    
-                    
-                    <a href="/tags/#异常" title="异常" rel="1">异常</a>
-                    
-                    
-                    
-                    <a href="/tags/#redis" title="redis" rel="1">redis</a>
-                    
-                    
-                    
-                    <a href="/tags/#vue.js" title="vue.js" rel="2">vue.js</a>
-                    
-                    
-                    
-                    <a href="/tags/#微信公众号" title="微信公众号" rel="1">微信公众号</a>
-                    
-                    
-                </div>
-            </section>
-            
-
-            
-            <hr>
-            <h5 style="text-align: center;">Friends</h5>
-            <ul class="list-inline" style="text-align: center;">
                 
-                <li><a href="https://www.antia1.top/" target="_blank">ANTIA</a></li>
-                
-            </ul>
-            
-
+            </div>
         </div>
+
     </div>
-</div>
+</article>
+
+
+
+
+
+
 
 <!-- Footer -->
 <!-- Footer -->
