@@ -80,7 +80,7 @@
                         
 							
                         <li>
-                            <a href="/tags/">标签</a>
+                            <a href="/my-works/">杂志</a>
                         </li>
 							
 						
@@ -88,7 +88,7 @@
                         
 							
                         <li>
-                            <a href="/my-works/">杂志</a>
+                            <a href="/tags/">标签</a>
                         </li>
 							
 						
@@ -184,7 +184,7 @@
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
                 <h2 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var vue = new Vue(&#123;  // 实例中如果要法官问 data 和 methods 必须使用 this</span><br><span class="line">    el: &apos;#&apos;,    // 要控制的html标签区域</span><br><span class="line">    data: &#123;&#125;,   // 控制区域使用的数据</span><br><span class="line">    methods: &#123;&#125;,  // 对象，可以自定义方法</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<h3 id="v-clock"><a href="#v-clock" class="headerlink" title="v-clock"></a>v-clock</h3><p>能够解决页面加载时出现原生表达式&ensp;<font color="#EE6A50">&#123; &#125;</font>&ensp;的问题</p>
+<h3 id="v-clock"><a href="#v-clock" class="headerlink" title="v-clock"></a>v-clock</h3><p>能够解决页面加载时出现原生表达式&ensp;<font color="#EE6A50">&#123;&#123; &#125;&#125;</font>&ensp;的问题</p>
 <h3 id="v-text-v-html"><a href="#v-text-v-html" class="headerlink" title="v-text v-html"></a>v-text v-html</h3><p>会覆盖原本的标签值，<font color="#EE6A50">v-html</font>&ensp;能解析带有标签的内容</p>
 <h3 id="v-bind"><a href="#v-bind" class="headerlink" title="v-bind"></a>v-bind</h3><p>简写<code>:</code>，可以将标签属性转为vue属性，多用来绑定值</p>
 <h3 id="v-on"><a href="#v-on" class="headerlink" title="v-on"></a>v-on</h3><p>简写<code>@</code>，可以自定义绑定事件，也可以绑定html事件</p>
@@ -219,7 +219,7 @@
 <li><font color="#EE6A50">组件化</font>： 从 UI 界面的角度进行划分，前端的组件化，方便 UI 组件的重用</li>
 <li><font color="#EE6A50">模块化</font>： 从代码逻辑的角度进行划分，方便代码的分层开发，保证每个功能模块的单一性</li>
 </ul>
-<h3 id="全局组件"><a href="#全局组件" class="headerlink" title="全局组件"></a>全局组件</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    html</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">&lt;div&gt;</span><br><span class="line">    &lt;mycom5&gt;<span class="xml"><span class="tag">&lt;/<span class="name">mycom5</span>&gt;</span></span></span><br><span class="line">&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;template id="temp3"&gt;</span></span><br><span class="line"><span class="regexp">    &lt;div&gt;</span></span><br><span class="line"><span class="regexp">        &lt;button @click="changeCount"&gt;点击+1&lt;/</span>button&gt;</span><br><span class="line">        &lt;p&gt;&#123;&#123;count&#125;&#125;&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">&lt;<span class="regexp">/template&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span>*</span><br><span class="line">    js</span><br><span class="line">*<span class="regexp">/</span></span><br><span class="line"><span class="regexp">Vue.component('mycom5', &#123;</span></span><br><span class="line"><span class="regexp">    template: '#temp3',</span></span><br><span class="line"><span class="regexp">    data: function () &#123;</span></span><br><span class="line"><span class="regexp">        return &#123;</span></span><br><span class="line"><span class="regexp">            count: 1</span></span><br><span class="line"><span class="regexp">        &#125;</span></span><br><span class="line"><span class="regexp">    &#125;,</span></span><br><span class="line"><span class="regexp">    methods: &#123;</span></span><br><span class="line"><span class="regexp">        changeCount() &#123;</span></span><br><span class="line"><span class="regexp">            this.count++</span></span><br><span class="line"><span class="regexp">        &#125;</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">&#125;)</span></span><br></pre></td></tr></table></figure>
+<h3 id="全局组件"><a href="#全局组件" class="headerlink" title="全局组件"></a>全局组件</h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line">/*</span><br><span class="line">    html</span><br><span class="line">*/</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mycom5</span>&gt;</span><span class="tag">&lt;/<span class="name">mycom5</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">id</span>=<span class="string">"temp3"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">"changeCount"</span>&gt;</span>点击+1<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123;count&#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">    js</span><br><span class="line">*/</span><br><span class="line">Vue.component('mycom5', &#123;</span><br><span class="line">    template: '#temp3',</span><br><span class="line">    data: function () &#123;</span><br><span class="line">        return &#123;</span><br><span class="line">            count: 1</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">        changeCount() &#123;</span><br><span class="line">            this.count++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
 <h3 id="私有组件"><a href="#私有组件" class="headerlink" title="私有组件"></a>私有组件</h3><h4 id="父组件向子组件传值"><a href="#父组件向子组件传值" class="headerlink" title="父组件向子组件传值"></a>父组件向子组件传值</h4><ul>
 <li>组件中所有的props数据，都是从父组件绑定的属性传递给子组件的</li>
@@ -229,12 +229,13 @@
 
 </li>
 </ul>
-<h3 id="使用vue实例render方法渲染组件"><a href="#使用vue实例render方法渲染组件" class="headerlink" title="使用vue实例render方法渲染组件"></a>使用vue实例render方法渲染组件</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var login = &#123;</span><br><span class="line">    template: &apos;&lt;p&gt;这是登录组件&lt;/p&gt;&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var vue = new Vue(&#123;</span><br><span class="line">    el: &apos;#app&apos;,</span><br><span class="line">    data: &#123;&#125;,</span><br><span class="line">    methods: &#123;&#125;,</span><br><span class="line">    render: function (createElements) &#123;   // createElements是一个方法，能够把指定的组件渲染为html标签</span><br><span class="line">        return createElements(login);    // return的结果把el控制的app替换掉</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="使用vue实例render方法渲染组件"><a href="#使用vue实例render方法渲染组件" class="headerlink" title="使用vue实例render方法渲染组件"></a>使用vue实例render方法渲染组件</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var login = &#123;</span><br><span class="line">    template: &apos;&lt;p&gt;这是登录组件&lt;/p&gt;&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var vue = new Vue(&#123;</span><br><span class="line">    el: &apos;#app&apos;,</span><br><span class="line">    data: &#123;&#125;,</span><br><span class="line">    methods: &#123;&#125;,</span><br><span class="line">    render: function (createElements) &#123;  // createElements是一个方法，把指定组件渲染为html标签</span><br><span class="line">        return createElements(login);    // return的结果把el控制的app替换掉</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
 <hr>
 <h2 id="router路由"><a href="#router路由" class="headerlink" title="router路由"></a>router路由</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><ul>
-<li><font color="#EE6A50">后端路由</font> -&gt; 对于普通的网站，所有的超链接都是url地址，所有的url地址都对应服务器上的对应资源</li>
-<li><font color="#EE6A50">前端路由</font> -&gt; 对于单页面应用程序来说，主要通过url中的hash(#号)来实现不同页面之间的跳转，<pre><code>&lt;font color=#EE6A50&gt;hash 的特点&lt;/font&gt; -&gt; http请求中不会包含hash的相关内容，所以单页面程序中的跳转主要用于hash实现单页面程序，通过hash来改变切换页面的方式，成为前端路由</code></pre></li>
+<li><font color="#EE6A50">后端路由</font>： 对于普通的网站，所有的超链接都是url地址，所有的url地址都对应服务器上的对应资源</li>
+<li><font color="#EE6A50">前端路由</font>： 对于单页面应用程序来说，主要通过url中的hash(#号)来实现不同页面之间的跳转，</li>
+<li><font color="#EE6A50">hash 的特点</font>： http请求中不会包含hash的相关内容，所以单页面程序中的跳转主要用于hash实现单页面程序，通过hash来改变切换页面的方式，成为前端路由</li>
 </ul>
 <h3 id="路由执行流程"><a href="#路由执行流程" class="headerlink" title="路由执行流程"></a>路由执行流程</h3><ul>
 <li>点击链接改变url地址，url地址触发路由的监听事件</li>
@@ -249,7 +250,7 @@
 
 </li>
 </ul>
-<h3 id="获取url传递的参数"><a href="#获取url传递的参数" class="headerlink" title="获取url传递的参数"></a>获取url传递的参数</h3><h3 id="使用js的形式进行路由导航"><a href="#使用js的形式进行路由导航" class="headerlink" title="使用js的形式进行路由导航"></a>使用js的形式进行路由导航</h3><p>注意区分<code>this.$route</code>和<code>this.$router</code>这俩个对象。<br>前者是路由地址传递的参数对象，路由中的参数如params、query…<br>后者是路由导航对象，可以使用js代码实现路由的url跳转地址</p>
+<h3 id="获取url传递的参数"><a href="#获取url传递的参数" class="headerlink" title="获取url传递的参数"></a>获取url传递的参数</h3><h3 id="使用js的形式进行路由导航"><a href="#使用js的形式进行路由导航" class="headerlink" title="使用js的形式进行路由导航"></a>使用js的形式进行路由导航</h3><p>注意区分<code>this.$route</code>和<code>this.$router</code>这俩个对象。<br>前者是路由地址传递的参数对象，路由中的参数如<font color="#EE6A50">params</font>、<font color="#EE6A50">query</font>…<br>后者是路由导航对象，可以使用js代码实现路由的url跳转地址</p>
 <h3 id="通过path属性传递"><a href="#通过path属性传递" class="headerlink" title="通过path属性传递"></a>通过path属性传递</h3><p>eg：</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// html</span></span><br><span class="line">&lt;div @click=<span class="string">"toDemo(id)"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// js</span></span><br><span class="line">toDemo(id) &#123;</span><br><span class="line">    <span class="keyword">this</span>.$router.push(path: <span class="string">"/AAA/aaa/"</span> + id) <span class="comment">// path可省略</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#123;<span class="attr">path</span>: <span class="string">"/AAA/aaa/:id"</span>, <span class="attr">component</span>: 组件名称&#125;</span><br></pre></td></tr></table></figure>
 
