@@ -182,15 +182,25 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <h2 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h2><h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><p>先看一个小demo</p>
+                <h2 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h2><h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><p>保证多个线程访问共享数据时，彼此数据在内存中是可见的</p>
+<p>先看一个小demo</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        SetBool setBool = <span class="keyword">new</span> SetBool();</span><br><span class="line">        <span class="keyword">new</span> Thread(setBool).start();</span><br><span class="line"></span><br><span class="line"><span class="comment">//        Thread.sleep(200);    // 主线程优先级较高，所以先执行 while</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>) &#123;</span><br><span class="line"><span class="comment">//            synchronized (setBool) &#123;</span></span><br><span class="line">                <span class="keyword">if</span> (setBool.isBool()) &#123;</span><br><span class="line">                    System.out.println(<span class="string">"------------------"</span>);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line"><span class="comment">//                &#125;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SetBool</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">boolean</span> bool = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">200</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        bool = <span class="keyword">true</span>;</span><br><span class="line">        System.out.println(<span class="string">"bool值:"</span> + bool);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isBool</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> bool;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBool</span><span class="params">(<span class="keyword">boolean</span> bool)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.bool = bool;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>当程序运行，JVM会为每个线程分配独立的缓存空间，用于提高效率<br>由于主线程中<code>while(true)</code>调用的是系统比较底层的代码执行效率较高，主线程未来得及从栈内存中读取&ensp;<font color="#EE6A50">bool</font>&ensp;的数据，一直在反复循环所以得到的值为&ensp;<font color="#EE6A50">false</font>。俩个线程在操作数据时，都有独立的缓存对彼此共享数据的操作不可见这种现象叫做内存可见性问题</p>
-<p><font color="#EE6A50">volatile</font><br>保证多个线程访问共享数据时，彼此数据在内存中是可见的</p>
 <h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
 <li>和synchronized不具备“互斥性“(线程抢锁)，synchronized是一种较为轻量级的同步策略具有“互斥性”，</li>
 <li>不能保证变量的”原子性“</li>
 </ul>
+<h2 id="原子变量"><a href="#原子变量" class="headerlink" title="原子变量"></a>原子变量</h2><p>volatile关键字涉及到“原子性”和同步的问题</p>
+<blockquote>
+<p>jdk1.5后java.util.concurrent.atomic包下提供了常用的原子变量</p>
+<ol>
+<li>volatile保证内存可见性</li>
+<li>CAS算法保证数据的原子性<br>  CAS是硬件对并发操作共享数据的支持，包含三个操作数：<pre><code>内存值 V
+预估值 A
+更新值 B</code></pre>  当V = A 时，V = B，否则不做任何操作</li>
+</ol>
+</blockquote>
 
                 <hr>
                 
@@ -218,7 +228,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#volatile关键字"><span class="toc-text">volatile关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解析"><span class="toc-text">解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#volatile关键字"><span class="toc-text">volatile关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解析"><span class="toc-text">解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原子变量"><span class="toc-text">原子变量</span></a></li></ol>
                 </div>
             </div>
         </div>
