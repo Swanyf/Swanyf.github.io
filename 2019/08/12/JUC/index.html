@@ -236,7 +236,7 @@
 <h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><p>以往的Thread等其他使用线程的方式会出现，线程任务过多频繁的创建销毁线程非常耗费资源</p>
 <h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>提供了一个线程队列，队列中保存着所有等待状态的线程。避免了重复创建与销毁。提高了效应的速度</p>
 <h3 id="体系结构"><a href="#体系结构" class="headerlink" title="体系结构"></a>体系结构</h3><blockquote>
-<p>java.util.concurrent.Executor：负责线程的使用与调度的根接口<br>—- <font color="#EE6A50">ExecutorService</font>&ensp;子接口：线程池的主要接口<br>——– <font color="#EE6A50">ThreadPoolExecutor</font>&ensp;实现类<br>——– <font color="#EE6A50">ScheduledExcutorService</font>&enspp;子接口：负责线程的调度<br>———— <font color="#EE6A50">ScheduledThreadPoolExecutor</font>：集成ThreadPoolExecutor，实现了ScheduledExecutorService</p>
+<p>java.util.concurrent.Executor：负责线程的使用与调度的根接口<br>—- <font color="#EE6A50">ExecutorService</font>&ensp;子接口：线程池的主要接口<br>——– <font color="#EE6A50">ThreadPoolExecutor</font>&ensp;实现类<br>——– <font color="#EE6A50">ScheduledExcutorService</font>&enspp;子接口：负责线程的调度<br>———— <font color="#EE6A50">ScheduledThreadPoolExecutor</font>：集成ThreadPoolExecutor，实现了ScheduledExecutorService<br><img src="/img/JUC/7853175-22f663f3f541e79d.png"></p>
 </blockquote>
 
                 <hr>
