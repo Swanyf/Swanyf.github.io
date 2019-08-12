@@ -188,12 +188,12 @@
 
 <p>当程序运行，JVM会为每个线程分配独立的缓存空间，用于提高效率<br>由于主线程中<code>while(true)</code>调用的是系统比较底层的代码执行效率较高，主线程未来得及从栈内存中读取&ensp;<font color="#EE6A50">bool</font>&ensp;的数据，一直在反复循环所以得到的值为&ensp;<font color="#EE6A50">false</font>。俩个线程在操作数据时，都有独立的缓存对彼此共享数据的操作不可见这种现象叫做内存可见性问题</p>
 <h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>和synchronized不具备“互斥性“(线程抢锁)，synchronized是一种较为轻量级的同步策略具有“互斥性”，</li>
+<li>和<code>synchronized</code>不具备“互斥性“(线程抢锁)，synchronized是一种较为轻量级的同步策略具有“互斥性”，</li>
 <li>不能保证变量的”原子性“</li>
 </ul>
 <h2 id="原子变量"><a href="#原子变量" class="headerlink" title="原子变量"></a>原子变量</h2><p>volatile关键字涉及到“原子性”和同步的问题</p>
 <blockquote>
-<p>jdk1.5后java.util.concurrent.atomic包下提供了常用的原子变量</p>
+<p>jdk1.5后<code>java.util.concurrent.atomic</code>包下提供了常用的原子变量</p>
 <ol>
 <li>volatile保证内存可见性</li>
 <li>CAS算法保证数据的原子性<br>  CAS是硬件对并发操作共享数据的支持，包含三个操作数：<pre><code>内存值 V
@@ -206,9 +206,25 @@
 <h2 id="ConcurrentMap"><a href="#ConcurrentMap" class="headerlink" title="ConcurrentMap"></a>ConcurrentMap</h2><blockquote>
 <ul>
 <li>java 5.0 增加的一个线程安全的哈希表</li>
-<li>采用“锁分段”机制替代Hashtable的独占锁(hashtable锁住整个hash表所以效率非常低)&gt; + 提供了多种并发容易来改进同步容器的性能</li>
+<li>采用“锁分段”机制替代&ensp;<font color="#EE6A50">Hashtable</font>&ensp;的独占锁(hashtable锁住整个hash表所以效率非常低)&gt; + 提供了多种并发容易来改进同步容器的性能</li>
 </ul>
 </blockquote>
+<h2 id="CopyOnWriteArrayList"><a href="#CopyOnWriteArrayList" class="headerlink" title="CopyOnWriteArrayList"></a>CopyOnWriteArrayList</h2><blockquote>
+<ul>
+<li>当每次写入时，都会在底层完成复制一个新的列表再进行添加，但是不推荐这样使用效率会非常低</li>
+<li>当迭代操作多并且有并发迭代推荐使用</li>
+</ul>
+</blockquote>
+<h2 id="CountDownLatch闭锁"><a href="#CountDownLatch闭锁" class="headerlink" title="CountDownLatch闭锁"></a>CountDownLatch闭锁</h2><p>在完成某些运算时，只有其他线程所有的运算全部完成，当前运算才会继续执行</p>
+<h2 id="实现Callable接口"><a href="#实现Callable接口" class="headerlink" title="实现Callable接口"></a>实现Callable接口</h2><blockquote>
+<ul>
+<li>相较于实现&ensp;<font color="#EE6A50">Runnble</font>&ensp;接口，实现&ensp;<font color="#EE6A50">Callable</font>&ensp;方法可以有返回值，并且可以抛出异常 </li>
+</ul>
+</blockquote>
+<p>###执行方式<br>需要&ensp;<font color="#EE6A50">FutureTask</font>&ensp;实现类的支持用于接收运算的结果，是&ensp;<font color="#EE6A50">Future</font>&ensp;接口的实现类</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CallableDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ExecutionException, InterruptedException </span>&#123;</span><br><span class="line">        CallableTest callableTest = <span class="keyword">new</span> CallableTest();</span><br><span class="line"></span><br><span class="line">        FutureTask futureTask = <span class="keyword">new</span> FutureTask&lt;&gt;(callableTest);</span><br><span class="line">        <span class="keyword">new</span> Thread(futureTask).start();</span><br><span class="line">        System.out.println(futureTask.get());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CallableTest</span> <span class="keyword">implements</span> <span class="title">Callable</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">101</span>; i++) &#123;</span><br><span class="line">            num += i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><font color="red">结论</font>：<font color="#EE6A50">FutureTask</font>&ensp;线程执行完成后才进行运算，说明也可用于闭锁</p>
 
                 <hr>
                 
@@ -236,7 +252,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#volatile关键字"><span class="toc-text">volatile关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解析"><span class="toc-text">解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原子变量"><span class="toc-text">原子变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ConcurrentMap"><span class="toc-text">ConcurrentMap</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#volatile关键字"><span class="toc-text">volatile关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解析"><span class="toc-text">解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原子变量"><span class="toc-text">原子变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ConcurrentMap"><span class="toc-text">ConcurrentMap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CopyOnWriteArrayList"><span class="toc-text">CopyOnWriteArrayList</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CountDownLatch闭锁"><span class="toc-text">CountDownLatch闭锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现Callable接口"><span class="toc-text">实现Callable接口</span></a></li></ol>
                 </div>
             </div>
         </div>
