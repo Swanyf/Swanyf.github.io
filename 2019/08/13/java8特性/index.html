@@ -162,6 +162,8 @@
                     </span>
                     <div class="tags text-center">
                         
+                        <a class="tag" href="/tags/#java" title="java">java</a>
+                        
                     </div>
                 </div>
             </div>
@@ -181,7 +183,7 @@
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
                 <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><blockquote>
-<p>04年推出 jdk5 ，改革非常大<br>06年推出 jdk6 ,企业中使用的最长久版本<br>11年 推出 jdk7<br>14年 推出 jdk8  LTS版本：受商业公司支持的长期版本<br>17年  9月份推出 jdk9，   “六个月版本升级计划”   小版本<br>18年 3月份 推出jdk10                         小版本<br>18年 9月份 推出jdk11    LTS版本：</p>
+<p>04年推出 jdk5 ，改革非常大<br>06年推出 jdk6 ,企业中使用的最长久版本<br>11年 推出 jdk7<br>14年 推出 jdk8  LTS版本：受商业公司支持的长期版本<br>17年  9月份推出 jdk9，   “六个月版本升级计划”   小版本<br>18年 3月份 推出jdk10                         小版本<br>18年 9月份 推出jdk11    LTS版本</p>
 </blockquote>
 <h2 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h2><h3 id="理解"><a href="#理解" class="headerlink" title="理解"></a>理解</h3><p>一段可以传递的代码，作为函数式接口的实例出现</p>
 <h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
@@ -204,7 +206,7 @@
 </ul>
 <h2 id="方法引用-Method-Rederences"><a href="#方法引用-Method-Rederences" class="headerlink" title="方法引用(Method Rederences)"></a>方法引用(Method Rederences)</h2><ul>
 <li>当要传递给Lambda体的操作已经有实现的方法了，可以使用方法引用</li>
-<li>方法引用就是Lambda表达式，就是函数式接口的一个实例，通过方法的名字来指向另一个方法</li>
+<li>方法引用就是Lambda表达式的简化，就是函数式接口的一个实例，通过方法的名字来指向另一个方法</li>
 <li>实现抽象方法的参数列表和返回值类型，必须与方法引用的方法的参数列表和返回值类型保持一致</li>
 <li>使用操作符<code>::</code>将类或对象与方法名隔开来</li>
 <li>仅有一句话为方法引用</li>
@@ -214,6 +216,17 @@
 <li>类<code>::</code>静态方法名</li>
 <li>类<code>::</code>实例方法名，调用方法的调用者正好是抽象方法的第一个参数，并且其他参数一致，调用方法的返回类型和抽象方法的返回类型一致<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Consumer&lt;Integer&gt; consumer = System.out::println;</span><br><span class="line">    consumer.accept(<span class="number">520</span>);   <span class="comment">// 520</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="comment">/*Comparator&lt;Integer&gt; comparator = new Comparator&lt;Integer&gt;() &#123;</span></span><br><span class="line"><span class="comment">       @Override</span></span><br><span class="line"><span class="comment">       public int compare(Integer o1, Integer o2) &#123;</span></span><br><span class="line"><span class="comment">           return Integer.compare(o1, o2);</span></span><br><span class="line"><span class="comment">       &#125;</span></span><br><span class="line"><span class="comment">   &#125;;*/</span></span><br><span class="line"></span><br><span class="line">    Comparator&lt;Integer&gt; comparator = Integer::compareTo;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test3</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">/*Function&lt;Employee,String&gt; function = new Function&lt;Employee, String&gt;() &#123;</span></span><br><span class="line"><span class="comment">        @Override</span></span><br><span class="line"><span class="comment">        public String apply(Employee employee) &#123;</span></span><br><span class="line"><span class="comment">            return employee.getName();</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">    &#125;;*/</span></span><br><span class="line"></span><br><span class="line">    Function&lt;Employee, String&gt; function = Employee::getName;</span><br><span class="line">    System.out.println(function.apply(<span class="keyword">new</span> Employee(<span class="string">"大魔王"</span>, <span class="number">20</span>, <span class="number">2000.0</span>, <span class="string">"男"</span>)));   <span class="comment">// 大魔王</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test4</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    BiFunction&lt;String, String, Boolean&gt; biFunction = String::endsWith;</span><br><span class="line">    System.out.println(biFunction.apply(<span class="string">"a"</span>,<span class="string">"aaa"</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+</li>
+</ul>
+<h2 id="构造器引用"><a href="#构造器引用" class="headerlink" title="构造器引用"></a>构造器引用</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConstructorReferencesTest</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Supplier&lt;String&gt; supplier = String::<span class="keyword">new</span>;</span><br><span class="line">        supplier.get().length();</span><br><span class="line">    &#125;  </span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Function&lt;String,String&gt; function = String::<span class="keyword">new</span>;</span><br><span class="line">        System.out.println(function.apply(<span class="string">"swan"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        M&lt;String,Integer,Double,String,Employee&gt; m = Employee::<span class="keyword">new</span>;</span><br><span class="line">        m.set(<span class="string">"swan"</span>,<span class="number">20</span>,<span class="number">8500.0</span>,<span class="string">"男"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">M</span>&lt;<span class="title">A</span>,<span class="title">B</span>,<span class="title">C</span>,<span class="title">D</span>,<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function">E <span class="title">set</span><span class="params">(A a,B b,C c,D d)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Stream-API"><a href="#Stream-API" class="headerlink" title="Stream API"></a>Stream API</h2><h3 id="介绍-2"><a href="#介绍-2" class="headerlink" title="介绍"></a>介绍</h3><p>java8中处理集合的关键抽象概念，可以指定你希望对集合进行的操作，能够偶执行非常复杂的查找、过滤、映射数据等操作。使用&ensp;<font color="#EE6A50">Stream API</font>&ensp;对集合数据进行操作，类似于用SQL执行数据库查询</p>
+<h3 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>Stream讲究的是“计算”，可以处理数据，但不能更新源数据</li>
+<li>Stream 属于“惰性操作”，必须等待终止操作执行后，前面的中间操作或开始操作才会处理</li>
+<li>Stream只能消费一次，一旦消费，就不能再次使用，除非重新创建Stream对象</li>
+<li>Stream的中间操作可以有0个或多个，每个操作都会返回一个新的Stream</li>
+<li>Stream相当于一个 更强大的&ensp;<font color="#EE6A50">Iterator</font>，可以处理更加复杂的数据，并且实现并行化，效率更高！<img src="/img/java8特性/1565675842(1).png">
 </li>
 </ul>
 
@@ -243,7 +256,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda表达式"><span class="toc-text">Lambda表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#理解"><span class="toc-text">理解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#语法"><span class="toc-text">语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特点"><span class="toc-text">特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数式接口"><span class="toc-text">函数式接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍-1"><span class="toc-text">介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法引用-Method-Rederences"><span class="toc-text">方法引用(Method Rederences)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#三种使用情况"><span class="toc-text">三种使用情况</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda表达式"><span class="toc-text">Lambda表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#理解"><span class="toc-text">理解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#语法"><span class="toc-text">语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特点"><span class="toc-text">特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数式接口"><span class="toc-text">函数式接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍-1"><span class="toc-text">介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法引用-Method-Rederences"><span class="toc-text">方法引用(Method Rederences)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#三种使用情况"><span class="toc-text">三种使用情况</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#构造器引用"><span class="toc-text">构造器引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stream-API"><span class="toc-text">Stream API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍-2"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特点-1"><span class="toc-text">特点</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
@@ -264,6 +277,8 @@
                         <a href="/tags/">FEATURED TAGS</a>
                     </h5>
                     <div class="tags">
+                        
+                        <a class="tag" href="/tags/#java" title="java">java</a>
                         
                     </div>
                 </section>
