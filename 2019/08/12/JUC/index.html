@@ -238,11 +238,16 @@
 <h3 id="体系结构"><a href="#体系结构" class="headerlink" title="体系结构"></a>体系结构</h3><blockquote>
 <p>java.util.concurrent.Executor：负责线程的使用与调度的根接口<br>—- <font color="#EE6A50">ExecutorService</font>&ensp;子接口：线程池的主要接口<br>——– <font color="#EE6A50">ThreadPoolExecutor</font>&ensp;实现类<br>——– <font color="#EE6A50">ScheduledExcutorService</font>&enspp;子接口：负责线程的调度<br>———— <font color="#EE6A50">ScheduledThreadPoolExecutor</font>：集成ThreadPoolExecutor，实现了ScheduledExecutorService<br><img src="/img/JUC/7853175-22f663f3f541e79d.png"></p>
 </blockquote>
+<h2 id="Fork-Join框架"><a href="#Fork-Join框架" class="headerlink" title="Fork/Join框架"></a>Fork/Join框架</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>在必要情况下，将一个大任务进行拆分成若干个小任务，直到拆到不可再拆时，再将一个个的小任务运算结果进行join汇总<br><img src="/img/JUC/1565659342(1).png"></p>
 
                 <hr>
                 
 
                 <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2019/08/13/java8特性/" data-toggle="tooltip" data-placement="top" title="java8特性">&larr; Previous Post</a>
+                    </li>
                     
                     
                     <li class="next">
@@ -265,7 +270,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#volatile关键字"><span class="toc-text">volatile关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解析"><span class="toc-text">解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原子变量"><span class="toc-text">原子变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ConcurrentMap"><span class="toc-text">ConcurrentMap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CopyOnWriteArrayList"><span class="toc-text">CopyOnWriteArrayList</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CountDownLatch闭锁"><span class="toc-text">CountDownLatch闭锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现Callable接口"><span class="toc-text">实现Callable接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#执行方式"><span class="toc-text">执行方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock同步锁"><span class="toc-text">Lock同步锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#读写锁ReadWriteLock"><span class="toc-text">读写锁ReadWriteLock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程池"><span class="toc-text">线程池</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#体系结构"><span class="toc-text">体系结构</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#volatile关键字"><span class="toc-text">volatile关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解析"><span class="toc-text">解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原子变量"><span class="toc-text">原子变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ConcurrentMap"><span class="toc-text">ConcurrentMap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CopyOnWriteArrayList"><span class="toc-text">CopyOnWriteArrayList</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CountDownLatch闭锁"><span class="toc-text">CountDownLatch闭锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现Callable接口"><span class="toc-text">实现Callable接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#执行方式"><span class="toc-text">执行方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock同步锁"><span class="toc-text">Lock同步锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#读写锁ReadWriteLock"><span class="toc-text">读写锁ReadWriteLock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程池"><span class="toc-text">线程池</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#体系结构"><span class="toc-text">体系结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fork-Join框架"><span class="toc-text">Fork/Join框架</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
