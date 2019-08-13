@@ -280,29 +280,6 @@
 
 
 <div class="post-preview " style="background-image: url('')">
-    <a href="/2019/06/24/使用SpringBoot测试类遇到的异常/">
-        <h2 class="post-title">
-            使用SpringBoot测试类遇到的异常
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-24
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                测试类启动失败今天在测试一个方法的时候发现测试类启动报错，来看看报错的日志
-java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you need to use @ContextConfigurat..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
-<div class="post-preview " style="background-image: url('')">
     <a href="/2019/06/18/微信pay/">
         <h2 class="post-title">
             微信pay
@@ -478,15 +455,15 @@ java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you 
                     
                     
                     
-                    <a href="/tags/#redis" title="redis" rel="1">redis</a>
-                    
-                    
-                    
                     <a href="/tags/#学习计划" title="学习计划" rel="1">学习计划</a>
                     
                     
                     
                     <a href="/tags/#mysql" title="mysql" rel="1">mysql</a>
+                    
+                    
+                    
+                    <a href="/tags/#redis" title="redis" rel="1">redis</a>
                     
                     
                     
@@ -498,11 +475,11 @@ java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you 
                     
                     
                     
-                    <a href="/tags/#vue.js" title="vue.js" rel="2">vue.js</a>
-                    
-                    
-                    
                     <a href="/tags/#微信公众号" title="微信公众号" rel="1">微信公众号</a>
+                    
+                    
+                    
+                    <a href="/tags/#vue.js" title="vue.js" rel="2">vue.js</a>
                     
                     
                 </div>
@@ -632,6 +609,37 @@ java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you 
 
 <!--wechat title img-->
 <img class="wechat-title-img" src="/img/微信图片_20190723103112.jpg">
+
+<script type="text/javascript">
+/* 鼠标特效 */
+var a_idx = 0;
+jQuery(document).ready(function($) {
+    $("body").click(function(e) {
+        var a = new Array("❤up❤","❤up❤","❤up❤","❤up❤","❤up❤","❤up❤","❤up❤","❤up❤","❤up❤","❤up❤","❤up❤","❤up❤");
+        var $i = $("<span></span>").text(a[a_idx]);
+        a_idx = (a_idx + 1) % a.length;
+        var x = e.pageX,
+        y = e.pageY;
+        $i.css({
+            "z-index": 999999999999999999999999999999999999999999999999999999999999999999999,
+            "top": y - 20,
+            "left": x,
+            "position": "absolute",
+            "font-weight": "bold",
+            "color": "rgb("+~~(255*Math.random())+","+~~(255*Math.random())+","+~~(255*Math.random())+")"
+        });
+        $("body").append($i);
+        $i.animate({
+            "top": y - 180,
+            "opacity": 0
+        },
+        1500,
+        function() {
+            $i.remove();
+        });
+    });
+});
+</script>
 </body>
 
 </html>
