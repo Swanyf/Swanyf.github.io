@@ -248,13 +248,7 @@
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    获取当前时间</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    LocalDateTime now = LocalDateTime.now();</span><br><span class="line">    <span class="keyword">int</span> year = now.getDayOfYear();</span><br><span class="line">    <span class="keyword">int</span> month = now.getMonthValue();</span><br><span class="line">    <span class="keyword">int</span> dayOfMonth = now.getDayOfMonth();</span><br><span class="line">    <span class="keyword">int</span> hour = now.getHour();</span><br><span class="line">    <span class="keyword">int</span> minute = now.getMinute();</span><br><span class="line">    <span class="keyword">int</span> second = now.getSecond();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    日期转为string</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(<span class="string">"yyyy-MM-dd kk:mm:ss"</span>);</span><br><span class="line">    String format = dateTimeFormatter.format(LocalDateTime.now());</span><br><span class="line">    System.out.println(format);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="optional类"><a href="#optional类" class="headerlink" title="optional类"></a>optional类</h2><p>是一个容器类，表示一个值存在或不存在，原来用null表示一个值不存在，现在 <font color="#EE6A50">optional</font> 可以更好的表达这个概念，并且可以避免空指针异常</p>
-<h3 id="Optional-empty"><a href="#Optional-empty" class="headerlink" title="Optional.empty()"></a>Optional.empty()</h3><p>创建一个空的 <font color="#EE6A50">Optional</font> 实例</p>
-<h3 id="Optional-of-T-t"><a href="#Optional-of-T-t" class="headerlink" title="Optional.of(T t)"></a>Optional.of(T t)</h3><p>创建一个 <font color="#EE6A50">Optional</font> 实例</p>
-<h3 id="Optional-ofNullable-T-t"><a href="#Optional-ofNullable-T-t" class="headerlink" title="Optional.ofNullable(T t)"></a>Optional.ofNullable(T t)</h3><p>若t不为 <font color="#EE6A50">null</font>，创建<font color="#EE6A50">Optional</font>实例，否则创建空实例</p>
-<h3 id="isPPresent"><a href="#isPPresent" class="headerlink" title="isPPresent()"></a>isPPresent()</h3><p>判断是否包含值</p>
-<h3 id="T-get"><a href="#T-get" class="headerlink" title="T get()"></a>T get()</h3><p>如果调用对象包含值，则返回该值，否则抛异常</p>
-<h3 id="orElse-T-t"><a href="#orElse-T-t" class="headerlink" title="orElse(T t)"></a>orElse(T t)</h3><p>如果调用对象包含值，返回该值，否则返回t</p>
-<h3 id="方法名"><a href="#方法名" class="headerlink" title="方法名"></a>方法名</h3><table>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><table>
 <thead>
 <tr>
 <th>方法名</th>
@@ -262,16 +256,40 @@
 </tr>
 </thead>
 <tbody><tr>
+<td>Optional.empty()</td>
+<td>创建一个空的 Optional 实例</td>
+</tr>
+<tr>
+<td>Optional.of(T t)</td>
+<td>创建一个 Optional 实例</td>
+</tr>
+<tr>
+<td>Optional.ofNullable(T t)</td>
+<td>若t不为 null，创建 Optional 实例，否则创建空实例</td>
+</tr>
+<tr>
+<td>isPresent()</td>
+<td>判断是否包含值</td>
+</tr>
+<tr>
+<td>T get()</td>
+<td>如果调用对象包含值，则返回该值，否则抛异常</td>
+</tr>
+<tr>
+<td>orElse(T t)</td>
+<td>如果调用对象包含值，返回该值，否则返回t</td>
+</tr>
+<tr>
 <td>orElseGet(Supplier s)</td>
 <td>如果调用对象包含值，返回该值，否则返回s获取的值</td>
 </tr>
 <tr>
 <td>map(Function f)</td>
-<td>如果有值对其处理，并返回处理后的<font color="#EE6A50">Optional</font>，否则返回<code>Optional.empty()</code></td>
+<td>如果有值对其处理，并返回处理后的Optional，否则返回<code>Optional.empty()</code></td>
 </tr>
 <tr>
 <td>flatMap(Function mapper)</td>
-<td>与map类似，要求返回值必须是<font color="#EE6A50">Optional</font></td>
+<td>与 map 类似，要求返回值必须是 Optional</td>
 </tr>
 </tbody></table>
 
@@ -301,7 +319,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda表达式"><span class="toc-text">Lambda表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#理解"><span class="toc-text">理解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#语法"><span class="toc-text">语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特点"><span class="toc-text">特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数式接口"><span class="toc-text">函数式接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍-1"><span class="toc-text">介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法引用-Method-Rederences"><span class="toc-text">方法引用(Method Rederences)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#三种使用情况"><span class="toc-text">三种使用情况</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#构造器引用"><span class="toc-text">构造器引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stream-API"><span class="toc-text">Stream API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍-2"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特点-1"><span class="toc-text">特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stream的中间操作"><span class="toc-text">Stream的中间操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stream的终止操作"><span class="toc-text">Stream的终止操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#reduce归约"><span class="toc-text">reduce归约</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#收集"><span class="toc-text">收集</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新日期API"><span class="toc-text">新日期API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#回顾Calendar"><span class="toc-text">回顾Calendar</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍-3"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类对比"><span class="toc-text">类对比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#optional类"><span class="toc-text">optional类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Optional-empty"><span class="toc-text">Optional.empty()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Optional-of-T-t"><span class="toc-text">Optional.of(T t)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Optional-ofNullable-T-t"><span class="toc-text">Optional.ofNullable(T t)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#isPPresent"><span class="toc-text">isPPresent()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#T-get"><span class="toc-text">T get()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#orElse-T-t"><span class="toc-text">orElse(T t)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法名"><span class="toc-text">方法名</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda表达式"><span class="toc-text">Lambda表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#理解"><span class="toc-text">理解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#语法"><span class="toc-text">语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特点"><span class="toc-text">特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数式接口"><span class="toc-text">函数式接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍-1"><span class="toc-text">介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法引用-Method-Rederences"><span class="toc-text">方法引用(Method Rederences)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#三种使用情况"><span class="toc-text">三种使用情况</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#构造器引用"><span class="toc-text">构造器引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stream-API"><span class="toc-text">Stream API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍-2"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特点-1"><span class="toc-text">特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stream的中间操作"><span class="toc-text">Stream的中间操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stream的终止操作"><span class="toc-text">Stream的终止操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#reduce归约"><span class="toc-text">reduce归约</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#收集"><span class="toc-text">收集</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新日期API"><span class="toc-text">新日期API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#回顾Calendar"><span class="toc-text">回顾Calendar</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍-3"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类对比"><span class="toc-text">类对比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#optional类"><span class="toc-text">optional类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#方法"><span class="toc-text">方法</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
