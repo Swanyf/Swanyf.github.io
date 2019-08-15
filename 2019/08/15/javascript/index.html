@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        Swan&#39;s blog
+        javascript｜Swan&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/tags/vue-js/">
+    <link rel="canonical" href="http://yoursite.com/2019/08/15/javascript/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -43,7 +43,7 @@
 <!-- hack iOS CSS :active style -->
 <body ontouchstart="" class="animated fadeIn">
 <!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="false" data-istags="true
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="true" data-istags="false
 " data-ishome="false">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -132,200 +132,147 @@
 
 <!-- Main Content -->
 
+<!--only post-->
 
-<!-- Page Header -->
-<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 visible-xs-block visible-sm-block">
-    <div class="row">
-        <header class="intro-header">
-            <div class="container">
-                <div class="site-heading text-center">
-                    <div class="about-me">
-                        <!--移动端头部显示-->
-                        <img src="/img/微信图片_20190723103112.jpg">
-                        <h5><a href="/about/">swan</a></h5>
-                        <p>低调做人 高调做事</p>
+
+<img class="wechat-title-img" src>
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>javascript</h1>
+                    
+                    <span class="meta">
+                         作者 swan
+                        <span>
+                          日期 2019-08-15
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#前端" title="前端">前端</a>
+                        
                     </div>
                 </div>
             </div>
-        </header>
+        </div>
     </div>
-</div>
-<!-- Main Content -->
-<div class="container custom-haojen-container">
-    <!-- Post Container -->
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 post-container">
-            <!-- Main Content -->
+    <div class="post-title-haojen">
+        <span>
+            javascript
+        </span>
+    </div>
+</header>
 
-
-
-<div class="post-preview " style="background-image: url('/img/vue.js/aaa.jpg')">
-    <a href="/2019/07/26/vue-js入门学习/">
-        <h2 class="post-title">
-            vue.js入门学习
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-07-26
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                基本命令var vue = new Vue(&#123;  // 实例中如果要法官问 data 和 methods 必须使用 this    el: &apos;#&apos;,    // 要控制的html标签区域    data: &#123;&#125;,   // 控制区域使用的数据  ..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
-<div class="post-preview " style="background-image: url('/img/and_then_comes_the_sun-wallpaper-1920x1080.jpg')">
-    <a href="/2019/07/24/webpack入门学习/">
-        <h2 class="post-title">
-            webpack入门学习
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-07-24
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                步骤
-安装node.js插眼传送nodejs下载链接&ensp;http://nodejs.cn/download/
-
-安装cnpm注意：安装指令都需要加上&ensp;-g&ensp;表示全局安装
-自带的npm镜像源速度太慢，这里安装cnpm选择淘宝镜像源，npm install -g cnpm..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
-
-<!-- 翻页 pager -->
-
-<ul class="pager">
-    
-    
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><blockquote>
+<p>number -&gt; 数值类型<br>boolean -&gt; 布尔<br>string -&gt; 字符串<br>undefined -&gt; 声明未定义<br>null -&gt; object<br>function -&gt; 函数类型</p>
+</blockquote>
+<h2 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h2><ul>
+<li><code>Number(arg)</code>，将任意类型参数转换为数字类型，如果是布尔类型，true为1，false为0，null为0，undefined为NaN，””为0</li>
+<li><code>parseInt(arg)</code>，将字符串转为整数类型</li>
+<li><code>parseFloat(arg)</code>，将字符串转为浮点类型</li>
+<li><code>String(arg)</code>，将任意类型值转为字符串</li>
+<li><code>Boolean(arg)</code>，将任意类型值转为布尔值，” “空字符串、0、NaN、null、undefined、false会被转为<code>false</code></li>
 </ul>
+<h2 id="与"><a href="#与" class="headerlink" title="== 与 ==="></a>== 与 ===</h2><p>全等就是数字相等且类型相同</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">55 == &quot;55&quot;;    // true</span><br><span class="line">55 === &quot;55&quot;    // false，值相等，类型不同</span><br><span class="line"></span><br><span class="line">&quot;&quot; == 0;    // true</span><br><span class="line">&quot;&quot; === 0;    //false</span><br></pre></td></tr></table></figure>
+
+<p>不全等 <code>!==</code>，只要类型不同或值不同就返回 <font color="#EE6A50">true</font></p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/08/12/JUC/" data-toggle="tooltip" data-placement="top" title="JUC">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
 
 
+                <!--加入新的评论系统-->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据类型"><span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类型转换"><span class="toc-text">类型转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#与"><span class="toc-text">== 与 ===</span></a></li></ol>
+                </div>
+            </div>
         </div>
-        <!-- Sidebar Container -->
-        <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
 
-            <!-- About Me -->
-            <section class="visible-md visible-lg" style="padding: 0 18px">
-                <div class="short-about">
-                    <!--侧边栏头像-->
-                    
-                    <img src="/img/微信图片_20190723103112.jpg">
-                    
-                    <h5><a href="/about/">swan</a></h5>
-                    
-                    <p>低调做人 高调做事</p>
-                    
-                    <hr>
-                    <!-- SNS Link 社交 -->
-                    <ul class="list-inline">
-                        
-                        
-                        
+        <div class="row">
+            <!-- Sidebar Container -->
 
-                        
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
 
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
                         
+                        <a class="tag" href="/tags/#前端" title="前端">前端</a>
+                        
+                    </div>
+                </section>
+                
 
+                <!-- Friends Blog -->
+                
+                <div style="margin-top: 20px;">
+                    <h5 class="text-center">FRIENDS</h5>
+                    <ul class="list-inline text-center">
                         
-                        <li>
-                            <a target="_blank" href="https://github.com/Swanyf">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                        </span>
-                            </a>
-                        </li>
-                        
-
+                        <li><a href="https://www.antia1.top/">ANTIA</a></li>
                         
                     </ul>
                 </div>
-            </section>
-
-            <!-- Featured Tags  标签 -->
-            
-            <section>
-                <div class="tags">
-                    
-                    
-                    <a href="/tags/#前端" title="前端" rel="1">前端</a>
-                    
-                    
-                    
-                    <a href="/tags/#node.js" title="node.js" rel="1">node.js</a>
-                    
-                    
-                    
-                    <a href="/tags/#java" title="java" rel="4">java</a>
-                    
-                    
-                    
-                    <a href="/tags/#异常" title="异常" rel="1">异常</a>
-                    
-                    
-                    
-                    <a href="/tags/#redis" title="redis" rel="1">redis</a>
-                    
-                    
-                    
-                    <a href="/tags/#学习计划" title="学习计划" rel="1">学习计划</a>
-                    
-                    
-                    
-                    <a href="/tags/#mysql" title="mysql" rel="1">mysql</a>
-                    
-                    
-                    
-                    <a href="/tags/#javascript" title="javascript" rel="1">javascript</a>
-                    
-                    
-                    
-                    <a href="/tags/#vue.js" title="vue.js" rel="2">vue.js</a>
-                    
-                    
-                    
-                    <a href="/tags/#微信公众号" title="微信公众号" rel="1">微信公众号</a>
-                    
-                    
-                </div>
-            </section>
-            
-
-            
-            <hr>
-            <h5 style="text-align: center;">Friends</h5>
-            <ul class="list-inline" style="text-align: center;">
                 
-                <li><a href="https://www.antia1.top/" target="_blank">ANTIA</a></li>
-                
-            </ul>
-            
-
+            </div>
         </div>
+
     </div>
-</div>
+</article>
+
+
+
+
+
+
 
 <!-- Footer -->
 <!-- Footer -->
