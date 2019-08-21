@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        Swan&#39;s blog
+        mysql优化｜Swan&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/archives/2018/12/">
+    <link rel="canonical" href="http://yoursite.com/2019/08/21/mysql优化/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -43,7 +43,7 @@
 <!-- hack iOS CSS :active style -->
 <body ontouchstart="" class="animated fadeIn">
 <!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="false" data-istags="false
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="true" data-istags="false
 " data-ishome="false">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -132,171 +132,139 @@
 
 <!-- Main Content -->
 
+<!--only post-->
 
-<!-- Page Header -->
-<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 visible-xs-block visible-sm-block">
-    <div class="row">
-        <header class="intro-header">
-            <div class="container">
-                <div class="site-heading text-center">
-                    <div class="about-me">
-                        <!--移动端头部显示-->
-                        <img src="/img/微信图片_20190723103112.jpg">
-                        <h5><a href="/about/">swan</a></h5>
-                        <p>低调做人 高调做事</p>
+
+<img class="wechat-title-img" src>
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>mysql优化</h1>
+                    
+                    <span class="meta">
+                         作者 swan
+                        <span>
+                          日期 2019-08-21
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
                     </div>
                 </div>
             </div>
-        </header>
+        </div>
     </div>
-</div>
-<!-- Main Content -->
-<div class="container custom-haojen-container">
-    <!-- Post Container -->
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 post-container">
-            <!-- Main Content -->
+    <div class="post-title-haojen">
+        <span>
+            mysql优化
+        </span>
+    </div>
+</header>
 
-
-
-<div class="post-preview " style="background-image: url('/img/java8特性/rainforest_fog-wallpaper-1920x1080.jpg')">
-    <a href="/2018/12/13/java8特性/">
-        <h2 class="post-title">
-            java8特性
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2018-12-13
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                介绍
-04年推出 jdk5 ，改革非常大06年推出 jdk6 ,企业中使用的最长久版本11年 推出 jdk714年 推出 jdk8  LTS版本：受商业公司支持的长期版本17年  9月份推出 jdk9，   “六个月版本升级计划”   小版本18年 3月份 推出jdk10            ..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
-
-<!-- 翻页 pager -->
-
-<ul class="pager">
-    
-    
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h2 id="逻辑分层"><a href="#逻辑分层" class="headerlink" title="逻辑分层"></a>逻辑分层</h2><ul>
+<li>连接层</li>
+<li>服务层</li>
+<li>引擎层</li>
+<li>存储层<br>InnoDB(默认)：事务优先，适合高并发操作；行锁<br>MyISAM：性能优先，表锁</li>
 </ul>
+<p><code>show engines \G</code>查询数据库支持哪些引擎<br><code>show variables like &#39;%storage_engine%&#39;</code></p>
+<h2 id="sql执行顺序"><a href="#sql执行顺序" class="headerlink" title="sql执行顺序"></a>sql执行顺序</h2><blockquote>
+<p><code>from</code>: 对前2个表执行笛卡尔积，生成虚表vt1<br><code>on</code>: 对vt1应用on条件，只有满足<code>join_condition</code>条件的才能插入虚表vt2<br><code>outer(join)</code>：如果指定了 <code>outer join</code>保留表(preserved table)中未找到的行将行作为外部行添加到vt2，生成t3，如果from包含两个以上表，则对上一个联结生成的结果表和下一个表重复执行步骤和步骤直接结束<br><code>where</code>: 对vt3进行where筛选，只有满足where条件的才能插入vt4<br><code>group by</code>: 对vt4按group by字段分组，得到vt5<br><code>having</code>：对vt5应用HAVING筛选器只有使 having_condition 为true的组才插入vt6<br><code>select</code>：处理select列表产生vt7<br><code>distinct</code>：将重复的行从vt7中去除产生vt8<br><code>order by</code>：将vt8的行按order by子句中的列 列表排序生成一个游标vc9<br><code>limit</code>: 从vc9的开始处选择指定数量的行生成vt10 并返回调用者</p>
+</blockquote>
+<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2>
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/08/12/JUC/" data-toggle="tooltip" data-placement="top" title="JUC">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
 
 
+                <!--加入新的评论系统-->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑分层"><span class="toc-text">逻辑分层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql执行顺序"><span class="toc-text">sql执行顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-text">索引</span></a></li></ol>
+                </div>
+            </div>
         </div>
-        <!-- Sidebar Container -->
-        <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
 
-            <!-- About Me -->
-            <section class="visible-md visible-lg" style="padding: 0 18px">
-                <div class="short-about">
-                    <!--侧边栏头像-->
-                    
-                    <img src="/img/微信图片_20190723103112.jpg">
-                    
-                    <h5><a href="/about/">swan</a></h5>
-                    
-                    <p>低调做人 高调做事</p>
-                    
-                    <hr>
-                    <!-- SNS Link 社交 -->
-                    <ul class="list-inline">
-                        
-                        
-                        
+        <div class="row">
+            <!-- Sidebar Container -->
 
-                        
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
 
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
                         
+                    </div>
+                </section>
+                
 
+                <!-- Friends Blog -->
+                
+                <div style="margin-top: 20px;">
+                    <h5 class="text-center">FRIENDS</h5>
+                    <ul class="list-inline text-center">
                         
-                        <li>
-                            <a target="_blank" href="https://github.com/Swanyf">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                        </span>
-                            </a>
-                        </li>
-                        
-
+                        <li><a href="https://www.antia1.top/">ANTIA</a></li>
                         
                     </ul>
                 </div>
-            </section>
-
-            <!-- Featured Tags  标签 -->
-            
-            <section>
-                <div class="tags">
-                    
-                    
-                    <a href="/tags/#java" title="java" rel="4">java</a>
-                    
-                    
-                    
-                    <a href="/tags/#学习计划" title="学习计划" rel="1">学习计划</a>
-                    
-                    
-                    
-                    <a href="/tags/#mysql" title="mysql" rel="1">mysql</a>
-                    
-                    
-                    
-                    <a href="/tags/#node.js" title="node.js" rel="1">node.js</a>
-                    
-                    
-                    
-                    <a href="/tags/#redis" title="redis" rel="1">redis</a>
-                    
-                    
-                    
-                    <a href="/tags/#异常" title="异常" rel="1">异常</a>
-                    
-                    
-                    
-                    <a href="/tags/#javascript" title="javascript" rel="1">javascript</a>
-                    
-                    
-                    
-                    <a href="/tags/#vue.js" title="vue.js" rel="2">vue.js</a>
-                    
-                    
-                    
-                    <a href="/tags/#微信公众号" title="微信公众号" rel="1">微信公众号</a>
-                    
-                    
-                </div>
-            </section>
-            
-
-            
-            <hr>
-            <h5 style="text-align: center;">Friends</h5>
-            <ul class="list-inline" style="text-align: center;">
                 
-                <li><a href="https://www.antia1.top/" target="_blank">ANTIA</a></li>
-                
-            </ul>
-            
-
+            </div>
         </div>
+
     </div>
-</div>
+</article>
+
+
+
+
+
+
 
 <!-- Footer -->
 <!-- Footer -->
