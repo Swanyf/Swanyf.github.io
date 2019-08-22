@@ -215,14 +215,14 @@
 
 <h3 id="查询索引"><a href="#查询索引" class="headerlink" title="查询索引"></a>查询索引</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">show index from 表名;</span><br></pre></td></tr></table></figure>
 
-<h3 id="sql性能问题"><a href="#sql性能问题" class="headerlink" title="sql性能问题"></a>sql性能问题</h3><ul>
+<h3 id="explain分析sql性能"><a href="#explain分析sql性能" class="headerlink" title="explain分析sql性能"></a>explain分析sql性能</h3><ul>
 <li>数据量小的表优先查询</li>
 <li>mysql查询优化可能会被底层提供的sql优化器干扰</li>
 <li><font color="#EE6A50">expaltin</font>，分析sql的执行计划</li>
 </ul>
-<h4 id="id"><a href="#id" class="headerlink" title="id"></a>id</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">sql</span>语句</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">sql</span>语句</span><br></pre></td></tr></table></figure>
 
-<p>示例1</p>
+<h4 id="id"><a href="#id" class="headerlink" title="id"></a>id</h4><p>示例1</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> t.teacherName,c.courseName</span><br><span class="line"><span class="keyword">from</span> teacher t, course c</span><br><span class="line"><span class="keyword">where</span> c.teacherId = t.teacherId</span><br><span class="line"><span class="keyword">and</span> (t.teacherId = <span class="number">1</span> <span class="keyword">or</span> t.teacherId = <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
 
 <img src="/img/mysql优化/1566456827(1).png">
@@ -244,10 +244,14 @@
 <img src="/img/mysql优化/1566457893(1).png">
 + DERIVED，衍生查询(使用到了临时表)
 在from子查询中，有且只有一张表
-在from子查询中，如果有tb1 union tb2，则tb1就是临时表
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> t.teacherName <span class="keyword">from</span> (<span class="keyword">select</span> * <span class="keyword">from</span> teacher) <span class="keyword">as</span> t</span><br></pre></td></tr></table></figure>
 
 <img src="/img/mysql优化/1566457796(1).png">
+table中的2表示id为2
+在from子查询中，如果有tb1 union tb2，则tb1就是derived临时表，tb2就是union
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> </span><br><span class="line"><span class="keyword">select</span> teacherName <span class="keyword">from</span> teacher <span class="keyword">where</span> teacherId = <span class="number">1</span> </span><br><span class="line"><span class="keyword">union</span> </span><br><span class="line"><span class="keyword">select</span> teacherName <span class="keyword">from</span> teacher <span class="keyword">where</span> teacherId = <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<img src="/img/mysql优化/1566458417(1).png">
 
                 <hr>
                 
@@ -275,7 +279,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑分层"><span class="toc-text">逻辑分层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql执行顺序"><span class="toc-text">sql执行顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-text">分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建索引"><span class="toc-text">创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除索引"><span class="toc-text">删除索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询索引"><span class="toc-text">查询索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sql性能问题"><span class="toc-text">sql性能问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#id"><span class="toc-text">id</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#select-type"><span class="toc-text">select_type</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑分层"><span class="toc-text">逻辑分层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql执行顺序"><span class="toc-text">sql执行顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-text">分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建索引"><span class="toc-text">创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除索引"><span class="toc-text">删除索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询索引"><span class="toc-text">查询索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#explain分析sql性能"><span class="toc-text">explain分析sql性能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#id"><span class="toc-text">id</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#select-type"><span class="toc-text">select_type</span></a></li></ol></li></ol></li></ol>
                 </div>
             </div>
         </div>
