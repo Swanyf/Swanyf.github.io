@@ -261,6 +261,26 @@ table中的2表示id为2
 </ul>
 <img src="/img/mysql优化/1566460321(1).png">
 
+<h4 id="range"><a href="#range" class="headerlink" title="range"></a>range</h4><p>检索指定范围的行，where后面是一个范围查询，between，&gt;，&lt;，in…，in的检索数据在大于表数据一半时，索引失效转为ALL</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> t_dept <span class="keyword">where</span> <span class="keyword">id</span> &lt; <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<img src="/img/mysql优化/1566462621(1).png">
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> t_dept <span class="keyword">where</span> dept <span class="keyword">in</span> (<span class="string">'IT'</span>,<span class="string">'养猪'</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="/img/mysql优化/1566462756(1).png">
+
+
+<h4 id="index"><a href="#index" class="headerlink" title="index"></a>index</h4><p>查询索引列中的全部数据</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> dept <span class="keyword">from</span> t_dept</span><br></pre></td></tr></table></figure>
+
+<img src="/img/mysql优化/1566462862(1).png">
+
+<h4 id="ALL"><a href="#ALL" class="headerlink" title="ALL"></a>ALL</h4><p>没有索引，全表扫描</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> t_dept</span><br></pre></td></tr></table></figure>
+
+<img src="/img/mysql优化/1566463010(1).png">
+
+
                 <hr>
                 
 
@@ -287,7 +307,7 @@ table中的2表示id为2
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑分层"><span class="toc-text">逻辑分层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql执行顺序"><span class="toc-text">sql执行顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-text">分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建索引"><span class="toc-text">创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除索引"><span class="toc-text">删除索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询索引"><span class="toc-text">查询索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#explain分析sql性能"><span class="toc-text">explain分析sql性能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#id"><span class="toc-text">id</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#select-type"><span class="toc-text">select_type</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#type索引类型"><span class="toc-text">type索引类型</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑分层"><span class="toc-text">逻辑分层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql执行顺序"><span class="toc-text">sql执行顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-text">分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建索引"><span class="toc-text">创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除索引"><span class="toc-text">删除索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询索引"><span class="toc-text">查询索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#explain分析sql性能"><span class="toc-text">explain分析sql性能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#id"><span class="toc-text">id</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#select-type"><span class="toc-text">select_type</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#type索引类型"><span class="toc-text">type索引类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#range"><span class="toc-text">range</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#index"><span class="toc-text">index</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ALL"><span class="toc-text">ALL</span></a></li></ol></li></ol></li></ol>
                 </div>
             </div>
         </div>
