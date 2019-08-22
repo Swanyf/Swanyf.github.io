@@ -190,7 +190,31 @@
 <h2 id="sql执行顺序"><a href="#sql执行顺序" class="headerlink" title="sql执行顺序"></a>sql执行顺序</h2><blockquote>
 <p><code>from</code>: 对前2个表执行笛卡尔积，生成虚表vt1<br><code>on</code>: 对vt1应用on条件，只有满足<code>join_condition</code>条件的才能插入虚表vt2<br><code>outer(join)</code>：如果指定了 <code>outer join</code>保留表(preserved table)中未找到的行将行作为外部行添加到vt2，生成t3，如果from包含两个以上表，则对上一个联结生成的结果表和下一个表重复执行步骤和步骤直接结束<br><code>where</code>: 对vt3进行where筛选，只有满足where条件的才能插入vt4<br><code>group by</code>: 对vt4按group by字段分组，得到vt5<br><code>having</code>：对vt5应用HAVING筛选器只有使 having_condition 为true的组才插入vt6<br><code>select</code>：处理select列表产生vt7<br><code>distinct</code>：将重复的行从vt7中去除产生vt8<br><code>order by</code>：将vt8的行按order by子句中的列 列表排序生成一个游标vc9<br><code>limit</code>: 从vc9的开始处选择指定数量的行生成vt10 并返回调用者</p>
 </blockquote>
-<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2>
+<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>一种高效获取数据的数据结构<br><img src="/img/mysql优化/1566452200(1).png"></p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>索引本身很大，可以存放在内存/硬盘(通常为硬盘)</li>
+<li>数据量较少、频繁更新的字段不适合做索引</li>
+<li>降低增删改的效率</li>
+</ul>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>提高查询效率(降低IO使用率)</li>
+<li>降低CPU使用率</li>
+<li>B树索引本身就是一个排好序的结构，因此排序时可以直接使用</li>
+</ul>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><ul>
+<li>单值索引<br>单列，一个表可以有多个单值索引</li>
+<li>唯一索引，该列值可以为null</li>
+<li>主键索引，该列值不能为null<br>数据不能重复，一般用id</li>
+<li>符合索引<br>多个列构成的索引，在多个列中查找数据如果在一列就找到，则跳出其他索引不再查找</li>
+</ul>
+<h3 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h3><p>方式一<br><code>create [unique] index 索引名 on 表(字段名1, ...)</code><br>方式二</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alter table 表明 add [unique] index 索引名(字段名1, ...)</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">drop index 索引名 on 表明;</span><br></pre></td></tr></table></figure>
+
+<h3 id="查询索引"><a href="#查询索引" class="headerlink" title="查询索引"></a>查询索引</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">show index from 表名;</span><br></pre></td></tr></table></figure>
+
+
                 <hr>
                 
 
@@ -217,7 +241,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑分层"><span class="toc-text">逻辑分层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql执行顺序"><span class="toc-text">sql执行顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-text">索引</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑分层"><span class="toc-text">逻辑分层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql执行顺序"><span class="toc-text">sql执行顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-text">分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建索引"><span class="toc-text">创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除索引"><span class="toc-text">删除索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询索引"><span class="toc-text">查询索引</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
