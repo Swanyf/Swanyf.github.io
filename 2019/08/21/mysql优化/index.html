@@ -253,6 +253,14 @@ table中的2表示id为2
 
 <img src="/img/mysql优化/1566458417(1).png">
 
+<h4 id="type索引类型"><a href="#type索引类型" class="headerlink" title="type索引类型"></a>type索引类型</h4><p><code>system&gt;const&gt;eq_ref&gt;ref&gt;range&gt;index&gt;ALL</code><br>越往左边，性能越高，比如 <font color="#EE6A50">system</font>就比 <font color="#EE6A50">ALL</font> 类型性能要高出许多，其中 <font color="#EE6A50">system、const</font>&ensp;只是理想类型，基本达不到；<br>我们自己实际能优化到 <font color="#EE6A50">ref&gt;range</font>这两个类型，就是你自己写SQL，如果你没优化基本上就是 <font color="#EE6A50">ALL</font>，如果你优化了，那就尽量达到 <font color="#EE6A50">ref&gt;range</font>这两个级别</p>
+<ul>
+<li>ref，非唯一性索引：对于每个索引键的查询，返回匹配的所有行（可以是0，或多个）<br>假设我现在要根据name查询，首先name可能有多个，因为一个公司或学校叫小明的不止一个人，但是你要用name去查，你必须name是索引，我们先给它加个索引，因为要达到ref级别，所以这里我给它加一个单值索引<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> t_dept <span class="keyword">where</span> dept = <span class="string">'IT'</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<img src="/img/mysql优化/1566460321(1).png">
+
                 <hr>
                 
 
@@ -279,7 +287,7 @@ table中的2表示id为2
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑分层"><span class="toc-text">逻辑分层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql执行顺序"><span class="toc-text">sql执行顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-text">分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建索引"><span class="toc-text">创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除索引"><span class="toc-text">删除索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询索引"><span class="toc-text">查询索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#explain分析sql性能"><span class="toc-text">explain分析sql性能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#id"><span class="toc-text">id</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#select-type"><span class="toc-text">select_type</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑分层"><span class="toc-text">逻辑分层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql执行顺序"><span class="toc-text">sql执行顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-text">分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建索引"><span class="toc-text">创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除索引"><span class="toc-text">删除索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询索引"><span class="toc-text">查询索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#explain分析sql性能"><span class="toc-text">explain分析sql性能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#id"><span class="toc-text">id</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#select-type"><span class="toc-text">select_type</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#type索引类型"><span class="toc-text">type索引类型</span></a></li></ol></li></ol></li></ol>
                 </div>
             </div>
         </div>
