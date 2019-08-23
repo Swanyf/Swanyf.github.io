@@ -222,13 +222,13 @@
 </ul>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">sql</span>语句</span><br></pre></td></tr></table></figure>
 
-<h4 id="id"><a href="#id" class="headerlink" title="id"></a>id</h4><p>示例1</p>
+<h4 id="id"><a href="#id" class="headerlink" title="id"></a>id</h4><p>示例 1</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> t.teacherName,c.courseName</span><br><span class="line"><span class="keyword">from</span> teacher t, course c</span><br><span class="line"><span class="keyword">where</span> c.teacherId = t.teacherId</span><br><span class="line"><span class="keyword">and</span> (t.teacherId = <span class="number">1</span> <span class="keyword">or</span> t.teacherId = <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
 
 <img src="/img/mysql优化/1566456827(1).png">
 由图中得出结论，id值相同时，数据量小的先执行
 
-<p>实例2</p>
+<p>示例 2</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> courseName <span class="keyword">from</span> course</span><br><span class="line"><span class="keyword">where</span> courseId <span class="keyword">in</span> (</span><br><span class="line">    <span class="keyword">select</span> courseId</span><br><span class="line">    <span class="keyword">from</span> course c</span><br><span class="line">    <span class="keyword">where</span> c.teacherId <span class="keyword">in</span> (</span><br><span class="line">	<span class="keyword">select</span> teacherId <span class="keyword">from</span> teacher <span class="keyword">where</span> teacherId = <span class="number">1</span> <span class="keyword">or</span> teacherId = <span class="number">2</span></span><br><span class="line">    )</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
 <img src="/img/mysql优化/1566457017(1).png">
@@ -281,10 +281,28 @@ table中的2表示id为2
 <img src="/img/mysql优化/1566463010(1).png">
 
 
-<h4 id="possible-keys"><a href="#possible-keys" class="headerlink" title="possible keys"></a>possible keys</h4><p>可能用到的索引，一种预测可能不准</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> t_dept <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h4 id="possible-keys、key"><a href="#possible-keys、key" class="headerlink" title="possible_keys、key"></a>possible_keys、key</h4><ul>
+<li><font color="#EE6A50">possible_keys</font> 可能用到的索引，一种预测可能不准</li>
+<li><font color="#EE6A50">key</font> 实际用到的索引<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> t_dept <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span></span><br></pre></td></tr></table></figure>
 
+</li>
+</ul>
 <img src="/img/mysql优化/1566463405(1).png">
+
+<h4 id="key-len"><a href="#key-len" class="headerlink" title="key_len"></a>key_len</h4><p>索引的长度，用于判断复合索引是否都被使用</p>
+<h4 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h4><p>与type索引类型中的ref不同，这里的作用是显示当前表所参照的字段</p>
+<h4 id="rows"><a href="#rows" class="headerlink" title="rows"></a>rows</h4><p>被索引优化查询的数据格数</p>
+<h4 id="Extra"><a href="#Extra" class="headerlink" title="Extra"></a>Extra</h4><img src="/img/mysql优化/图片1.png">
++ using filesort，表示sql性能消耗较大，需要“额外”的一次排序(查询)，常见于order by语句中
++ 对于单值索引，如果排序和查找是同一个字段这不会出现using filesort
++ 为了避免这种情况，采用where哪些字段就order by哪些字段
++ 对于复合索引，where和ordre by应按照符合索引的顺序使用，不要跨列或无序使用
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">index</span> 索引名 <span class="keyword">on</span> 表名(a, b, c)</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表名 <span class="keyword">where</span> a = <span class="string">''</span> <span class="keyword">order</span> <span class="keyword">by</span> c    <span class="comment"># using filesort</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表明 <span class="keyword">where</span> b = <span class="string">''</span> <span class="keyword">order</span> <span class="keyword">by</span> c    <span class="comment"># using filesort</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表名 <span class="keyword">where</span> a = <span class="string">''</span> <span class="keyword">order</span> <span class="keyword">by</span> b    <span class="comment"># 不会出现</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>using temporary，用到临时表性能损耗大，一般出现在group by语句中<img src="/img/mysql优化/图片2.png">
+</li>
+</ul>
 
                 <hr>
                 
@@ -312,7 +330,7 @@ table中的2表示id为2
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑分层"><span class="toc-text">逻辑分层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql执行顺序"><span class="toc-text">sql执行顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-text">分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建索引"><span class="toc-text">创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除索引"><span class="toc-text">删除索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询索引"><span class="toc-text">查询索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#explain分析sql性能"><span class="toc-text">explain分析sql性能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#id"><span class="toc-text">id</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#select-type"><span class="toc-text">select_type</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#type索引类型"><span class="toc-text">type索引类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#range"><span class="toc-text">range</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#index"><span class="toc-text">index</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ALL"><span class="toc-text">ALL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#possible-keys"><span class="toc-text">possible keys</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑分层"><span class="toc-text">逻辑分层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql执行顺序"><span class="toc-text">sql执行顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-text">分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建索引"><span class="toc-text">创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除索引"><span class="toc-text">删除索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询索引"><span class="toc-text">查询索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#explain分析sql性能"><span class="toc-text">explain分析sql性能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#id"><span class="toc-text">id</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#select-type"><span class="toc-text">select_type</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#type索引类型"><span class="toc-text">type索引类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#range"><span class="toc-text">range</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#index"><span class="toc-text">index</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ALL"><span class="toc-text">ALL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#possible-keys、key"><span class="toc-text">possible_keys、key</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#key-len"><span class="toc-text">key_len</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ref"><span class="toc-text">ref</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rows"><span class="toc-text">rows</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Extra"><span class="toc-text">Extra</span></a></li></ol></li></ol></li></ol>
                 </div>
             </div>
         </div>
