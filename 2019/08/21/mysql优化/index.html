@@ -188,7 +188,7 @@
 </ul>
 <p><code>show engines \G</code>查询数据库支持哪些引擎<br><code>show variables like &#39;%storage_engine%&#39;</code></p>
 <h2 id="sql执行顺序"><a href="#sql执行顺序" class="headerlink" title="sql执行顺序"></a>sql执行顺序</h2><blockquote>
-<p><code>from</code>: 对前2个表执行笛卡尔积，生成虚表vt1<br><code>on</code>: 对vt1应用on条件，只有满足<code>join_condition</code>条件的才能插入虚表vt2<br><code>outer(join)</code>：如果指定了 <code>outer join</code>保留表(preserved table)中未找到的行将行作为外部行添加到vt2，生成t3，如果from包含两个以上表，则对上一个联结生成的结果表和下一个表重复执行步骤和步骤直接结束<br><code>where</code>: 对vt3进行where筛选，只有满足where条件的才能插入vt4<br><code>group by</code>: 对vt4按group by字段分组，得到vt5<br><code>having</code>：对vt5应用HAVING筛选器只有使 having_condition 为true的组才插入vt6<br><code>select</code>：处理select列表产生vt7<br><code>distinct</code>：将重复的行从vt7中去除产生vt8<br><code>order by</code>：将vt8的行按order by子句中的列 列表排序生成一个游标vc9<br><code>limit</code>: 从vc9的开始处选择指定数量的行生成vt10 并返回调用者</p>
+<p><font color="#EE6A50">from</font>: 对前2个表执行笛卡尔积，生成虚表 vt1<br><font color="#EE6A50">on</font>: 对 vt1 应用 on 条件，只有满足 join_condition 条件的才能插入虚表vt2<br><font color="#EE6A50">outer(join)</font>：如果指定了 outer join 保留表 (preserved table) 中未找到的行将行作为外部行添加到 vt2，生成 t3，如果 from 包含两个以上表，则对上一个联结生成的结果表和下一个表重复执行步骤和步骤直接结束<br><font color="#EE6A50">where</font>: 对 vt3 进行 where 筛选，只有满足 where 条件的才能插入 vt4<br><font color="#EE6A50">group by</font>: 对 vt4 按 group by 字段分组，得到vt5<br><font color="#EE6A50">having</font>：对 vt5 应用HAVING筛选器只有使 having_condition 为 true 的组才插入 vt6<br><font color="#EE6A50">select</font>：处理 select 列表产生 vt7<br><font color="#EE6A50">distinct</font>：将重复的行从 vt7中去除产生 vt8<br><font color="#EE6A50">order by</font>：将 vt8 的行按 order by 子句中的列，列表排序生成一个游标vc9<br><font color="#EE6A50">limit</font>: 从 vc9 的开始处选择指定数量的行生成 vt10，并返回调用者</p>
 </blockquote>
 <h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>一种高效获取数据的数据结构<br><img src="/img/mysql优化/1566452200(1).png"></p>
 <h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
@@ -203,8 +203,8 @@
 </ul>
 <h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><ul>
 <li>单值索引<br>单列，一个表可以有多个单值索引</li>
-<li>唯一索引，该列值可以为null</li>
-<li>主键索引，该列值不能为null<br>数据不能重复，一般用id</li>
+<li>唯一索引，该列值可以为 null</li>
+<li>主键索引，该列值不能为 null<br>数据不能重复，一般用 id</li>
 <li>符合索引<br>多个列构成的索引，在多个列中查找数据如果在一列就找到，则跳出其他索引不再查找</li>
 </ul>
 <h3 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h3><p>方式一<br><code>create [unique] index 索引名 on 表(字段名1, ...)</code></p>
@@ -217,8 +217,8 @@
 
 <h3 id="explain分析sql性能"><a href="#explain分析sql性能" class="headerlink" title="explain分析sql性能"></a>explain分析sql性能</h3><ul>
 <li>数据量小的表优先查询</li>
-<li>mysql查询优化可能会被底层提供的sql优化器干扰</li>
-<li><font color="#EE6A50">expaltin</font>，分析sql的执行计划</li>
+<li>mysql查询优化可能会被底层提供的 sql 优化器干扰</li>
+<li><font color="#EE6A50">expaltin</font>，分析 sql 的执行计划</li>
 </ul>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">sql</span>语句</span><br></pre></td></tr></table></figure>
 
@@ -226,42 +226,44 @@
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> t.teacherName,c.courseName</span><br><span class="line"><span class="keyword">from</span> teacher t, course c</span><br><span class="line"><span class="keyword">where</span> c.teacherId = t.teacherId</span><br><span class="line"><span class="keyword">and</span> (t.teacherId = <span class="number">1</span> <span class="keyword">or</span> t.teacherId = <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
 
 <img src="/img/mysql优化/1566456827(1).png">
-由图中得出结论，id值相同时，数据量小的先执行
+由图中得出结论，id 值相同时，数据量小的先执行
 
 <p>示例 2</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> courseName <span class="keyword">from</span> course</span><br><span class="line"><span class="keyword">where</span> courseId <span class="keyword">in</span> (</span><br><span class="line">    <span class="keyword">select</span> courseId</span><br><span class="line">    <span class="keyword">from</span> course c</span><br><span class="line">    <span class="keyword">where</span> c.teacherId <span class="keyword">in</span> (</span><br><span class="line">	<span class="keyword">select</span> teacherId <span class="keyword">from</span> teacher <span class="keyword">where</span> teacherId = <span class="number">1</span> <span class="keyword">or</span> teacherId = <span class="number">2</span></span><br><span class="line">    )</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
 <img src="/img/mysql优化/1566457017(1).png">
-由图中得出结论，id值不同时，id大的先执行
+由图中得出结论，id 值不同时，id 大的先执行
 
 <h4 id="select-type"><a href="#select-type" class="headerlink" title="select_type"></a>select_type</h4><ul>
-<li>PRIMARY，包含子查询SQL中 的住查询(最外层)</li>
-<li>SUNQUERY，包含子查询SQL中的子查询(飞最外层)</li>
-<li>SIMPLE，简单查询(不包含子查询、union)<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> teacher</span><br></pre></td></tr></table></figure>
+<li><font color="#EE6A50">PRIMARY</font>，包含子查询SQL中 的住查询(最外层)</li>
+<li><font color="#EE6A50">SUNQUERY</font>，包含子查询 SQL 中的子查询(飞最外层)</li>
+<li><font color="#EE6A50">SIMPLE</font>，简单查询(不包含子查询、union)<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> teacher</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <img src="/img/mysql优化/1566457893(1).png">
-+ DERIVED，衍生查询(使用到了临时表)
-在from子查询中，有且只有一张表
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> t.teacherName <span class="keyword">from</span> (<span class="keyword">select</span> * <span class="keyword">from</span> teacher) <span class="keyword">as</span> t</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li><font color="#EE6A50">DERIVED</font>，衍生查询(使用到了临时表)<br>在 from 子查询中，有且只有一张表<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> t.teacherName <span class="keyword">from</span> (<span class="keyword">select</span> * <span class="keyword">from</span> teacher) <span class="keyword">as</span> t</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
 <img src="/img/mysql优化/1566457796(1).png">
 table中的2表示id为2
-在from子查询中，如果有tb1 union tb2，则tb1就是derived临时表，tb2就是union
+在 from 子查询中，如果有 tb1 union tb2，则 tb1 就是 derived 临时表，tb2 就是 union
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> </span><br><span class="line"><span class="keyword">select</span> teacherName <span class="keyword">from</span> teacher <span class="keyword">where</span> teacherId = <span class="number">1</span> </span><br><span class="line"><span class="keyword">union</span> </span><br><span class="line"><span class="keyword">select</span> teacherName <span class="keyword">from</span> teacher <span class="keyword">where</span> teacherId = <span class="number">2</span></span><br></pre></td></tr></table></figure>
 
 <img src="/img/mysql优化/1566458417(1).png">
 
-<h4 id="type索引类型"><a href="#type索引类型" class="headerlink" title="type索引类型"></a>type索引类型</h4><p><code>system&gt;const&gt;eq_ref&gt;ref&gt;range&gt;index&gt;ALL</code><br>越往左边，性能越高，比如 <font color="#EE6A50">system</font>就比 <font color="#EE6A50">ALL</font> 类型性能要高出许多，其中 <font color="#EE6A50">system、const</font>&ensp;只是理想类型，基本达不到；<br>我们自己实际能优化到 <font color="#EE6A50">ref&gt;range</font>这两个类型，就是你自己写SQL，如果你没优化基本上就是 <font color="#EE6A50">ALL</font>，如果你优化了，那就尽量达到 <font color="#EE6A50">ref&gt;range</font>这两个级别</p>
+<h4 id="type索引类型"><a href="#type索引类型" class="headerlink" title="type索引类型"></a>type索引类型</h4><p><font color="#EE6A50">system &gt; const &gt; eq_ref &gt; ref &gt; range &gt; index &gt; ALL</font><br>越往左边，性能越高，比如 <font color="#EE6A50">system</font>就比 <font color="#EE6A50">ALL</font> 类型性能要高出许多，其中 <font color="#EE6A50">system、const</font>&ensp;只是理想类型，基本达不到；<br>我们自己实际能优化到 <font color="#EE6A50">ref&gt;range</font>这两个类型，就是你自己写SQL，如果你没优化基本上就是 <font color="#EE6A50">ALL</font>，如果你优化了，那就尽量达到 <font color="#EE6A50">ref&gt;range</font>这两个级别</p>
 <ul>
-<li>ref，非唯一性索引：对于每个索引键的查询，返回匹配的所有行（可以是0，或多个）<br>假设我现在要根据name查询，首先name可能有多个，因为一个公司或学校叫小明的不止一个人，但是你要用name去查，你必须name是索引，我们先给它加个索引，因为要达到ref级别，所以这里我给它加一个单值索引<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> t_dept <span class="keyword">where</span> dept = <span class="string">'IT'</span></span><br></pre></td></tr></table></figure>
+<li><font color="#EE6A50">ref</font>，非唯一性索引：对于每个索引键的查询，返回匹配的所有行（可以是0，或多个）<br>假设我现在要根据name查询，首先name可能有多个，因为一个公司或学校叫小明的不止一个人，但是你要用name去查，你必须name是索引，我们先给它加个索引，因为要达到ref级别，所以这里我给它加一个单值索引<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> t_dept <span class="keyword">where</span> dept = <span class="string">'IT'</span></span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <img src="/img/mysql优化/1566460321(1).png">
 
-<h4 id="range"><a href="#range" class="headerlink" title="range"></a>range</h4><p>检索指定范围的行，where后面是一个范围查询，between，&gt;，&lt;，in…，in的检索数据在大于表数据一半时，索引失效转为ALL</p>
+<h4 id="range"><a href="#range" class="headerlink" title="range"></a>range</h4><p>检索指定范围的行，where 后面是一个范围查询，<font color="#EE6A50">between</font>，<font color="#EE6A50">&gt;</font>，<font color="#EE6A50">&lt;</font>，<font color="#EE6A50">in</font>…，in 的检索数据在大于表数据一半时，索引失效转为 ALL</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> t_dept <span class="keyword">where</span> <span class="keyword">id</span> &lt; <span class="number">4</span></span><br></pre></td></tr></table></figure>
 
 <img src="/img/mysql优化/1566462621(1).png">
@@ -293,14 +295,19 @@ table中的2表示id为2
 <h4 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h4><p>与type索引类型中的ref不同，这里的作用是显示当前表所参照的字段</p>
 <h4 id="rows"><a href="#rows" class="headerlink" title="rows"></a>rows</h4><p>被索引优化查询的数据格数</p>
 <h4 id="Extra"><a href="#Extra" class="headerlink" title="Extra"></a>Extra</h4><img src="/img/mysql优化/图片1.png">
-+ using filesort，表示sql性能消耗较大，需要“额外”的一次排序(查询)，常见于order by语句中
-+ 对于单值索引，如果排序和查找是同一个字段这不会出现using filesort
-+ 为了避免这种情况，采用where哪些字段就order by哪些字段
-+ 对于复合索引，where和ordre by应按照符合索引的顺序使用，不要跨列或无序使用
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">index</span> 索引名 <span class="keyword">on</span> 表名(a, b, c)</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表名 <span class="keyword">where</span> a = <span class="string">''</span> <span class="keyword">order</span> <span class="keyword">by</span> c    <span class="comment"># using filesort</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表明 <span class="keyword">where</span> b = <span class="string">''</span> <span class="keyword">order</span> <span class="keyword">by</span> c    <span class="comment"># using filesort</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表名 <span class="keyword">where</span> a = <span class="string">''</span> <span class="keyword">order</span> <span class="keyword">by</span> b    <span class="comment"># 不会出现</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>using temporary，用到临时表性能损耗大，一般出现在group by语句中<img src="/img/mysql优化/图片2.png">
+<li><p><font color="#EE6A50">using filesort</font>，表示sql性能消耗较大，需要“额外”的一次排序(查询)，常见于order by语句中</p>
+</li>
+<li><p>对于单值索引，如果排序和查找是同一个字段这不会出现using filesort</p>
+</li>
+<li><p>为了避免这种情况，采用where哪些字段就order by哪些字段</p>
+</li>
+<li><p>对于复合索引，where和ordre by应按照符合索引的顺序使用，不要跨列或无序使用</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">index</span> 索引名 <span class="keyword">on</span> 表名(a, b, c)</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表名 <span class="keyword">where</span> a = <span class="string">''</span> <span class="keyword">order</span> <span class="keyword">by</span> c    <span class="comment"># using filesort</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表明 <span class="keyword">where</span> b = <span class="string">''</span> <span class="keyword">order</span> <span class="keyword">by</span> c    <span class="comment"># using filesort</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表名 <span class="keyword">where</span> a = <span class="string">''</span> <span class="keyword">order</span> <span class="keyword">by</span> b    <span class="comment"># 不会出现</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><font color="#EE6A50">using temporary</font>，用到临时表性能损耗大，一般出现在group by语句中</p>
+<img src="/img/mysql优化/图片2.png">
 </li>
 </ul>
 
