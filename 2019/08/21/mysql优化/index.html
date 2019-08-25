@@ -217,14 +217,14 @@
 
 <h3 id="查询索引"><a href="#查询索引" class="headerlink" title="查询索引"></a>查询索引</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">show index from 表名;</span><br></pre></td></tr></table></figure>
 
-<h3 id="explain分析sql性能"><a href="#explain分析sql性能" class="headerlink" title="explain分析sql性能"></a>explain分析sql性能</h3><ul>
+<h2 id="explain分析sql性能"><a href="#explain分析sql性能" class="headerlink" title="explain分析sql性能"></a>explain分析sql性能</h2><ul>
 <li>数据量小的表优先查询</li>
 <li>mysql查询优化可能会被底层提供的 sql 优化器干扰</li>
 <li><font color="#EE6A50">expaltin</font>，分析 sql 的执行计划</li>
 </ul>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">sql</span>语句</span><br></pre></td></tr></table></figure>
 
-<h4 id="id"><a href="#id" class="headerlink" title="id"></a>id</h4><p>示例 1</p>
+<h3 id="id"><a href="#id" class="headerlink" title="id"></a>id</h3><p>示例 1</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> t.teacherName,c.courseName</span><br><span class="line"><span class="keyword">from</span> teacher t, course c</span><br><span class="line"><span class="keyword">where</span> c.teacherId = t.teacherId</span><br><span class="line"><span class="keyword">and</span> (t.teacherId = <span class="number">1</span> <span class="keyword">or</span> t.teacherId = <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
 
 <img src="/img/mysql优化/1566456827(1).png">
@@ -236,7 +236,7 @@
 <img src="/img/mysql优化/1566457017(1).png">
 由图中得出结论，id 值不同时，id 大的先执行
 
-<h4 id="select-type"><a href="#select-type" class="headerlink" title="select_type"></a>select_type</h4><ul>
+<h3 id="select-type"><a href="#select-type" class="headerlink" title="select_type"></a>select_type</h3><ul>
 <li><font color="#EE6A50">PRIMARY</font>，包含子查询SQL中 的住查询(最外层)</li>
 <li><font color="#EE6A50">SUNQUERY</font>，包含子查询 SQL 中的子查询(飞最外层)</li>
 <li><font color="#EE6A50">SIMPLE</font>，简单查询(不包含子查询、union)<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> teacher</span><br></pre></td></tr></table></figure>
@@ -257,7 +257,7 @@ table中的2表示id为2
 
 <img src="/img/mysql优化/1566458417(1).png">
 
-<h4 id="type索引类型"><a href="#type索引类型" class="headerlink" title="type索引类型"></a>type索引类型</h4><p><font color="#EE6A50">system &gt; const &gt; eq_ref &gt; ref &gt; range &gt; index &gt; ALL</font><br>越往左边，性能越高，比如 <font color="#EE6A50">system</font>就比 <font color="#EE6A50">ALL</font> 类型性能要高出许多，其中 <font color="#EE6A50">system、const</font>&ensp;只是理想类型，基本达不到；<br>我们自己实际能优化到 <font color="#EE6A50">ref&gt;range</font>这两个类型，就是你自己写SQL，如果你没优化基本上就是 <font color="#EE6A50">ALL</font>，如果你优化了，那就尽量达到 <font color="#EE6A50">ref&gt;range</font>这两个级别</p>
+<h3 id="type索引类型"><a href="#type索引类型" class="headerlink" title="type索引类型"></a>type索引类型</h3><p><font color="#EE6A50">system &gt; const &gt; eq_ref &gt; ref &gt; range &gt; index &gt; ALL</font><br>越往左边，性能越高，比如 <font color="#EE6A50">system</font>就比 <font color="#EE6A50">ALL</font> 类型性能要高出许多，其中 <font color="#EE6A50">system、const</font>&ensp;只是理想类型，基本达不到；<br>我们自己实际能优化到 <font color="#EE6A50">ref&gt;range</font>这两个类型，就是你自己写SQL，如果你没优化基本上就是 <font color="#EE6A50">ALL</font>，如果你优化了，那就尽量达到 <font color="#EE6A50">ref&gt;range</font>这两个级别</p>
 <ul>
 <li><font color="#EE6A50">ref</font>，非唯一性索引：对于每个索引键的查询，返回匹配的所有行（可以是0，或多个）<br>假设我现在要根据name查询，首先name可能有多个，因为一个公司或学校叫小明的不止一个人，但是你要用name去查，你必须name是索引，我们先给它加个索引，因为要达到ref级别，所以这里我给它加一个单值索引<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> t_dept <span class="keyword">where</span> dept = <span class="string">'IT'</span></span><br></pre></td></tr></table></figure>
 
@@ -285,7 +285,7 @@ table中的2表示id为2
 <img src="/img/mysql优化/1566463010(1).png">
 
 
-<h4 id="possible-keys、key"><a href="#possible-keys、key" class="headerlink" title="possible_keys、key"></a>possible_keys、key</h4><ul>
+<h3 id="possible-keys、key"><a href="#possible-keys、key" class="headerlink" title="possible_keys、key"></a>possible_keys、key</h3><ul>
 <li><font color="#EE6A50">possible_keys</font> 可能用到的索引，一种预测可能不准</li>
 <li><font color="#EE6A50">key</font> 实际用到的索引<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> t_dept <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span></span><br></pre></td></tr></table></figure>
 
@@ -293,15 +293,15 @@ table中的2表示id为2
 </ul>
 <img src="/img/mysql优化/1566463405(1).png">
 
-<h4 id="key-len"><a href="#key-len" class="headerlink" title="key_len"></a>key_len</h4><p>索引的长度，用于判断复合索引是否都被使用</p>
-<h4 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h4><ul>
+<h3 id="key-len"><a href="#key-len" class="headerlink" title="key_len"></a>key_len</h3><p>索引的长度，用于判断复合索引是否都被使用</p>
+<h3 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h3><ul>
 <li>与type索引类型中的ref不同，这里的作用是显示当前表所参照的字段</li>
 <li><font color="#EE6A50">const</font> 条件常量<img src="/img/mysql优化/图片4.png">
 
 </li>
 </ul>
-<h4 id="rows"><a href="#rows" class="headerlink" title="rows"></a>rows</h4><p>被索引优化查询的数据格数</p>
-<h4 id="Extra"><a href="#Extra" class="headerlink" title="Extra"></a>Extra</h4><img src="/img/mysql优化/图片1.png">
+<h3 id="rows"><a href="#rows" class="headerlink" title="rows"></a>rows</h3><p>被索引优化查询的数据格数</p>
+<h3 id="Extra"><a href="#Extra" class="headerlink" title="Extra"></a>Extra</h3><img src="/img/mysql优化/图片1.png">
 
 <ul>
 <li><p><font color="#EE6A50">using filesort</font>，表示 sql 性能消耗较大，需要“额外”的排序或查询，常见于 order by 语句中</p>
@@ -337,30 +337,27 @@ table中的2表示id为2
 
 <img src="/img/mysql优化/1566546487(1).png">
 分析：由于 sql 执行计划 select 在 where 后面执行，所以 索引 id 失效，但是 in 又会导致索引失效所以结果为 using where，而(authorId)为覆盖索引，则结果是 using index
-<br>
-#### 情况三
-继续上述优化
+
+<h4 id="情况三"><a href="#情况三" class="headerlink" title="情况三"></a>情况三</h4><p>继续上述优化</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">index</span> typeId_auth_id_index <span class="keyword">on</span> book(typeId, authorId, <span class="keyword">id</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> <span class="keyword">id</span> <span class="keyword">from</span> book <span class="keyword">where</span> typeId <span class="keyword">in</span> (<span class="number">2</span>,<span class="number">3</span>) <span class="keyword">and</span> authorId = <span class="number">1</span> <span class="keyword">order</span> <span class="keyword">by</span> typeId <span class="keyword">desc</span></span><br></pre></td></tr></table></figure>
 
 <img src="/img/mysql优化/1566547182(1).png">
 分析：
 where 条件按照索引顺序、sql 执行顺序查找，结果为using index；执行到 in 时，索引失效结果是using where；但是 type 级别由 index 转为 ref，大大提高效率
 
-
-
 <h3 id="双表优化"><a href="#双表优化" class="headerlink" title="双表优化"></a>双表优化</h3><h4 id="情况一-1"><a href="#情况一-1" class="headerlink" title="情况一"></a>情况一</h4><p>无索引</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * </span><br><span class="line"><span class="keyword">from</span> t_teacher t </span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> t_course c </span><br><span class="line"><span class="keyword">on</span> t.cid = c.cid</span><br><span class="line"><span class="keyword">where</span> cname = <span class="string">'java'</span></span><br></pre></td></tr></table></figure>
 
 <img src="/img/mysql优化/1566548899(1).png">
 分析：
-Using join buffer这是 mysql 认为 sql 语句太差了，就是用引擎的连接缓存做些优化
+Using join buffer这是 mysql 认为 sql 语句太差了，就是用引擎的连接缓存做些优化。
 
 <h4 id="情况二-1"><a href="#情况二-1" class="headerlink" title="情况二"></a>情况二</h4><p>优化上述sql</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">create index tcid_index on t_teacher(cid);</span><br><span class="line">create index cname_index on t_course(cname);</span><br><span class="line"></span><br><span class="line">explain select *</span><br><span class="line">from t_teacher t</span><br><span class="line">left join t_course c</span><br><span class="line">on t.cid = c.cid</span><br><span class="line">where cname = &apos;java&apos;;</span><br></pre></td></tr></table></figure>
 
 <img src="/img/mysql优化/1566549309(1).png">
 分析：
-left join 数据量小的表应该在左，数据量大的在又，小标驱动大表。right join 反之
+left join 数据量小的表应该在左，数据量大的在又，小标驱动大表。right join 反之。
 
 <h3 id="避免索引失效的原则"><a href="#避免索引失效的原则" class="headerlink" title="避免索引失效的原则"></a>避免索引失效的原则</h3><ul>
 <li><p>复合索引，不要跨列或无序使用(最佳左前缀)</p>
@@ -368,9 +365,14 @@ left join 数据量小的表应该在左，数据量大的在又，小标驱动�
 </li>
 <li><p>复合索引，尽量使用全索引匹配都用上</p>
 </li>
-<li></li>
+<li><p>不要再索引上进行计算、函数、类型转换，否则索引失效</p>
+</li>
+<li><p>复合索引，如果左边失效，右边全部失效</p>
+</li>
+<li><p>复合索引不能使用<code>!=</code>、<code>&lt;&gt;</code>、<code>is [not] null</code>，<code>&gt;</code>等，否则索引自身全部失效</p>
+</li>
 </ul>
-
+<h3 id="sql优化概率情况"><a href="#sql优化概率情况" class="headerlink" title="sql优化概率情况"></a>sql优化概率情况</h3>
                 <hr>
                 
 
@@ -397,7 +399,7 @@ left join 数据量小的表应该在左，数据量大的在又，小标驱动�
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑分层"><span class="toc-text">逻辑分层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql执行顺序"><span class="toc-text">sql执行顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-text">分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建索引"><span class="toc-text">创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除索引"><span class="toc-text">删除索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询索引"><span class="toc-text">查询索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#explain分析sql性能"><span class="toc-text">explain分析sql性能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#id"><span class="toc-text">id</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#select-type"><span class="toc-text">select_type</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#type索引类型"><span class="toc-text">type索引类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#range"><span class="toc-text">range</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#index"><span class="toc-text">index</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ALL"><span class="toc-text">ALL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#possible-keys、key"><span class="toc-text">possible_keys、key</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#key-len"><span class="toc-text">key_len</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ref"><span class="toc-text">ref</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rows"><span class="toc-text">rows</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Extra"><span class="toc-text">Extra</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优化案例"><span class="toc-text">优化案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单表优化"><span class="toc-text">单表优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#情况一"><span class="toc-text">情况一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#情况二"><span class="toc-text">情况二</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#双表优化"><span class="toc-text">双表优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#情况一-1"><span class="toc-text">情况一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#情况二-1"><span class="toc-text">情况二</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#避免索引失效的原则"><span class="toc-text">避免索引失效的原则</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#逻辑分层"><span class="toc-text">逻辑分层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql执行顺序"><span class="toc-text">sql执行顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-text">分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建索引"><span class="toc-text">创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除索引"><span class="toc-text">删除索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询索引"><span class="toc-text">查询索引</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#explain分析sql性能"><span class="toc-text">explain分析sql性能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#id"><span class="toc-text">id</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#select-type"><span class="toc-text">select_type</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type索引类型"><span class="toc-text">type索引类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#range"><span class="toc-text">range</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#index"><span class="toc-text">index</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ALL"><span class="toc-text">ALL</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#possible-keys、key"><span class="toc-text">possible_keys、key</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#key-len"><span class="toc-text">key_len</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ref"><span class="toc-text">ref</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rows"><span class="toc-text">rows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Extra"><span class="toc-text">Extra</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优化案例"><span class="toc-text">优化案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单表优化"><span class="toc-text">单表优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#情况一"><span class="toc-text">情况一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#情况二"><span class="toc-text">情况二</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#情况三"><span class="toc-text">情况三</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#双表优化"><span class="toc-text">双表优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#情况一-1"><span class="toc-text">情况一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#情况二-1"><span class="toc-text">情况二</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#避免索引失效的原则"><span class="toc-text">避免索引失效的原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sql优化概率情况"><span class="toc-text">sql优化概率情况</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
