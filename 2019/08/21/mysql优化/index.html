@@ -371,8 +371,19 @@ left join 数据量小的表应该在左，数据量大的在又，小标驱动�
 </li>
 <li><p>复合索引不能使用<code>!=</code>、<code>&lt;&gt;</code>、<code>is [not] null</code>，<code>&gt;</code>等，否则索引自身全部失效</p>
 </li>
+<li><p>like 百分号开头会使索引失效，若查询字段和 like 条件字段相同可以使索引级别达到 index</p>
+</li>
+<li><p>or 会使索引全部失效</p>
+</li>
+<li><p>避免使用类型转换(显示、隐士)，如 where 条件字段是 varchar，给的值却是数字，底层会将数字转换为 varchar类型导致索引失效</p>
+</li>
+<li><p>如果主查询数据量大，使用 in</p>
+</li>
+<li><p>如果子查询数据量大，使用exists</p>
+</li>
 </ul>
-<h3 id="sql优化概率情况"><a href="#sql优化概率情况" class="headerlink" title="sql优化概率情况"></a>sql优化概率情况</h3>
+<h3 id="sql优化概率情况"><a href="#sql优化概率情况" class="headerlink" title="sql优化概率情况"></a>sql优化概率情况</h3><p>### </p>
+
                 <hr>
                 
 
