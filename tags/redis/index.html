@@ -182,6 +182,32 @@
 
 
 
+<div class="post-preview " style="background-image: url('')">
+    <a href="/2018/12/30/redis分布式锁/">
+        <h2 class="post-title">
+            redis分布式锁
+        </h2>
+        <p class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2018-12-30
+        </p>
+        
+        <div class="post-content-preview">
+            <p>
+                加锁通过 setnx 命令给指定的 key 写入一个随机值，同时设置失效时间，若写值成功即加锁成功
+setnx key value nx(not exist) px(时间单位毫秒) 1000
+
+
+必须给锁设置失效时间，避免死锁假设有A、B俩个服务，A服务操作业务给a加锁超时为 2s，若A服务出现..
+            </p>
+        </div>
+    </a>
+
+</div>
+
+<hr>
+
+
+
 
 <!-- 翻页 pager -->
 
@@ -253,19 +279,15 @@
                     
                     
                     
-                    <a href="/tags/#mysql" title="mysql" rel="1">mysql</a>
-                    
-                    
-                    
                     <a href="/tags/#node.js" title="node.js" rel="1">node.js</a>
                     
                     
                     
-                    <a href="/tags/#redis" title="redis" rel="1">redis</a>
+                    <a href="/tags/#redis" title="redis" rel="2">redis</a>
                     
                     
                     
-                    <a href="/tags/#异常" title="异常" rel="1">异常</a>
+                    <a href="/tags/#mysql" title="mysql" rel="1">mysql</a>
                     
                     
                     
@@ -278,6 +300,10 @@
                     
                     
                     <a href="/tags/#微信公众号" title="微信公众号" rel="1">微信公众号</a>
+                    
+                    
+                    
+                    <a href="/tags/#异常" title="异常" rel="1">异常</a>
                     
                     
                 </div>
