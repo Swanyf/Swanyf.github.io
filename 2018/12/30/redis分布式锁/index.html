@@ -80,7 +80,7 @@
                         
 							
                         <li>
-                            <a href="/my-works/">杂志</a>
+                            <a href="/tags/">标签</a>
                         </li>
 							
 						
@@ -88,7 +88,7 @@
                         
 							
                         <li>
-                            <a href="/tags/">标签</a>
+                            <a href="/my-works/">杂志</a>
                         </li>
 							
 						
@@ -186,9 +186,9 @@
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">setnx key value <span class="title">nx</span><span class="params">(not exist)</span> <span class="title">px</span><span class="params">(时间单位毫秒)</span> 1000</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>必须给锁设置失效时间，避免死锁<br>假设有A、B俩个服务，A服务操作业务给a加锁超时为 2s，若A服务出现异常，超时时间一到自动删除a锁，防止B服务去加锁时造成死锁，互不干扰</li>
-<li>加锁时，每个节点产生一个随机字符串，避免锁误删<br>假设A服务去获取之前加的锁 a，a的超时时间是 2s。若A服务的操作由于其他原因延时超过2s了，但是A服务获取的锁已经失效若不设置随机值，可能造成A服务获取到别的服务相同 key 的锁并在操作完成后误删掉。设置随机值是用于区分不同操作获取的锁是不一样的，避免误删</li>
-<li>写入随机值与设置失效时间必须是相同的，保证加锁的原子性</li>
+<li>必须给锁设置失效时间，避免死锁。<br>假设有A、B俩个服务，A服务操作业务给a加锁超时为 2s，若A服务出现异常，超时时间一到自动删除a锁，防止B服务去加锁时造成死锁，互不干扰</li>
+<li>加锁时，每个节点产生一个随机字符串，避免锁误删。<br>假设A服务去获取之前加的锁 a，a的超时时间是 2s。若A服务的操作由于其他原因延时超过2s了，但是A服务获取的锁已经失效若不设置随机值，可能造成A服务获取到别的服务相同 key 的锁并在操作完成后误删掉。设置随机值是用于区分不同操作获取的锁是不一样的，避免误删</li>
+<li>写入随机值与设置失效时间必须是相同的，保证加锁的原子性。</li>
 </ul>
 <h2 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h2><p>获取随机值，删除 redis 的指定 key 数据，保证获取数据、判断一直以及删除数据操作是原子性</p>
 
