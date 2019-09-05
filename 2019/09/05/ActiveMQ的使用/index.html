@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/pig.jpg">
+    <link rel="alternate" type="application/atom+xml" title="Swan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        ActiveMQ的使用｜Swan&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2019/09/05/ActiveMQ的使用/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('/img/pig.jpg')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="true" data-istags="false
+" data-ishome="false">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    Swan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/my-works/">杂志</a>
+                        </li>
+							
+						
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img" src>
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>ActiveMQ的使用</h1>
+                    
+                    <span class="meta">
+                         作者 swan
+                        <span>
+                          日期 2019-09-05
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#分布式" title="分布式">分布式</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            ActiveMQ的使用
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>ActiveMQ是一种消息中间件，有两种模式：</p>
+<ul>
+<li>一种点对点模式 发布者将发布的消息发送给服务器，等待用户监听并接受数据</li>
+<li>第二种订阅模式 发布者将消息发布给消息服务器，让服务器将所有的数据直接转发给再监听的用户，进行一对多通信（类似微信公众号）。<br>ActiveMQ主要是为了降低程序间的耦合，以及异步执行处理时间较长的代码（如网络通信）</li>
+</ul>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>从官网中下载ActiveMQ，<a href="http://activemq.apache.org/download.html" target="_blank" rel="noopener">传送门</a><br>解压后，打开目录下的bin，根据自己的系统选择win32或win64安装Active服务，并开启activeMQ，开启后浏览器访问该地址：<a href="http://127.0.0.1:8161/，选择" target="_blank" rel="noopener">http://127.0.0.1:8161/，选择</a> Manage ActiveMQ broker，输入账号密码，默认都是admin<br><img src="/img/activemq的使用/图片1.png"></p>
+<p>maven依赖</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.activemq<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>activemq-all<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.9.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="点对点模式"><a href="#点对点模式" class="headerlink" title="点对点模式"></a>点对点模式</h2><p>假设发布者发布8条信息，这时有3个用户在监听服务器消息，则3个用户共同消费这8条消息。服务器中的每条消息只能被一个用户消费，这种模式服务器会存储发布者发布的数据，当未被用户接收的数据则会留在服务器中，等待下个监听服务器的用户接收数据。<br><img src="/img/activemq的使用/图片1.png"></p>
+<p>消息发送者 MessageProducer.java</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//定义ActivMQ的连接地址</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACTIVEMQ_URL = <span class="string">"tcp://127.0.0.1:61616"</span>;</span><br><span class="line"><span class="comment">//定义发送消息的队列名称</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String QUEUE_NAME = <span class="string">"MyMessage"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> JMSException </span>&#123;</span><br><span class="line">    <span class="comment">// 创建连接工厂</span></span><br><span class="line">    ActiveMQConnectionFactory activeMQConnectionFactory = <span class="keyword">new</span> ActiveMQConnectionFactory();</span><br><span class="line">    <span class="comment">//从工厂中获取一个连接</span></span><br><span class="line">    Connection connection = activeMQConnectionFactory.createConnection();</span><br><span class="line">    <span class="comment">//测试过这个步骤不写也是可以的，但是网上的各个文档都写了</span></span><br><span class="line">    connection.start();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">        创建session会话</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        第一个参数：是否支持事务，如果为true，则会忽略第二个参数，被jms服务器设置为SESSION_TRANSACTED</span></span><br><span class="line"><span class="comment">        第二个参数：为false时，paramB的值可为Session.AUTO_ACKNOWLEDGE，Session.CLIENT_ACKNOWLEDGE，DUPS_OK_ACKNOWLEDGE其中一个。</span></span><br><span class="line"><span class="comment">        Session.AUTO_ACKNOWLEDGE</span></span><br><span class="line"><span class="comment">            为自动确认，客户端发送和接收消息不需要做额外的工作。哪怕是接收端发生异常，也会被当作正常发送成功。</span></span><br><span class="line"><span class="comment">        Session.CLIENT_ACKNOWLEDGE</span></span><br><span class="line"><span class="comment">            为客户端确认。客户端接收到消息后，必须调用javax.jms.Message的acknowledge方法。jms服务器才会当作发送成功，并删除消息。</span></span><br><span class="line"><span class="comment">        DUPS_OK_ACKNOWLEDGE</span></span><br><span class="line"><span class="comment">            允许副本的确认模式。一旦接收方应用程序的方法调用从处理消息处返回，会话对象就会确认消息的接收；而且允许重复确认。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    Session session = connection.createSession(<span class="keyword">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建一个到达的目的地，activemq不可能同时只能跑一个队列吧，</span></span><br><span class="line">    <span class="comment">// 这里就是连接了一个名为"MyMessage"的队列，这个会话将会到这个队列，当然，如果这个队列不存在，将会被创建</span></span><br><span class="line">    Destination destination = session.createQueue(QUEUE_NAME);</span><br><span class="line">    javax.jms.MessageProducer producer = session.createProducer(destination);</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">        设置生产者的模式，有两种可选</span></span><br><span class="line"><span class="comment">        1.DeliveryMode.PERSISTENT 当activemq关闭的时候，队列数据将会被保存</span></span><br><span class="line"><span class="comment">        2.Deliv eryMode.NON_PERSISTENT 当activemq关闭的时候，队列里面的数据将会被清空</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    producer.setDeliveryMode(DeliveryMode.PERSISTENT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 模拟创建一百个消息</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">        <span class="comment">//创建一条消息，当然，消息的类型有很多，如文字，字节，对象等,可以通过session.create..方法来创建出来</span></span><br><span class="line">        TextMessage message = session.createTextMessage(<span class="string">"第"</span> + i + <span class="string">"条消息"</span>);</span><br><span class="line">        <span class="comment">// 执行发送消息</span></span><br><span class="line">        producer.send(message);</span><br><span class="line"></span><br><span class="line">        log.info(<span class="string">"现在发送的是：&#123;&#125;"</span>, message.getText());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 关闭连接</span></span><br><span class="line">    connection.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>消息消费者 MessageConsumer.java，通过消息监听器监听服务器上的信息</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//定义ActivMQ的连接地址</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACTIVEMQ_URL = <span class="string">"tcp://127.0.0.1:61616"</span>;</span><br><span class="line"><span class="comment">//定义消费消息的队列名称</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String QUEUE_NAME = <span class="string">"MyMessage"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> JMSException </span>&#123;</span><br><span class="line">    <span class="comment">//创建连接工厂</span></span><br><span class="line">    ActiveMQConnectionFactory activeMQConnectionFactory = <span class="keyword">new</span> ActiveMQConnectionFactory(ACTIVEMQ_URL);</span><br><span class="line">    <span class="comment">//创建连接</span></span><br><span class="line">    Connection connection = activeMQConnectionFactory.createConnection();</span><br><span class="line">    <span class="comment">//打开连接</span></span><br><span class="line">    connection.start();</span><br><span class="line">    <span class="comment">//创建会话</span></span><br><span class="line">    Session session = connection.createSession(<span class="keyword">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line">    <span class="comment">//创建队列目标</span></span><br><span class="line">    Destination destination = session.createQueue(QUEUE_NAME);</span><br><span class="line">    <span class="comment">//创建消费者</span></span><br><span class="line">    javax.jms.MessageConsumer consumer = session.createConsumer(destination);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//实现一个消息的监听器</span></span><br><span class="line">    <span class="comment">//实现这个监听器后，以后只要有消息，就会通过这个监听器接收到</span></span><br><span class="line">    consumer.setMessageListener(<span class="keyword">new</span> MessageListener() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onMessage</span><span class="params">(Message message)</span> </span>&#123;</span><br><span class="line">            TextMessage textMessage = (TextMessage) message;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Integer value = Integer.valueOf(textMessage.getText().replace(<span class="string">"第"</span>, <span class="string">""</span>).replace(<span class="string">"条消息"</span>, <span class="string">""</span>));</span><br><span class="line">                <span class="keyword">if</span> (value % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">                    log.info(<span class="string">"接受偶数消息:&#123;&#125;"</span>, textMessage.getText());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行发送者将消息发送到ActiveMQ服务器上<br><img src="/img/activemq的使用/图片3.png"><br>查看ActiveMQ中的队列信息<br><img src="/img/activemq的使用/图片4.png"><br>此时拥有100条消息，未出列、未消费，这时运行消费者去消费者100条消息<br><img src="/img/activemq的使用/图片5.png"><br>查看ActiveMQ上的数据，100条消息全被1个消费者<br><img src="/img/activemq的使用/图片6.png"><br>清空服务器中的消息，然后同时运行3个消费者，再运行生产者<br><img src="/img/activemq的使用/图片7.png"><br><img src="/img/activemq的使用/图片8.png"><br>可以看到100条消息被三个消费者平分了</p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>点对点模式主要用于消除程序高并发高峰对数据库造成的巨大压力，可以通过使用消息队列，让消费者进程从消息队列中获取数据，然后异步将数据写入数据库，由于消息队列的服务处理速度远快于数据库，因此用户的响应延迟可得到有效改善。</p>
+<h2 id="订阅模式"><a href="#订阅模式" class="headerlink" title="订阅模式"></a>订阅模式</h2><h3 id="非持久订阅"><a href="#非持久订阅" class="headerlink" title="非持久订阅"></a>非持久订阅</h3><p>消息生产者</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//定义ActivMQ的连接地址</span><br><span class="line">private static final String ACTIVEMQ_URL = &quot;tcp://127.0.0.1:61616&quot;;</span><br><span class="line">//定义发送消息的主题名称</span><br><span class="line">private static final String TOPIC_NAME = &quot;MyTopicMessage&quot;;</span><br><span class="line"></span><br><span class="line">public static void main(String[] args) throws JMSException &#123;</span><br><span class="line">    //创建连接工厂</span><br><span class="line">    ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory(ACTIVEMQ_URL);</span><br><span class="line">    //创建连接</span><br><span class="line">    Connection connection = activeMQConnectionFactory.createConnection();</span><br><span class="line">    //打开连接</span><br><span class="line">    connection.start();</span><br><span class="line">    //创建会话</span><br><span class="line">    Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">        创建队列目标</span><br><span class="line">        点对点与订阅模式唯一不同的地方，就是这一行代码，点对点创建的是Queue，而订阅模式创建的是Topic</span><br><span class="line">     */</span><br><span class="line">    Destination destination = session.createTopic(TOPIC_NAME);</span><br><span class="line">    //创建一个生产者</span><br><span class="line">    javax.jms.MessageProducer producer = session.createProducer(destination);</span><br><span class="line"></span><br><span class="line">    //创建模拟100个消息</span><br><span class="line">    for (int i = 1; i &lt;= 100; i++) &#123;</span><br><span class="line">        TextMessage message = session.createTextMessage(&quot;当前message是(主题模型):&quot; + i);</span><br><span class="line">        //发送消息</span><br><span class="line">        producer.send(message);</span><br><span class="line">        //在本地打印消息</span><br><span class="line">        System.out.println(&quot;我现在发的消息是：&quot; + message.getText());</span><br><span class="line">    &#125;</span><br><span class="line">    //关闭连接</span><br><span class="line">    connection.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>消息消费者</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//定义ActivMQ的连接地址</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACTIVEMQ_URL = <span class="string">"tcp://127.0.0.1:61616"</span>;</span><br><span class="line"><span class="comment">//定义发送消息的队列名称</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String QUEUE_NAME = <span class="string">"MyTopicMessage"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> JMSException </span>&#123;</span><br><span class="line">    <span class="comment">//创建连接工厂</span></span><br><span class="line">    ActiveMQConnectionFactory activeMQConnectionFactory = <span class="keyword">new</span> ActiveMQConnectionFactory(ACTIVEMQ_URL);</span><br><span class="line">    <span class="comment">//创建连接</span></span><br><span class="line">    Connection connection = activeMQConnectionFactory.createConnection();</span><br><span class="line">    <span class="comment">//打开连接</span></span><br><span class="line">    connection.start();</span><br><span class="line">    <span class="comment">//创建会话</span></span><br><span class="line">    Session session = connection.createSession(<span class="keyword">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line">    <span class="comment">//创建队列目标</span></span><br><span class="line">    Destination destination = session.createTopic(QUEUE_NAME);</span><br><span class="line">    <span class="comment">//创建消费者</span></span><br><span class="line">    MessageConsumer consumer = session.createConsumer(destination);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//实现一个消息的监听器</span></span><br><span class="line">    <span class="comment">//实现这个监听器后，以后只要有消息，就会通过这个监听器接收到</span></span><br><span class="line">    consumer.setMessageListener(<span class="keyword">new</span> MessageListener() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onMessage</span><span class="params">(Message message)</span> </span>&#123;</span><br><span class="line">            TextMessage textMessage = (TextMessage) message;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (Integer.valueOf(textMessage.getText().substring(<span class="number">17</span>)) % <span class="number">2</span> != <span class="number">0</span>) &#123;</span><br><span class="line">                    log.info(<span class="string">"接受奇数消息:&#123;&#125;"</span>, textMessage.getText());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之后先运行消费者，在运行生产者，消费者才能接受到信息，否则生产者发布信息时若没有在监听的消费者则会将信息丢弃，这样消费者是接收不到信息的。</p>
+<p>同时运行多个消费者，在运行生产者，消费者将获取生产者发布的所有消息</p>
+<h3 id="持久订阅"><a href="#持久订阅" class="headerlink" title="持久订阅"></a>持久订阅</h3><p>持久订阅模式的客户端需要创建一个链接id，以保证服务器确认该客户端是否已消费信息，创建完订阅模式，之后不再是创建一个消费者，而是创建一个带有id的用户，这个用户id是唯一的，若有两个相同的id连接，则会报错。</p>
+<p>消息生产者，生产者需要将消息模式设为持久订阅模式</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String URL = <span class="string">"tcp://127.0.0.1:61616"</span>;</span><br><span class="line"><span class="comment">//发布/订阅模式名称</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TOPIC_NAME = <span class="string">"topic-name"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> JMSException </span>&#123;</span><br><span class="line"></span><br><span class="line">    ConnectionFactory connectionFactory = <span class="keyword">new</span> ActiveMQConnectionFactory(URL);</span><br><span class="line"></span><br><span class="line">    Connection createConnection = connectionFactory.createConnection();</span><br><span class="line"></span><br><span class="line">    createConnection.start();</span><br><span class="line"></span><br><span class="line">    Session session = createConnection.createSession(<span class="keyword">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line">    <span class="comment">//发布/订阅模式</span></span><br><span class="line">    Destination destination = session.createTopic(TOPIC_NAME);</span><br><span class="line"></span><br><span class="line">    MessageProducer producer = session.createProducer(destination);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置为持久订阅模式</span></span><br><span class="line">    producer.setDeliveryMode(DeliveryMode.PERSISTENT);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">        TextMessage textMessage = session.createTextMessage(<span class="string">"发送第 "</span> + i + <span class="string">"条消息"</span>);</span><br><span class="line">        producer.send(textMessage);</span><br><span class="line">        System.out.println(<span class="string">"发送的消息为："</span> + textMessage.getText());</span><br><span class="line">    &#125;</span><br><span class="line">    createConnection.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>消息消费者</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String URL = <span class="string">"tcp://127.0.0.1:61616"</span>;</span><br><span class="line"><span class="comment">//发布/订阅模式名称</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String topicName = <span class="string">"topic-name"</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> JMSException </span>&#123;</span><br><span class="line">    <span class="comment">//创建连接工厂</span></span><br><span class="line">    ConnectionFactory connectionFactory = <span class="keyword">new</span> ActiveMQConnectionFactory(URL);</span><br><span class="line">    <span class="comment">//创建连接</span></span><br><span class="line">    Connection createConnection = connectionFactory.createConnection();</span><br><span class="line">    <span class="comment">//创建客户端ID</span></span><br><span class="line">    createConnection.setClientID(<span class="string">"333"</span>);</span><br><span class="line">    <span class="comment">//打开连接</span></span><br><span class="line">    createConnection.start();</span><br><span class="line">    <span class="comment">//创建会话</span></span><br><span class="line">    Session createSession = createConnection.createSession(<span class="keyword">false</span>, Session.AUTO_ACKNOWLEDGE);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建发布/订阅模式消息</span></span><br><span class="line">    Topic createTopic = createSession.createTopic(topicName);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建持久订阅 即未在发布者发布时监听消息，在之后也能接收消息</span></span><br><span class="line">    TopicSubscriber subscriber = createSession.createDurableSubscriber(createTopic, <span class="string">"333"</span>);</span><br><span class="line"></span><br><span class="line">    subscriber.setMessageListener(<span class="keyword">new</span> MessageListener() &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onMessage</span><span class="params">(Message message)</span> </span>&#123;</span><br><span class="line">            TextMessage textMessage = (TextMessage) message;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">"接受消息："</span> + textMessage.getText());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>持久传输：采用持久传输时，传输的消息会保存到磁盘中(messages are persisted to disk/database)，即“存储转发”方式。先把消息存储到磁盘中，然后再将消息“转发”给订阅者<br>非持久传输：采用非持久传输时，发送的消息不会存储到磁盘中。</p>
+<ul>
+<li>采用持久传输时，当Borker宕机 恢复后，消息还在。</li>
+<li>采用非持久传输，Borker宕机重启后，消息丢失。比如，当生产者将消息投递给Broker后，Broker将该消息存储到磁盘中，在Broker将消息发送给Subscriber之前，Broker宕机了</li>
+<li>如果采用持久传输，Broker重启后，从磁盘中读出消息再传递给Subscriber</li>
+<li>如果采用非持久传输，这条消息就丢失了。</li>
+</ul>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/09/04/什么是消息队列？/" data-toggle="tooltip" data-placement="top" title="什么是消息队列？">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用"><span class="toc-text">使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#点对点模式"><span class="toc-text">点对点模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#结论"><span class="toc-text">结论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#订阅模式"><span class="toc-text">订阅模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#非持久订阅"><span class="toc-text">非持久订阅</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#持久订阅"><span class="toc-text">持久订阅</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#分布式" title="分布式">分布式</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <div style="margin-top: 20px;">
+                    <h5 class="text-center">FRIENDS</h5>
+                    <ul class="list-inline text-center">
+                        
+                        <li><a href="https://www.antia1.top/">ANTIA</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/Swanyf">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Swan 2019
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/微信图片_20190723103112.jpg">
+</body>
+
+</html>
