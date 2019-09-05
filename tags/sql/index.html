@@ -22,7 +22,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/tags/分布式/">
+    <link rel="canonical" href="http://yoursite.com/tags/sql/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -159,48 +159,26 @@
 
 
 
-<div class="post-preview " style="background-image: url('/img/activemq的使用/6kw5z6.jpg')">
-    <a href="/2019/09/05/ActiveMQ的使用/">
+<div class="post-preview " style="background-image: url('/img/mysql优化/13p6o1.jpg')">
+    <a href="/2019/08/21/mysql优化/">
         <h2 class="post-title">
-            ActiveMQ的使用
+            mysql优化
         </h2>
         <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-09-05
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-08-21
         </p>
         
         <div class="post-content-preview">
             <p>
-                介绍ActiveMQ是一种消息中间件，有两种模式：
+                逻辑分层
+连接层
+服务层
+引擎层
+存储层InnoDB(默认)：事务优先，适合高并发操作；行锁MyISAM：性能优先，表锁
 
-一种点对点模式 发布者将发布的消息发送给服务器，等待用户监听并接受数据
-第二种订阅模式 发布者将消息发布给消息服务器，让服务器将所有的数据直接转发给再监听的用户，进行一对多通信（类似微信公众号）。ActiveMQ主要是为了降低程序间的耦合，以..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
-<div class="post-preview " style="background-image: url('/img/什么是消息队列/2e99dg.jpg')">
-    <a href="/2019/09/04/什么是消息队列？/">
-        <h2 class="post-title">
-            什么是消息队列？
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-09-04
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                概述
-消息队列中间件是分布式系统中重要的组件，主要解决应用耦合，异步消息，流量削锋等问题。
-实现高性能，高可用，可伸缩和最终一致性架构。
-使用较多的消息队列有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ
-队列是一种先进先出的数据结构。
-消息队列可以..
+show engines \G查询数据库支持哪些引擎show variables like &#39;%storage_engine%&#39;
+sql执行顺序
+from：..
             </p>
         </div>
     </a>
