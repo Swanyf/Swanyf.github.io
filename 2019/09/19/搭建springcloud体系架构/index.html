@@ -197,22 +197,21 @@
 <p>Eureka Server之间通过复制的方式完成数据的同步，Eureka还提供了客户端缓存机 制，即使所有的Eureka Server都挂掉，客户端依然可以利用缓存中的信息消费其他服务 的API。综上，Eureka通过心跳检查、客户端缓存等机制，确保了系统的高可用性、灵活 性和可伸缩性。</p>
 <h3 id="Eureka服务端开发"><a href="#Eureka服务端开发" class="headerlink" title="Eureka服务端开发"></a>Eureka服务端开发</h3><p>项目初始结构<br><img src="/img/搭建springcloud体系架构/1.png"></p>
 <ol>
-<li>创建eureka-server模块</li>
-<li>引入依赖<br>在父工程 pom.xml 中定义 springcloud 版本<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>Finchley.M9<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
+<li><p>创建eureka-server模块</p>
 </li>
-</ol>
-<p>在 eureka-server 模块 pom.xml 中引入 eureka-server</p>
+<li><p>引入依赖<br>在父工程 pom.xml 中定义 springcloud 版本</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>Finchley.M9<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 eureka-server 模块 pom.xml 中引入 eureka-server</p>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-eureka-server<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
+</li>
 <li><p>application.yml</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">7000</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line"><span class="attr">  client:</span></span><br><span class="line"><span class="attr">    register-with-eureka:</span> <span class="literal">false</span>   <span class="comment">#是否将自己注册到Eureka服务中,本身就是所有无需注册</span></span><br><span class="line"><span class="attr">    fetch-registry:</span> <span class="literal">false</span>    <span class="comment">#是否从Eureka中获取注册信息</span></span><br><span class="line"><span class="attr">    serviceUrl:</span>   <span class="comment">#Eureka客户端与Eureka服务端进行交互的地址</span></span><br><span class="line"><span class="attr">      defaultZone:</span> <span class="attr">http://127.0.0.1:$&#123;server.port&#125;/eureka/</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>启动类上加入注解 <code>@EnableEurekaServer</code></p>
 </li>
 <li><p>启动 eureka-server，浏览器地址栏输入 <a href="http://localhost:7000/" target="_blank" rel="noopener">http://localhost:7000/</a></p>
-<img width="500px" src="/img/搭建springcloud体系架构/2.png">
+<img src="/img/搭建springcloud体系架构/2.png">
 主界面中system status为系统信息
 General Info为一般信息
 Instances currently registered with Eureka为注册到的所有微服务列表
@@ -230,14 +229,41 @@ Instances currently registered with Eureka为注册到的所有微服务列表
 <li><p>在启动类上加入注解 <code>@EnableEurekaClient</code></p>
 </li>
 <li><p>运行并刷新 localhost:7000</p>
-<img width="500px" src="/img/搭建springcloud体系架构/3.png">
+<img src="/img/搭建springcloud体系架构/3.png">
+可以看到现eureka的注册列表中存在我们刚刚注册的 user-client 微服务模块
+
 </li>
 </ol>
+<h3 id="保护模式"><a href="#保护模式" class="headerlink" title="保护模式"></a>保护模式</h3><p>如果在 eureka server的首页看到以下这段提示，则说明 eureka 已经进入了保护模式：<br>    <font color="red">EMERGENCY! EUREKA MAY BE INCORRECTLY CLAIMING INSTANCES ARE UP WHEN THEY’RE NOT. RENEWALS ARE LESSER THAN THRESHOLD AND HENCE THE INSTANCES ARE NOT BEING EXPIRED JUST TO BE SAFE.    </font></p>
+<p>Eureka Server在运行期间，会统计心跳失败的比例在15分钟之内是否低于85%，如果出 现低于的情况（在单机调试的时候很容易满足，实际在生产环境上通常是由于网络不稳 定导致）.<br>Eureka Server会将当前的实例注册信息保护起来，同时提示这个警告。保护 模式主要用于一组客户端和Eureka Server之间存在网络分区场景下的保护。一旦进入保 护模式，Eureka Server将会尝试保护其服务注册表中的信息，不再删除服务注册表中的 数据（也就是不会注销任何微服务）。</p>
+<h2 id="feign实现服务之间的调用"><a href="#feign实现服务之间的调用" class="headerlink" title="feign实现服务之间的调用"></a>feign实现服务之间的调用</h2><ol>
+<li><p>新增 admin-client 模块 pom.xml 中添加依赖</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-openfeign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0.0.RC1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在启动类上添加注解 <code>@EnableDiscoveryClient</code>、<code>@EnableFeignClients</code></p>
+</li>
+<li><p>在模块中创建 feign 接口 UserFeignClient，远程调用 user-client 模块中的方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  @FeignClient注解用于指定从哪个服务中调用功能</span></span><br><span class="line"><span class="comment">  名称与被调用服务中 yml 指定的 spring.application.name 一致</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@FeignClient</span>(<span class="string">"user-client"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserFeignClient</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">      对被调用的微服务进行地址映射</span></span><br><span class="line"><span class="comment">      @PathVariable 注解一定要指定参数名称，否则出错</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/user/&#123;id&#125;"</span>)</span><br><span class="line">    <span class="function">ResponseEntity <span class="title">findById</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span> String id)</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>user-client 中 UserController </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/user/&#123;id&#125;"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseEntity <span class="title">findById</span><span class="params">(@PathVariable String id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity(<span class="keyword">true</span>, StatusCode.SUCCESS.getCode(), <span class="string">"查询成功"</span>, userService.findById(id));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>admin-client 模块中 AdminController </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> UserFeignClient userFeignClient;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"admin/user/&#123;id&#125;"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> ResponseEntity <span class="title">findUserById</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span> String id) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity(<span class="keyword">true</span>, StatusCode.SUCCESS.getCode(), <span class="string">"查询成功"</span>, userFeignClient.findById(id));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>启动admin-client端口，postman测试结果<br><img src="/img/搭建springcloud体系架构/4.png"></p>
+<h3 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h3><h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>每次启动都修改 user-client 端口 和 UserController 中 findById方法 的打印信息<br><img src="/img/搭建springcloud体系架构/5.png"></p>
 
                 <hr>
                 
 
                 <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2019/09/20/使用springboot发送邮件/" data-toggle="tooltip" data-placement="top" title="使用springboot发送邮件">&larr; Previous Post</a>
+                    </li>
                     
                     
                     <li class="next">
@@ -260,7 +286,7 @@ Instances currently registered with Eureka为注册到的所有微服务列表
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是SpringCloud"><span class="toc-text">什么是SpringCloud</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SpringCloud主要框架"><span class="toc-text">SpringCloud主要框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Eureka"><span class="toc-text">Eureka</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Eureka服务端开发"><span class="toc-text">Eureka服务端开发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#服务注册"><span class="toc-text">服务注册</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是SpringCloud"><span class="toc-text">什么是SpringCloud</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SpringCloud主要框架"><span class="toc-text">SpringCloud主要框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Eureka"><span class="toc-text">Eureka</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Eureka服务端开发"><span class="toc-text">Eureka服务端开发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#服务注册"><span class="toc-text">服务注册</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#保护模式"><span class="toc-text">保护模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#feign实现服务之间的调用"><span class="toc-text">feign实现服务之间的调用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#负载均衡"><span class="toc-text">负载均衡</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#测试"><span class="toc-text">测试</span></a></li></ol></li></ol></li></ol>
                 </div>
             </div>
         </div>
