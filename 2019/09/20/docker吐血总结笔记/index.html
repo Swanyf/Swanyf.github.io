@@ -212,6 +212,30 @@
 <li>一个容器运行一种服务，当我们需要的时候，就可以通过docker客户端创建一个对应的运行实例，也就是我们的容器</li>
 <li>至于仓储，就是放了一堆镜像的地方，我们可以把镜像发布到仓储中，需要的时候从仓储中拉下来就可以了。</li>
 </ul>
+<h2 id="centos7下安装"><a href="#centos7下安装" class="headerlink" title="centos7下安装"></a>centos7下安装</h2><ul>
+<li><p>yum安装gcc相关</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y install gcc</span><br><span class="line">yum -y install gcc-c++</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装需要的软件包</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install -y yum-utils \</span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置stable镜像仓库，选择阿里源</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>更新yum软件包索引</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum makecache fast</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装doker ce</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y install docker-ce</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动docker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker version</span><br><span class="line">docker run helllo-world</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
 
                 <hr>
                 
@@ -239,7 +263,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题：为什么会有docker出现"><span class="toc-text">问题：为什么会有docker出现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker理念"><span class="toc-text">docker理念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker基本组成"><span class="toc-text">docker基本组成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#镜像image"><span class="toc-text">镜像image</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#容器container"><span class="toc-text">容器container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#仓库repositry"><span class="toc-text">仓库repositry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结-1"><span class="toc-text">小结</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题：为什么会有docker出现"><span class="toc-text">问题：为什么会有docker出现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker理念"><span class="toc-text">docker理念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker基本组成"><span class="toc-text">docker基本组成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#镜像image"><span class="toc-text">镜像image</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#容器container"><span class="toc-text">容器container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#仓库repositry"><span class="toc-text">仓库repositry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结-1"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#centos7下安装"><span class="toc-text">centos7下安装</span></a></li></ol>
                 </div>
             </div>
         </div>
