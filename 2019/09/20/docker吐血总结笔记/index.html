@@ -229,11 +229,23 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y install docker-ce</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>启动docker</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>测试</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker version</span><br><span class="line">docker run helllo-world</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置docker镜像加速器，aliyun搜索容器镜像服务获取复制加速地址</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir -p /etc/docker</span><br><span class="line">vi /etc/docker/daemon.json</span><br><span class="line"># 网易镜像加速</span><br><span class="line"># &#123;&quot;registry-mirrors&quot;: [&quot;http://hub-mirror.c.163.com&quot;] &#125;</span><br><span class="line"></span><br><span class="line"># 阿里云</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://｛自已的编码｝.mirror.aliyuncs.com&quot;]</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>docker run 做了哪些工作</p>
+</li>
+</ul>
+<img src="/img/docker笔记/3.png">
 
+<h2 id="docker原理"><a href="#docker原理" class="headerlink" title="docker原理"></a>docker原理</h2><h3 id="docker是怎么工作的"><a href="#docker是怎么工作的" class="headerlink" title="docker是怎么工作的"></a>docker是怎么工作的</h3><p>docker是一个Client-Server结构的系统，docker守护进程运行在主机上， 然后通过Socket连接从客户端访问，守护进程从客户端接受命令并管理运行在主机上的容器。 容器，是一个运行时环境，就是我们前面说到的集装箱。<br><img src="/img/docker笔记/4.png"></p>
+<h3 id="为什么docker比VM快"><a href="#为什么docker比VM快" class="headerlink" title="为什么docker比VM快"></a>为什么docker比VM快</h3><ul>
+<li>docker有着比虚拟机更少的抽象层。由亍docker不需要Hypervisor实现硬件资源虚拟化,运行在docker容器上的程序直接使用的都是实际物理机的硬件资源。因此在CPU、内存利用率上docker将会在效率上有明显优势。</li>
+<li>docker利用的是宿主机的内核,而不需要Guest OS。因此,当新建一个容器时,docker不需要和虚拟机一样重新加载一个操作系统内核。仍而避免引寻、加载操作系统内核返个比较费时费资源的过程,当新建一个虚拟机时,虚拟机软件需要加载Guest OS,返个新建过程是分钟级别的。而docker由于直接利用宿主机的操作系统,则省略了返个过程,因此新建一个docker容器只需要几秒钟。<img src="/img/docker笔记/5.png">
 </li>
 </ul>
 
@@ -263,7 +275,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题：为什么会有docker出现"><span class="toc-text">问题：为什么会有docker出现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker理念"><span class="toc-text">docker理念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker基本组成"><span class="toc-text">docker基本组成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#镜像image"><span class="toc-text">镜像image</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#容器container"><span class="toc-text">容器container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#仓库repositry"><span class="toc-text">仓库repositry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结-1"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#centos7下安装"><span class="toc-text">centos7下安装</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题：为什么会有docker出现"><span class="toc-text">问题：为什么会有docker出现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker理念"><span class="toc-text">docker理念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker基本组成"><span class="toc-text">docker基本组成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#镜像image"><span class="toc-text">镜像image</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#容器container"><span class="toc-text">容器container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#仓库repositry"><span class="toc-text">仓库repositry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结-1"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#centos7下安装"><span class="toc-text">centos7下安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker原理"><span class="toc-text">docker原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker是怎么工作的"><span class="toc-text">docker是怎么工作的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么docker比VM快"><span class="toc-text">为什么docker比VM快</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
