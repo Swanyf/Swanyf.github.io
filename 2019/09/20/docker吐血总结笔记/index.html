@@ -259,6 +259,42 @@
 
 <h4 id="docker-rmi删除镜像"><a href="#docker-rmi删除镜像" class="headerlink" title="docker rmi删除镜像"></a>docker rmi删除镜像</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 删除单个，-f强制停止删除</span><br><span class="line">docker rmi -f 镜像id/镜像名</span><br><span class="line"></span><br><span class="line"># 删除多个</span><br><span class="line">docker rmi -f 镜像名1:TAG 镜像名2:TAG</span><br><span class="line"></span><br><span class="line"># 删除全部</span><br><span class="line">docker rmi -f $(docer images -qa)</span><br></pre></td></tr></table></figure>
 
+<h3 id="容器命令"><a href="#容器命令" class="headerlink" title="容器命令"></a>容器命令</h3><table>
+<thead>
+<tr>
+<th>[OPTIONS]</th>
+<th>说明：有些是一个减号，有些是两个减号</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>–name=”自定义容器名称”</td>
+<td>为容易指定一个名称</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>后台运行容器，并返回容器id，也即启动守护式容器</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>以交互模式运行容器，通常与 -t 同时使用</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>为容器重新分配一个伪输入终端，通常与 -i 同时使用</td>
+</tr>
+<tr>
+<td>-P</td>
+<td>随机端口映射</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>指定端口映射，有以下四种格式<br>ip:hostPort:containerPort<br> ip::containerPort<br>hostPort:containerPort<br>containerPort</td>
+</tr>
+<tr>
+<td><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 新建并启动容器</span><br><span class="line">docker run [OPTIONS] images [COMMAND]</span><br></pre></td></tr></table></figure></td>
+<td></td>
+</tr>
+</tbody></table>
 
                 <hr>
                 
@@ -286,7 +322,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题：为什么会有docker出现"><span class="toc-text">问题：为什么会有docker出现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker理念"><span class="toc-text">docker理念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker基本组成"><span class="toc-text">docker基本组成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#镜像image"><span class="toc-text">镜像image</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#容器container"><span class="toc-text">容器container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#仓库repositry"><span class="toc-text">仓库repositry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结-1"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#centos7下安装"><span class="toc-text">centos7下安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker原理"><span class="toc-text">docker原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker是怎么工作的"><span class="toc-text">docker是怎么工作的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么docker比VM快"><span class="toc-text">为什么docker比VM快</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker常用命令"><span class="toc-text">docker常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#帮助命令"><span class="toc-text">帮助命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#镜像命令"><span class="toc-text">镜像命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-images"><span class="toc-text">docker images</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-search"><span class="toc-text">docker search</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-pull"><span class="toc-text">docker pull</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-rmi删除镜像"><span class="toc-text">docker rmi删除镜像</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题：为什么会有docker出现"><span class="toc-text">问题：为什么会有docker出现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker理念"><span class="toc-text">docker理念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker基本组成"><span class="toc-text">docker基本组成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#镜像image"><span class="toc-text">镜像image</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#容器container"><span class="toc-text">容器container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#仓库repositry"><span class="toc-text">仓库repositry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结-1"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#centos7下安装"><span class="toc-text">centos7下安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker原理"><span class="toc-text">docker原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker是怎么工作的"><span class="toc-text">docker是怎么工作的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么docker比VM快"><span class="toc-text">为什么docker比VM快</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker常用命令"><span class="toc-text">docker常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#帮助命令"><span class="toc-text">帮助命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#镜像命令"><span class="toc-text">镜像命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-images"><span class="toc-text">docker images</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-search"><span class="toc-text">docker search</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-pull"><span class="toc-text">docker pull</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-rmi删除镜像"><span class="toc-text">docker rmi删除镜像</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#容器命令"><span class="toc-text">容器命令</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
