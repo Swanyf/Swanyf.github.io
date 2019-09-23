@@ -262,7 +262,7 @@
 <h3 id="容器命令"><a href="#容器命令" class="headerlink" title="容器命令"></a>容器命令</h3><h4 id="新建并启动容器"><a href="#新建并启动容器" class="headerlink" title="新建并启动容器"></a>新建并启动容器</h4><table>
 <thead>
 <tr>
-<th align="center">:[OPTIONS]:</th>
+<th align="center">OPTIONS</th>
 <th>说明：有些是一个减号，有些是两个减号</th>
 </tr>
 </thead>
@@ -296,7 +296,7 @@
 <h4 id="列出所有正在运行的容器"><a href="#列出所有正在运行的容器" class="headerlink" title="列出所有正在运行的容器"></a>列出所有正在运行的容器</h4><table>
 <thead>
 <tr>
-<th align="center">:[OPTIONS]:</th>
+<th align="center">OPTIONS</th>
 <th>说明</th>
 </tr>
 </thead>
@@ -331,7 +331,16 @@
 
 <h4 id="删除已停止的容器"><a href="#删除已停止的容器" class="headerlink" title="删除已停止的容器"></a>删除已停止的容器</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker rm 容器id或容器名称</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 一次性删除多个容器</span><br><span class="line">docker rm -f $(docker ps -a -q)</span><br><span class="line">docker ps -a -q | xargs docker rm</span><br></pre></td></tr></table></figure>
 
-
+<h4 id="补充：启动后台守护式容器"><a href="#补充：启动后台守护式容器" class="headerlink" title="补充：启动后台守护式容器"></a>补充：启动后台守护式容器</h4><p>使用镜像centos:latest以后台模式启动一个容器<br><img src="/img/docker笔记/7.png"><br>可以发现明明已经启动了centos容器却已经退出</p>
+<p>原因：</p>
+<ul>
+<li>docker容器后台运行,就必须有一个前台进程。</li>
+<li>容器运行的命令如果不是那些一直挂起的命令（比如运行top，tail），就是会自动退出的。</li>
+</ul>
+<blockquote>
+<p>这个是docker的机制问题,比如你的web容器,我们以nginx为例，正常情况下,我们配置启动服务只需要启动响应的service即可<br>这个是docker的机制问题,比如你的web容器,我们以nginx为例，正常情况下,我们配置启动服务只需要启动响应的service即可。例如<br>service nginx start<br>但是,这样做,nginx为后台进程模式运行,就导致docker前台没有运行的应用,<br>这样的容器后台启动后,会立即自杀因为他觉得他没事可做了.<br>所以，最佳的解决方案是,将你要运行的程序以前台进程的形式运行</p>
+</blockquote>
+<h4 id="查看容器日志"><a href="#查看容器日志" class="headerlink" title="查看容器日志"></a>查看容器日志</h4>
                 <hr>
                 
 
@@ -358,7 +367,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题：为什么会有docker出现"><span class="toc-text">问题：为什么会有docker出现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker理念"><span class="toc-text">docker理念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker基本组成"><span class="toc-text">docker基本组成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#镜像image"><span class="toc-text">镜像image</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#容器container"><span class="toc-text">容器container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#仓库repositry"><span class="toc-text">仓库repositry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结-1"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#centos7下安装"><span class="toc-text">centos7下安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker原理"><span class="toc-text">docker原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker是怎么工作的"><span class="toc-text">docker是怎么工作的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么docker比VM快"><span class="toc-text">为什么docker比VM快</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker常用命令"><span class="toc-text">docker常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#帮助命令"><span class="toc-text">帮助命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#镜像命令"><span class="toc-text">镜像命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-images"><span class="toc-text">docker images</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-search"><span class="toc-text">docker search</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-pull"><span class="toc-text">docker pull</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-rmi删除镜像"><span class="toc-text">docker rmi删除镜像</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#容器命令"><span class="toc-text">容器命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#新建并启动容器"><span class="toc-text">新建并启动容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#列出所有正在运行的容器"><span class="toc-text">列出所有正在运行的容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#退出容器"><span class="toc-text">退出容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#启动容器"><span class="toc-text">启动容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#停止容器"><span class="toc-text">停止容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除已停止的容器"><span class="toc-text">删除已停止的容器</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题：为什么会有docker出现"><span class="toc-text">问题：为什么会有docker出现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker理念"><span class="toc-text">docker理念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker基本组成"><span class="toc-text">docker基本组成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#镜像image"><span class="toc-text">镜像image</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#容器container"><span class="toc-text">容器container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#仓库repositry"><span class="toc-text">仓库repositry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结-1"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#centos7下安装"><span class="toc-text">centos7下安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker原理"><span class="toc-text">docker原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker是怎么工作的"><span class="toc-text">docker是怎么工作的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么docker比VM快"><span class="toc-text">为什么docker比VM快</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker常用命令"><span class="toc-text">docker常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#帮助命令"><span class="toc-text">帮助命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#镜像命令"><span class="toc-text">镜像命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-images"><span class="toc-text">docker images</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-search"><span class="toc-text">docker search</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-pull"><span class="toc-text">docker pull</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-rmi删除镜像"><span class="toc-text">docker rmi删除镜像</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#容器命令"><span class="toc-text">容器命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#新建并启动容器"><span class="toc-text">新建并启动容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#列出所有正在运行的容器"><span class="toc-text">列出所有正在运行的容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#退出容器"><span class="toc-text">退出容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#启动容器"><span class="toc-text">启动容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#停止容器"><span class="toc-text">停止容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除已停止的容器"><span class="toc-text">删除已停止的容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#补充：启动后台守护式容器"><span class="toc-text">补充：启动后台守护式容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#查看容器日志"><span class="toc-text">查看容器日志</span></a></li></ol></li></ol></li></ol>
                 </div>
             </div>
         </div>
