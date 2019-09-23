@@ -287,6 +287,10 @@
 <td>随机端口映射</td>
 </tr>
 <tr>
+<td align="center">-v</td>
+<td>目录共享</td>
+</tr>
+<tr>
 <td align="center">-p</td>
 <td>指定端口映射，有以下四种格式<br>ip:hostPort:containerPort<br> ip::containerPort<br><font color="red">containerPort:hostPort</font><br>containerPort</td>
 </tr>
@@ -390,8 +394,8 @@
 </ol>
 <h2 id="docker容器数据卷"><a href="#docker容器数据卷" class="headerlink" title="docker容器数据卷"></a>docker容器数据卷</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>类似于redis的aof和aof</p>
 <p>docker容器产生的数据，如果不通过docker commit生成新的镜像，使得数据做为镜像的一部分保存下来，那么当容器删除后，数据自然也就没有了。为了能保存数据在docker中我们使用卷。</p>
-<h3 id="卷的含义分析"><a href="#卷的含义分析" class="headerlink" title="卷的含义分析"></a>卷的含义分析</h3><p>卷就是目录或文件，存在于一个或多个容器中，由docker挂载到容器，但不属于联合文件系统，因此能够绕过Union File System提供一些用于持续存储或共享数据的特性：</p>
-<p>卷的设计目的就是数据的持久化，完全独立于容器的生存周期，因此docker不会在容器删除时删除其挂载的数据卷</p>
+<h3 id="卷的含义分析"><a href="#卷的含义分析" class="headerlink" title="卷的含义分析"></a>卷的含义分析</h3><p><font color="#025A6C">卷就是目录或文件，存在于一个或多个容器中</font>，由docker挂载到容器，但不属于联合文件系统，因此能够绕过Union File System提供一些用于持续存储或共享数据的特性：</p>
+<p><font color="#025A6C">卷的设计目的就是数据的持久化，完全独立于容器的生存周期</font>，因此docker不会在容器删除时删除其挂载的数据卷</p>
 <h3 id="卷的特点"><a href="#卷的特点" class="headerlink" title="卷的特点"></a>卷的特点</h3><p>容器的持久化、容器之间的继承和共享数据</p>
 <ul>
 <li>数据卷可在容器之间共享或重用数据</li>
