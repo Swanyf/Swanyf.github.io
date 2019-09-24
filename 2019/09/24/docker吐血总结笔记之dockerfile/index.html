@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        Swan&#39;s blog
+        docker吐血总结笔记之dockerfile｜Swan&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/tags/微信公众号/">
+    <link rel="canonical" href="http://yoursite.com/2019/09/24/docker吐血总结笔记之dockerfile/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -43,7 +43,7 @@
 <!-- hack iOS CSS :active style -->
 <body ontouchstart="" class="animated fadeIn">
 <!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="false" data-istags="true
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="true" data-istags="false
 " data-ishome="false">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -132,192 +132,152 @@
 
 <!-- Main Content -->
 
+<!--only post-->
 
-<!-- Page Header -->
-<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 visible-xs-block visible-sm-block">
-    <div class="row">
-        <header class="intro-header">
-            <div class="container">
-                <div class="site-heading text-center">
-                    <div class="about-me">
-                        <!--移动端头部显示-->
-                        <img src="/img/微信图片_20190723103112.jpg">
-                        <h5><a href="/about/">swan</a></h5>
-                        <p>低调做人 高调做事</p>
+
+<img class="wechat-title-img" src>
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>docker吐血总结笔记之dockerfile</h1>
+                    
+                    <span class="meta">
+                         作者 swan
+                        <span>
+                          日期 2019-09-24
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#部署" title="部署">部署</a>
+                        
                     </div>
                 </div>
             </div>
-        </header>
+        </div>
     </div>
-</div>
-<!-- Main Content -->
-<div class="container custom-haojen-container">
-    <!-- Post Container -->
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 post-container">
-            <!-- Main Content -->
+    <div class="post-title-haojen">
+        <span>
+            docker吐血总结笔记之dockerfile
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>dockerfile 是用来构建 docker 镜像的构建文件，是由一系列命令和参数构成的脚本</p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol>
+<li>编写dockerfile文件</li>
+<li>docker build ….</li>
+<li>docker run ….</li>
+</ol>
+<h2 id="dockerfile基本知识"><a href="#dockerfile基本知识" class="headerlink" title="dockerfile基本知识"></a>dockerfile基本知识</h2><ol>
+<li>每条保留字指令都必须为大写字母且后面要跟随至少个参数</li>
+<li>指令按照从上到下，顺序执行</li>
+<li><h1 id="表示注释"><a href="#表示注释" class="headerlink" title="表示注释"></a>表示注释</h1></li>
+<li>每条指令都会创建一个新的镜像层，并对镜像进行提交</li>
+</ol>
+<h2 id="体系结构-保留字指令"><a href="#体系结构-保留字指令" class="headerlink" title="体系结构(保留字指令)"></a>体系结构(保留字指令)</h2><img src="/img/docker笔记/28.png">
+
+<h3 id="ONBUILD命令案例"><a href="#ONBUILD命令案例" class="headerlink" title="ONBUILD命令案例"></a>ONBUILD命令案例</h3><img src="/img/docker笔记/29.png">
+继承镜像依然可以打印父类镜像dockerfile定义的信息
+<img src="/img/docker笔记/30.png">
 
 
 
-<div class="post-preview " style="background-image: url('/img/prague_super_city_view-wallpaper-1920x1080.jpg')">
-    <a href="/2019/07/19/微信公众号jssdk基于百度地图考勤打卡/">
-        <h2 class="post-title">
-            微信公众号jssdk基于百度地图考勤打卡
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-07-19
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                前言因最近给的需求要在微信公众号完成考勤打卡，刚开始说根据员工连接公司的wifi去判断，网上查了下java好像没得这个功能，所以只能选择在地图来完成。本人也是第一次接触微信公众号，所以刚开始动手比较困难，好在经过一番摸索还是完成了。这里记录下自己的地图方案，希望能给有缘人帮助。
+                <hr>
+                
 
-准备工作既然是..
-            </p>
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/09/20/docker吐血总结笔记/" data-toggle="tooltip" data-placement="top" title="docker吐血总结笔记">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dockerfile基本知识"><span class="toc-text">dockerfile基本知识</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#表示注释"><span class="toc-text">表示注释</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#体系结构-保留字指令"><span class="toc-text">体系结构(保留字指令)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ONBUILD命令案例"><span class="toc-text">ONBUILD命令案例</span></a></li></ol></li></ol>
+                </li></div>
+            </div>
         </div>
-    </a>
 
-</div>
+        <div class="row">
+            <!-- Sidebar Container -->
 
-<hr>
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
 
-
-
-
-<!-- 翻页 pager -->
-
-<ul class="pager">
-    
-    
-</ul>
-
-
-        </div>
-        <!-- Sidebar Container -->
-        <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
-
-            <!-- About Me -->
-            <section class="visible-md visible-lg" style="padding: 0 18px">
-                <div class="short-about">
-                    <!--侧边栏头像-->
-                    
-                    <img src="/img/微信图片_20190723103112.jpg">
-                    
-                    <h5><a href="/about/">swan</a></h5>
-                    
-                    <p>低调做人 高调做事</p>
-                    
-                    <hr>
-                    <!-- SNS Link 社交 -->
-                    <ul class="list-inline">
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
                         
+                        <a class="tag" href="/tags/#部署" title="部署">部署</a>
                         
-                        
+                    </div>
+                </section>
+                
 
+                <!-- Friends Blog -->
+                
+                <div style="margin-top: 20px;">
+                    <h5 class="text-center">FRIENDS</h5>
+                    <ul class="list-inline text-center">
                         
-
-                        
-
-                        
-                        <li>
-                            <a target="_blank" href="https://github.com/Swanyf">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                        </span>
-                            </a>
-                        </li>
-                        
-
+                        <li><a href="https://www.antia1.top/">ANTIA</a></li>
                         
                     </ul>
                 </div>
-            </section>
-
-            <!-- Featured Tags  标签 -->
-            
-            <section>
-                <div class="tags">
-                    
-                    
-                    <a href="/tags/#部署" title="部署" rel="3">部署</a>
-                    
-                    
-                    
-                    <a href="/tags/#java" title="java" rel="4">java</a>
-                    
-                    
-                    
-                    <a href="/tags/#学习计划" title="学习计划" rel="1">学习计划</a>
-                    
-                    
-                    
-                    <a href="/tags/#node.js" title="node.js" rel="1">node.js</a>
-                    
-                    
-                    
-                    <a href="/tags/#springboot" title="springboot" rel="2">springboot</a>
-                    
-                    
-                    
-                    <a href="/tags/#mysql" title="mysql" rel="1">mysql</a>
-                    
-                    
-                    
-                    <a href="/tags/#redis" title="redis" rel="2">redis</a>
-                    
-                    
-                    
-                    <a href="/tags/#异常" title="异常" rel="1">异常</a>
-                    
-                    
-                    
-                    <a href="/tags/#微服务" title="微服务" rel="1">微服务</a>
-                    
-                    
-                    
-                    <a href="/tags/#分布式" title="分布式" rel="2">分布式</a>
-                    
-                    
-                    
-                    <a href="/tags/#javascript" title="javascript" rel="1">javascript</a>
-                    
-                    
-                    
-                    <a href="/tags/#sql" title="sql" rel="1">sql</a>
-                    
-                    
-                    
-                    <a href="/tags/#vue.js" title="vue.js" rel="2">vue.js</a>
-                    
-                    
-                    
-                    <a href="/tags/#微信公众号" title="微信公众号" rel="1">微信公众号</a>
-                    
-                    
-                </div>
-            </section>
-            
-
-            
-            <hr>
-            <h5 style="text-align: center;">Friends</h5>
-            <ul class="list-inline" style="text-align: center;">
                 
-                <li><a href="https://www.antia1.top/" target="_blank">ANTIA</a></li>
-                
-            </ul>
-            
-
+            </div>
         </div>
+
     </div>
-</div>
+</article>
+
+
+
+
+
+
 
 <!-- Footer -->
 <!-- Footer -->
