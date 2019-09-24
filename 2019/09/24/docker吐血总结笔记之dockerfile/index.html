@@ -214,13 +214,41 @@
 <img src="/img/docker笔记/32.png">
 
 <p>落脚点为脚本中的 <code>tmp</code> 目录<br><img src="/img/docker笔记/33.png"></p>
-<h3 id="CMD-ENTRYPOINT命令案例"><a href="#CMD-ENTRYPOINT命令案例" class="headerlink" title="CMD/ENTRYPOINT命令案例"></a>CMD/ENTRYPOINT命令案例</h3><img src="/img/docker笔记/35.png">
+<h3 id="CMD-ENTRYPOINT命令案例"><a href="#CMD-ENTRYPOINT命令案例" class="headerlink" title="CMD/ENTRYPOINT命令案例"></a>CMD/ENTRYPOINT命令案例</h3><h4 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a>CMD</h4><img src="/img/docker笔记/35.png">
 上图可以发现为什么只显示了tomcat目录，明明启动了tomcat却没有运行
 
 <p>原因：<br>我们找到官网中的tomcat镜像代码</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">...省略其他</span><br><span class="line"></span><br><span class="line">EXPOSE 8080</span><br><span class="line">CMD [&quot;catalina.sh&quot;, &quot;run&quot;]</span><br></pre></td></tr></table></figure>
 
 <p>可以看到结尾是CMD命令，那么我们之前在 <code>run</code>  容器的时候，由于最后的CMD命令会覆盖之前CMD操作，所以<code>[&quot;catalina.sh&quot;,&quot;run&quot;]</code>没有执行被 <code>ls -l</code>覆盖</p>
+<h4 id="ENTRYPOINT"><a href="#ENTRYPOINT" class="headerlink" title="ENTRYPOINT"></a>ENTRYPOINT</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">FROM centos</span><br><span class="line"></span><br><span class="line">RUN yum install -y curl</span><br><span class="line"></span><br><span class="line">ENTRYPOINT [ &quot;curl&quot;, &quot;-s&quot;, &quot;http://ip.cn&quot; ]</span><br></pre></td></tr></table></figure>
+
+<img src="/img/docker笔记/36.png">
+不会出现覆盖命令``-s``，而是追加命令继续使用获取更多信息
+
+<p>这也是和<code>CMD</code>命令区别的根本之处</p>
+<h3 id="自定义tomcat镜像，并发布"><a href="#自定义tomcat镜像，并发布" class="headerlink" title="自定义tomcat镜像，并发布"></a>自定义tomcat镜像，并发布</h3><ol>
+<li><p>新建层级目录 <code>mkdir -p /mydocker/mydockerfile/tomcat7</code></p>
+</li>
+<li><p>进入tomcat7目录新建 <code>touch info.txt</code></p>
+</li>
+<li><p>将jdk和tomcat安装包拷贝拷贝到当前目录</p>
+<img src="/img/docker笔记/37.png">
+</li>
+<li><p>新建dockerfile文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">FROM         centos</span><br><span class="line">MAINTAINER    swan&lt;swanyf@yeah.net&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>把宿主机当前上下文的c.txt拷贝到容器/usr/local/路径下</span><br><span class="line">COPY c.txt /usr/local/cincontainer.txt</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>把java与tomcat添加到容器中</span><br><span class="line">ADD jdk-8u171-linux-x64.tar.gz /usr/local/</span><br><span class="line">ADD apache-tomcat-9.0.8.tar.gz /usr/local/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>安装vim编辑器</span><br><span class="line">RUN yum -y install vim</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>设置工作访问时候的WORKDIR路径，登录落脚点</span><br><span class="line">ENV MYPATH /usr/local</span><br><span class="line">WORKDIR $MYPATH</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>配置java与tomcat环境变量</span><br><span class="line">ENV JAVA_HOME /usr/local/jdk1.8.0_171</span><br><span class="line">ENV CLASSPATH $JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">ENV CATALINA_HOME /usr/local/apache-tomcat-7.0.75</span><br><span class="line">ENV CATALINA_BASE /usr/local/apache-tomcat-7.0.75</span><br><span class="line">ENV PATH $PATH:$JAVA_HOME/bin:$CATALINA_HOME/lib:$CATALINA_HOME/bin</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>容器运行时监听的端口</span><br><span class="line">EXPOSE  8080</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>启动时运行tomcat</span><br><span class="line"><span class="meta">#</span> ENTRYPOINT ["/usr/local/apache-tomcat-9.0.8/bin/startup.sh" ]</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> CMD ["/usr/local/apache-tomcat-9.0.8/bin/catalina.sh","run"]</span><br><span class="line">CMD /usr/local/apache-tomcat-7.0.75/bin/startup.sh &amp;&amp; tail -F /usr/local/apache-tomcat-7.0.75/bin/logs/catalina.out</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建hello.jsp</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot; pageEncoding=&quot;UTF-8&quot;%&gt;</span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line"></span><br><span class="line">  &lt;head&gt;</span><br><span class="line"></span><br><span class="line">    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;title&gt;Insert title here&lt;/title&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/head&gt;</span><br><span class="line"></span><br><span class="line">  &lt;body&gt;</span><br><span class="line"></span><br><span class="line">    -----------welcome------------</span><br><span class="line"></span><br><span class="line">    &lt;%=&quot;i am in docker tomcat self &quot;%&gt;</span><br><span class="line"></span><br><span class="line">    &lt;br&gt;</span><br><span class="line"></span><br><span class="line">    &lt;br&gt;</span><br><span class="line"></span><br><span class="line">    &lt;% System.out.println(&quot;=============docker tomcat self&quot;);%&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/body&gt;</span><br><span class="line"></span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<img src="/img/docker笔记/38.png">
+
+<ol start="6">
+<li>重启tomcat，并访问hello.jsp</li>
+</ol>
+<img src="/img/docker笔记/39.png">
 
                 <hr>
                 
@@ -248,7 +276,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dockerfile基本知识"><span class="toc-text">dockerfile基本知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#体系结构-保留字指令"><span class="toc-text">体系结构(保留字指令)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#命令补充说明"><span class="toc-text">命令补充说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ONBUILD命令案例"><span class="toc-text">ONBUILD命令案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义镜像centos"><span class="toc-text">自定义镜像centos</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMD-ENTRYPOINT命令案例"><span class="toc-text">CMD/ENTRYPOINT命令案例</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dockerfile基本知识"><span class="toc-text">dockerfile基本知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#体系结构-保留字指令"><span class="toc-text">体系结构(保留字指令)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#命令补充说明"><span class="toc-text">命令补充说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ONBUILD命令案例"><span class="toc-text">ONBUILD命令案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义镜像centos"><span class="toc-text">自定义镜像centos</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMD-ENTRYPOINT命令案例"><span class="toc-text">CMD/ENTRYPOINT命令案例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CMD"><span class="toc-text">CMD</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ENTRYPOINT"><span class="toc-text">ENTRYPOINT</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义tomcat镜像，并发布"><span class="toc-text">自定义tomcat镜像，并发布</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
