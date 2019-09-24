@@ -191,7 +191,7 @@
 <h2 id="dockerfile基本知识"><a href="#dockerfile基本知识" class="headerlink" title="dockerfile基本知识"></a>dockerfile基本知识</h2><ol>
 <li>每条保留字指令都必须为大写字母且后面要跟随至少个参数</li>
 <li>指令按照从上到下，顺序执行</li>
-<li><h1 id="表示注释"><a href="#表示注释" class="headerlink" title="表示注释"></a>表示注释</h1></li>
+<li># 表示注释</li>
 <li>每条指令都会创建一个新的镜像层，并对镜像进行提交</li>
 </ol>
 <h2 id="体系结构-保留字指令"><a href="#体系结构-保留字指令" class="headerlink" title="体系结构(保留字指令)"></a>体系结构(保留字指令)</h2><img src="/img/docker笔记/28.png">
@@ -199,6 +199,14 @@
 <h3 id="ONBUILD命令案例"><a href="#ONBUILD命令案例" class="headerlink" title="ONBUILD命令案例"></a>ONBUILD命令案例</h3><img src="/img/docker笔记/29.png">
 继承镜像依然可以打印父类镜像dockerfile定义的信息
 <img src="/img/docker笔记/30.png">
+
+<h3 id="自定义镜像centos"><a href="#自定义镜像centos" class="headerlink" title="自定义镜像centos"></a>自定义镜像centos</h3><img src="/img/docker笔记/31.png">
+直接拉取的镜像容器可以发现功能是不齐全的，我们可以通过编写dockerfile脚本来自定义镜像，给镜像添加新的功能
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">FROM centos  # 镜像来演</span><br><span class="line">MAINTAINER swan&lt;swanyf@yeah.net&gt;  # 作者&lt;邮箱&gt;</span><br><span class="line"></span><br><span class="line">ENV mypath /tmp  #定义变量</span><br><span class="line">WORKDIR $mypath  # 指定落脚目录</span><br><span class="line"></span><br><span class="line">RUN yum -y install vim # 安装vim工具</span><br><span class="line"><span class="meta">#</span> RUN yum ...</span><br><span class="line"></span><br><span class="line">EXPOSE 8001  # 对外暴露端口</span><br><span class="line"></span><br><span class="line">CMD echo $mypath  # 打印</span><br><span class="line">CMD echo ["this is my centos"]  # 打印</span><br><span class="line">CMD /bin/bash</span><br></pre></td></tr></table></figure>
+
+<img src="/img/docker笔记/32.png">
+落脚点为脚本中的 ``tmp`` 目录
+<img src="/img/docker笔记/33.png">
 
 
 
@@ -228,8 +236,8 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dockerfile基本知识"><span class="toc-text">dockerfile基本知识</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#表示注释"><span class="toc-text">表示注释</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#体系结构-保留字指令"><span class="toc-text">体系结构(保留字指令)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ONBUILD命令案例"><span class="toc-text">ONBUILD命令案例</span></a></li></ol></li></ol>
-                </li></div>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dockerfile基本知识"><span class="toc-text">dockerfile基本知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#体系结构-保留字指令"><span class="toc-text">体系结构(保留字指令)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ONBUILD命令案例"><span class="toc-text">ONBUILD命令案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义镜像centos"><span class="toc-text">自定义镜像centos</span></a></li></ol></li></ol>
+                </div>
             </div>
         </div>
 
