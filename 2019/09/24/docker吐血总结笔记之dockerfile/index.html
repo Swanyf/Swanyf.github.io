@@ -185,8 +185,9 @@
                 <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>dockerfile 是用来构建 docker 镜像的构建文件，是由一系列命令和参数构成的脚本</p>
 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol>
 <li>编写dockerfile文件</li>
-<li>-f 指定文件，-t 指定镜像名，<code>docker build -f /mydocker/dockerfile -t swan/centos .</code>，最后的 <code>.</code>表示当前目录</li>
+<li>-f 指定文件，-t 指定镜像名:[TAG]，<code>docker build -f /mydocker/dockerfile -t swan/centos .</code>，最后的 <code>.</code>表示当前目录</li>
 <li>docker run ….</li>
+<li>列出镜像的变更历史，<code>docker histort 镜像名</code></li>
 </ol>
 <h2 id="dockerfile基本知识"><a href="#dockerfile基本知识" class="headerlink" title="dockerfile基本知识"></a>dockerfile基本知识</h2><ol>
 <li>每条保留字指令都必须为大写字母且后面要跟随至少个参数</li>
