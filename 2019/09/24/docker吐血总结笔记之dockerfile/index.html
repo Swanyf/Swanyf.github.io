@@ -195,6 +195,9 @@
 <li>每条指令都会创建一个新的镜像层，并对镜像进行提交</li>
 </ol>
 <h2 id="体系结构-保留字指令"><a href="#体系结构-保留字指令" class="headerlink" title="体系结构(保留字指令)"></a>体系结构(保留字指令)</h2><img src="/img/docker笔记/28.png">
+### 命令补充说明
++ ``ENV MY_PATH /usr/mytest``。这个环境变量可以在后续的任何RUN指令中使用，这就如同在命令前面指定了环境变量前缀一样，也可以在其它指令中直接使用这些环境变量。比如 ``WORKDIR $MY_PATH``
++ <img src="/img/docker笔记/34.png">
 
 <h3 id="ONBUILD命令案例"><a href="#ONBUILD命令案例" class="headerlink" title="ONBUILD命令案例"></a>ONBUILD命令案例</h3><img src="/img/docker笔记/29.png">
 继承镜像依然可以打印父类镜像dockerfile定义的信息
@@ -202,13 +205,11 @@
 
 <h3 id="自定义镜像centos"><a href="#自定义镜像centos" class="headerlink" title="自定义镜像centos"></a>自定义镜像centos</h3><img src="/img/docker笔记/31.png">
 直接拉取的镜像容器可以发现功能是不齐全的，我们可以通过编写dockerfile脚本来自定义镜像，给镜像添加新的功能
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">FROM centos  # 镜像来演</span><br><span class="line">MAINTAINER swan&lt;swanyf@yeah.net&gt;  # 作者&lt;邮箱&gt;</span><br><span class="line"></span><br><span class="line">ENV mypath /tmp  #定义变量</span><br><span class="line">WORKDIR $mypath  # 指定落脚目录</span><br><span class="line"></span><br><span class="line">RUN yum -y install vim # 安装vim工具</span><br><span class="line"><span class="meta">#</span> RUN yum ...</span><br><span class="line"></span><br><span class="line">EXPOSE 8001  # 对外暴露端口</span><br><span class="line"></span><br><span class="line">CMD echo $mypath  # 打印</span><br><span class="line">CMD echo ["this is my centos"]  # 打印</span><br><span class="line">CMD /bin/bash</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">FROM centos  # 镜像来源</span><br><span class="line">MAINTAINER swan&lt;swanyf@yeah.net&gt;  # 作者&lt;邮箱&gt;</span><br><span class="line"></span><br><span class="line">ENV mypath /tmp  #定义变量</span><br><span class="line">WORKDIR $mypath  # 指定落脚目录</span><br><span class="line"></span><br><span class="line">RUN yum -y install vim # 安装vim工具</span><br><span class="line"><span class="meta">#</span> RUN yum ...</span><br><span class="line"></span><br><span class="line">EXPOSE 8001  # 对外暴露端口</span><br><span class="line"></span><br><span class="line">CMD echo $mypath  # 打印</span><br><span class="line">CMD echo ["this is my centos"]  # 打印</span><br><span class="line">CMD /bin/bash</span><br></pre></td></tr></table></figure>
 
 <img src="/img/docker笔记/32.png">
-落脚点为脚本中的 ``tmp`` 目录
-<img src="/img/docker笔记/33.png">
 
-
+<p>落脚点为脚本中的 <code>tmp</code> 目录<br><img src="/img/docker笔记/33.png"></p>
 
                 <hr>
                 
