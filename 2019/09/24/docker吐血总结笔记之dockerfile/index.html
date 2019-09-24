@@ -214,6 +214,13 @@
 <img src="/img/docker笔记/32.png">
 
 <p>落脚点为脚本中的 <code>tmp</code> 目录<br><img src="/img/docker笔记/33.png"></p>
+<h3 id="CMD-ENTRYPOINT命令案例"><a href="#CMD-ENTRYPOINT命令案例" class="headerlink" title="CMD/ENTRYPOINT命令案例"></a>CMD/ENTRYPOINT命令案例</h3><img src="/img/docker笔记/35.png">
+上图可以发现为什么只显示了tomcat目录，明明启动了tomcat却没有运行
+
+<p>原因：<br>我们找到官网中的tomcat镜像代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">...省略其他</span><br><span class="line"></span><br><span class="line">EXPOSE 8080</span><br><span class="line">CMD [&quot;catalina.sh&quot;, &quot;run&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>可以看到结尾是CMD命令，那么我们之前在 <code>run</code>  容器的时候，由于最后的CMD命令会覆盖之前CMD操作，所以<code>[&quot;catalina.sh&quot;,&quot;run&quot;]</code>没有执行被 <code>ls -l</code>覆盖</p>
 
                 <hr>
                 
@@ -241,7 +248,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dockerfile基本知识"><span class="toc-text">dockerfile基本知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#体系结构-保留字指令"><span class="toc-text">体系结构(保留字指令)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#命令补充说明"><span class="toc-text">命令补充说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ONBUILD命令案例"><span class="toc-text">ONBUILD命令案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义镜像centos"><span class="toc-text">自定义镜像centos</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dockerfile基本知识"><span class="toc-text">dockerfile基本知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#体系结构-保留字指令"><span class="toc-text">体系结构(保留字指令)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#命令补充说明"><span class="toc-text">命令补充说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ONBUILD命令案例"><span class="toc-text">ONBUILD命令案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义镜像centos"><span class="toc-text">自定义镜像centos</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMD-ENTRYPOINT命令案例"><span class="toc-text">CMD/ENTRYPOINT命令案例</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
