@@ -246,9 +246,11 @@
 
 <p>则端口2的访问评率比端口1多</p>
 <h3 id="ip-hash"><a href="#ip-hash" class="headerlink" title="ip_hash"></a>ip_hash</h3><p>每个请求按访问 ip 的 hash 结果分配，这样每个访客的ip固定访问一个后端服务器，可以解决 session 的共享问题。<br>例如：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">upstream myserver &#123;</span><br><span class="line">	ip_hash;</span><br><span class="line">    server ip:端口1;</span><br><span class="line">	server ip:端口2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">upstream myserver &#123;</span><br><span class="line">    ip_hash;</span><br><span class="line">    server ip:端口1;</span><br><span class="line">    server ip:端口2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="fail-第三方"><a href="#fail-第三方" class="headerlink" title="fail(第三方)"></a>fail(第三方)</h3><p>按后端服务器的响应时间来分配请求，响应时间短的优先分配。<br>upstream myserver {<br>    server ip:端口1;<br>    server ip:端口2;<br>    fail;<br>}</p>
+<h3 id="fail-第三方"><a href="#fail-第三方" class="headerlink" title="fail(第三方)"></a>fail(第三方)</h3><p>按后端服务器的响应时间来分配请求，响应时间短的优先分配。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">upstream myserver &#123;</span><br><span class="line">    server ip:端口1;</span><br><span class="line">    server ip:端口2;</span><br><span class="line">    fail;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="动静分离"><a href="#动静分离" class="headerlink" title="动静分离"></a>动静分离</h2><p>nginx 动静分离简单来说就是把动态跟静态请求分开，不能理解成只是单纯的把动态页面和<br>静态页面物理分离。严格意义上说应该是动态请求跟静态请求分开，可以理解成使用 nginx<br>处理静态页面，tomcat 处理动态页面。</p>
 <p>动静分离从目前实现角度来讲大致分为两种。</p>
 <ul>
@@ -275,7 +277,11 @@
 
 <h3 id="同时启动nginx和keepalived"><a href="#同时启动nginx和keepalived" class="headerlink" title="同时启动nginx和keepalived"></a>同时启动nginx和keepalived</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/usr/local/nginx/sbin/nginx</span><br><span class="line">systemctl start keepalived</span><br></pre></td></tr></table></figure>
 
-<h3 id="最终测试"><a href="#最终测试" class="headerlink" title="最终测试"></a>最终测试</h3><p>访问配置文件中的虚拟ip 192.168.110.111<br><img src="/img/nginx学习/2.png"></p>
+<h3 id="最终测试"><a href="#最终测试" class="headerlink" title="最终测试"></a>最终测试</h3><p>查看是否绑定到虚拟ip<br><img src="/img/nginx学习/3.png"></p>
+<p>访问配置文件中的虚拟ip 192.168.110.111<br><img src="/img/nginx学习/2.png"></p>
+<p>关闭主服务器的 nginx 和 keepalived 再刷新虚拟ip，依然可以访问 nginx 页面，说明已经指向到从服务器的 nginx</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl stop keepalived</span><br><span class="line">/urc/local/nginx/sbin/nginx -s stop</span><br></pre></td></tr></table></figure>
+
 
                 <hr>
                 
