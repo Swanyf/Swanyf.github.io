@@ -261,10 +261,12 @@
 <h3 id="简单实现动静分离"><a href="#简单实现动静分离" class="headerlink" title="简单实现动静分离"></a>简单实现动静分离</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 创建俩个目录存放文件</span><br><span class="line">mkdir -p /data/img /data/page</span><br><span class="line"></span><br><span class="line"># 修改 nginx.conf 文件</span><br><span class="line">vi /usr/local/nginx/conf/nginx.conf</span><br><span class="line">server &#123;</span><br><span class="line">    listen  8060;</span><br><span class="line">    server_name  192.168.110.128;</span><br><span class="line">		</span><br><span class="line">    location /page/ &#123;</span><br><span class="line">        root  /data/;</span><br><span class="line">        autoindex on;   # 访问到page时，显示page下的所有目录文件</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location /img/ &#123;</span><br><span class="line">        root /data/;</span><br><span class="line">        autoindex on;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 重启nginx</span><br><span class="line">/usr/local/nginx/sbin/nginx -s reload</span><br></pre></td></tr></table></figure>
 
 <p>访问192.168.110.128:8060/page/aaa.png、192.168.110.128:8060/page/test.html</p>
-<h2 id="keepalived实现高可用"><a href="#keepalived实现高可用" class="headerlink" title="keepalived实现高可用"></a>keepalived实现高可用</h2><p>前提，需要有俩台服务器，一主一备，都安装好 nginx 和 keepalived</p>
-<blockquote>
-<p>192.168.110.128 主<br>192.168.110.129 从<br>192.168.110.111 虚拟ip</p>
-</blockquote>
+<h2 id="keepalived实现高可用"><a href="#keepalived实现高可用" class="headerlink" title="keepalived实现高可用"></a>keepalived实现高可用</h2><img src="/img/nginx学习/4.png">
+前提，需要有俩台服务器，一主一备，都安装好 nginx 和 keepalived
+> 192.168.110.128 主
+> 192.168.110.129 从
+> 192.168.110.111 虚拟ip
+
 <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ol>
 <li>安装keepalived<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install -y keepalived</span><br></pre></td></tr></table></figure>
 
