@@ -162,6 +162,8 @@
                     </span>
                     <div class="tags text-center">
                         
+                        <a class="tag" href="/tags/#微服务" title="微服务">微服务</a>
+                        
                     </div>
                 </div>
             </div>
@@ -180,7 +182,14 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <h2 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h2><ol>
+                <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a href="https://lnmp.org/nginx.html" target="_blank" rel="noopener">https://lnmp.org/nginx.html</a><br>Nginx (“engine x”) 是一个高性能的 HTTP 和反向代理服务器,特点是占有内存少，并发能<br>力强，事实上 nginx 的并发能力确实在同类型的网页服务器中表现较好</p>
+<p>Nginx 可以作为静态页面的 web 服务器，同时还支持 CGI 协议的动态语言，比如 perl、php等。但是不支持 java。Java 程序只能通过与 tomcat 配合完成。</p>
+<p>Nginx 专为性能优化而开发，性能是其最重要的考量,实现上非常注重效率 ，能经受高负载的考验,有报告表明能支持高<br>达 50,000 个并发连接数。</p>
+<h2 id="正向代理"><a href="#正向代理" class="headerlink" title="正向代理"></a>正向代理</h2><p>Nginx 不仅可以做反向代理，实现负载均衡。还能用作正向代理来进行上网等功能。<br>正向代理：如果把局域网外的 Internet 想象成一个巨大的资源库，则局域网中的客户端要访问 Internet，则需要通过代理服务器来访问，这种代理服务就称为正向代理。<br>比如通过客户端访问谷歌需要通过代理服务器，这个状态就是正向代理<br><font color="#045465">正向代理代理的是客户端</font></p>
+<h2 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h2><p>反向代理，其实客户端对代理是无感知的，因为客户端不需要任何配置就可以访问，我们只<br>需要将请求发送到反向代理服务器，由反向代理服务器去选择目标服务器获取数据后，在返<br>回给客户端，此时反向代理服务器和目标服务器对外就是一个服务器，暴露的是代理服务器<br>地址，隐藏了真实服务器 IP 地址。<br><font color="#045465">反向代理代理的是服务器</font></p>
+<h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><p>客户端发送多个请求到服务器，服务器处理请求，有一些可能要与数据库进行交互，服<br>务器处理完毕后，再将结果返回给客户端。</p>
+<p>将请求分发到各个服务器上，将原先请求集中到单个服务器上的情况改为将请求分发到多个服务器上，将负载分发到不同的服务器，也就是我们所说的负载均衡</p>
+<h2 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h2><ol>
 <li><p>上传nginx tar 安装包，并解压</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -zxvf nginx安装包</span><br></pre></td></tr></table></figure>
 </li>
@@ -200,6 +209,44 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure>
 
 </li>
+</ol>
+<h2 id="nginx-conf解析"><a href="#nginx-conf解析" class="headerlink" title="nginx.conf解析"></a>nginx.conf解析</h2><h3 id="全局块"><a href="#全局块" class="headerlink" title="全局块"></a>全局块</h3><ul>
+<li>主要会设置一些影响 nginx 服务器整体运行的配置指令。</li>
+<li>主要包括配置运行 Nginx 服务器的用户（组）</li>
+<li>允许生成的 worker process 数</li>
+<li>进程 PID 存放路径</li>
+<li>日志存放路径和类型以及配置文件的引入等。<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#user  nobody;</span><br><span class="line"></span><br><span class="line">worker_processes  1;    # 服务器并发处理服务的关键配置</span><br><span class="line">                        # worker_processes 值越大，可以支持的并发处理量也越多</span><br><span class="line">			# 但是会受到硬件、软件等设备的制约</span><br><span class="line"></span><br><span class="line">#error_log  logs/error.log;</span><br><span class="line">#error_log  logs/error.log  notice;</span><br><span class="line">#error_log  logs/error.log  info;</span><br><span class="line"></span><br><span class="line">#pid        logs/nginx.pid;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="events块"><a href="#events块" class="headerlink" title="events块"></a>events块</h3><p>events 块涉及的指令主要影响 Nginx 服务器与用户的网络连接，常用的设置包括：</p>
+<ul>
+<li>是否开启对多 work process下的网络连接进行序列化</li>
+<li>是否允许同时接收多个网络连接</li>
+<li>选取哪种事件驱动模型来处理连接请求</li>
+<li>每个 wordprocess 可以同时支持的最大连接数等。<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>例子就表示每个 work process 支持的最大连接数为 1024.<br>这部分的配置对 Nginx 的性能影响较大，在实际中应该灵活配置。</p>
+<h3 id="http块"><a href="#http块" class="headerlink" title="http块"></a>http块</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    #log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</span><br><span class="line">    #                  &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</span><br><span class="line">    #                  &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;</span><br><span class="line"></span><br><span class="line">    #access_log  logs/access.log  main;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line"></span><br><span class="line">    #keepalive_timeout  0;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    #gzip  on;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        #charset koi8-r;</span><br><span class="line"></span><br><span class="line">        #access_log  logs/host.access.log  main;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            root   html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #error_page  404              /404.html;</span><br><span class="line"></span><br><span class="line">        # redirect server error pages to the static page /50x.html</span><br><span class="line">        #</span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # proxy the PHP scripts to Apache listening on 127.0.0.1:80</span><br><span class="line">        #</span><br><span class="line">        #location ~ \.php$ &#123;</span><br><span class="line">        #    proxy_pass   http://127.0.0.1;</span><br><span class="line">        #&#125;</span><br><span class="line"></span><br><span class="line">        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span><br><span class="line">        #</span><br><span class="line">        #location ~ \.php$ &#123;</span><br><span class="line">        #    root           html;</span><br><span class="line">        #    fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">        #    fastcgi_index  index.php;</span><br><span class="line">        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;</span><br><span class="line">        #    include        fastcgi_params;</span><br><span class="line">        #&#125;</span><br><span class="line"></span><br><span class="line">        # deny access to .htaccess files, if Apache&apos;s document root</span><br><span class="line">        # concurs with nginx&apos;s one</span><br><span class="line">        #</span><br><span class="line">        #location ~ /\.ht &#123;</span><br><span class="line">        #    deny  all;</span><br><span class="line">        #&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # another virtual host using mix of IP-, name-, and port-based configuration</span><br><span class="line">    #</span><br><span class="line">    #server &#123;</span><br><span class="line">    #    listen       8000;</span><br><span class="line">    #    listen       somename:8080;</span><br><span class="line">    #    server_name  somename  alias  another.alias;</span><br><span class="line"></span><br><span class="line">    #    location / &#123;</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # HTTPS server</span><br><span class="line">    #</span><br><span class="line">    #server &#123;</span><br><span class="line">    #    listen       443 ssl;</span><br><span class="line">    #    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    #    ssl_certificate      cert.pem;</span><br><span class="line">    #    ssl_certificate_key  cert.key;</span><br><span class="line"></span><br><span class="line">    #    ssl_session_cache    shared:SSL:1m;</span><br><span class="line">    #    ssl_session_timeout  5m;</span><br><span class="line"></span><br><span class="line">    #    ssl_ciphers  HIGH:!aNULL:!MD5;</span><br><span class="line">    #    ssl_prefer_server_ciphers  on;</span><br><span class="line"></span><br><span class="line">    #    location / &#123;</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是 Nginx 服务器配置中最频繁的部分，代理、缓存和日志定义等绝大多数功能和第三方模块的配置都在这里。<br>需要注意的是：http 块也可以包括 <font color="red">http 全局块、server 块</font>。</p>
+<h4 id="http全局块"><a href="#http全局块" class="headerlink" title="http全局块"></a>http全局块</h4><p>http 全局块配置的指令包括文件引入、MIME-TYPE 定义、日志自定义、连接超时时间、单链接请求数上限等。</p>
+<h4 id="server块"><a href="#server块" class="headerlink" title="server块"></a>server块</h4><ul>
+<li>每个 http 块可以包括多个 server 块，而<font color="#045465">每个 server 块就相当于一个虚拟主机</font>。</li>
+<li>每个 server 块也分为全局 server 块，以及<font color="#045465">可以同时包含多个 locaton 块</font></li>
+</ul>
+<p>server 块：<br>最常见的配置是本虚拟机主机的监听配置和本虚拟主机的名称或 IP 配置。</p>
+<p>location 块：<br>主要作用是基于 Nginx 服务器接收到的请求字符串（例如 server_name/uri-string），对虚拟主机名称（也可以是 IP 别名）之外的字符串（例如 前面的 /uri-string）进行匹配，对特定的请求进行处理。地址定向、数据缓存和应答控制等功能，还有许多第三方模块的配置也在这里进行。</p>
+<h4 id="location指令说明"><a href="#location指令说明" class="headerlink" title="location指令说明"></a>location指令说明</h4><p>该指令用于匹配 URL。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">location [ = | ~ | ~* | ^~] uri &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>= ：用于不含正则表达式的 uri 前，要求请求字符串与 uri 严格匹配，如果匹配<br>成功，就停止继续向下搜索并立即处理该请求。</li>
+<li>~：用于表示 uri 包含正则表达式，并且区分大小写</li>
+<li>~*：用于表示 uri 包含正则表达式，并且不区分大小写</li>
+<li>^~：用于不含正则表达式的 uri 前，要求 Nginx 服务器找到标识 uri 和请求字<br>符串匹配度最高的 location 后，立即使用此 location 处理请求，而不再使用 location<br>块中的正则 uri 和请求字符串做匹配。<br><font color="red">注意：如果 uri 包含正则表达式，则必须要有 ~ 或者 ~* 标识</font></li>
 </ol>
 <h2 id="nginx基本命令"><a href="#nginx基本命令" class="headerlink" title="nginx基本命令"></a>nginx基本命令</h2><table>
 <thead>
@@ -251,7 +298,8 @@
 <h3 id="fail-第三方"><a href="#fail-第三方" class="headerlink" title="fail(第三方)"></a>fail(第三方)</h3><p>按后端服务器的响应时间来分配请求，响应时间短的优先分配。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">upstream myserver &#123;</span><br><span class="line">    server ip:端口1;</span><br><span class="line">    server ip:端口2;</span><br><span class="line">    fail;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="动静分离"><a href="#动静分离" class="headerlink" title="动静分离"></a>动静分离</h2><p>nginx 动静分离简单来说就是把动态跟静态请求分开，不能理解成只是单纯的把动态页面和<br>静态页面物理分离。严格意义上说应该是动态请求跟静态请求分开，可以理解成使用 nginx<br>处理静态页面，tomcat 处理动态页面。</p>
+<h2 id="动静分离"><a href="#动静分离" class="headerlink" title="动静分离"></a>动静分离</h2><p><font color="#045465">为了加快网站的解析速度，可以把动态页面和静态页面由不同的服务器来解析，加快解析速度。降低原来单个服务器的压力。</font></p>
+<p>nginx 动静分离简单来说就是把动态跟静态请求分开，不能理解成只是单纯的把动态页面和<br>静态页面物理分离。严格意义上说应该是动态请求跟静态请求分开，可以理解成使用 nginx<br>处理静态页面，tomcat 处理动态页面。</p>
 <p>动静分离从目前实现角度来讲大致分为两种。</p>
 <ul>
 <li>一种是纯粹把静态文件独立成单独的域名，放在独立的服务器上，也是目前主流推崇的方案；</li>
@@ -284,6 +332,11 @@
 <p>关闭主服务器的 nginx 和 keepalived 再刷新虚拟ip，依然可以访问 nginx 页面，说明已经指向到从服务器的 nginx</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl stop keepalived</span><br><span class="line">/urc/local/nginx/sbin/nginx -s stop</span><br></pre></td></tr></table></figure>
 
+<h2 id="nginx原理"><a href="#nginx原理" class="headerlink" title="nginx原理"></a>nginx原理</h2><img src="/img/nginx学习/5.png">
+### master-workers 机制的有点
++ 首先，对于每个 worker 进程来说，独立的进程，不需要加锁，所以省掉了锁带来的开销+ 同时在编程以及问题查找时，也会方便很多。
++ 其次，采用独立的进程，可以让互相之间不会影响，一个进程退出后，其它进程还在工作，服务不会中断，master 进程则很快启动新的worker 进程。
++ 当然，worker 进程的异常退出，肯定是程序有 bug 了，异常退出，会导致当前 worker 上的所有请求失败，不过不会影响到所有请求，所以降低了风险。
 
                 <hr>
                 
@@ -311,7 +364,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装nginx"><span class="toc-text">安装nginx</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx基本命令"><span class="toc-text">nginx基本命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx分配服务器策略"><span class="toc-text">nginx分配服务器策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#轮询-默认"><span class="toc-text">轮询(默认)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#weight"><span class="toc-text">weight</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ip-hash"><span class="toc-text">ip_hash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fail-第三方"><span class="toc-text">fail(第三方)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动静分离"><span class="toc-text">动静分离</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简单实现动静分离"><span class="toc-text">简单实现动静分离</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#keepalived实现高可用"><span class="toc-text">keepalived实现高可用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更改配置文件"><span class="toc-text">更改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加入keepalived的检测nginx存活脚本"><span class="toc-text">加入keepalived的检测nginx存活脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#同时启动nginx和keepalived"><span class="toc-text">同时启动nginx和keepalived</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最终测试"><span class="toc-text">最终测试</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#正向代理"><span class="toc-text">正向代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#反向代理"><span class="toc-text">反向代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#负载均衡"><span class="toc-text">负载均衡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装nginx"><span class="toc-text">安装nginx</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx-conf解析"><span class="toc-text">nginx.conf解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#全局块"><span class="toc-text">全局块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#events块"><span class="toc-text">events块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http块"><span class="toc-text">http块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#http全局块"><span class="toc-text">http全局块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#server块"><span class="toc-text">server块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#location指令说明"><span class="toc-text">location指令说明</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx基本命令"><span class="toc-text">nginx基本命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx分配服务器策略"><span class="toc-text">nginx分配服务器策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#轮询-默认"><span class="toc-text">轮询(默认)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#weight"><span class="toc-text">weight</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ip-hash"><span class="toc-text">ip_hash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fail-第三方"><span class="toc-text">fail(第三方)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动静分离"><span class="toc-text">动静分离</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简单实现动静分离"><span class="toc-text">简单实现动静分离</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#keepalived实现高可用"><span class="toc-text">keepalived实现高可用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更改配置文件"><span class="toc-text">更改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加入keepalived的检测nginx存活脚本"><span class="toc-text">加入keepalived的检测nginx存活脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#同时启动nginx和keepalived"><span class="toc-text">同时启动nginx和keepalived</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最终测试"><span class="toc-text">最终测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx原理"><span class="toc-text">nginx原理</span></a></li></ol>
                 </div>
             </div>
         </div>
@@ -332,6 +385,8 @@
                         <a href="/tags/">FEATURED TAGS</a>
                     </h5>
                     <div class="tags">
+                        
+                        <a class="tag" href="/tags/#微服务" title="微服务">微服务</a>
                         
                     </div>
                 </section>
