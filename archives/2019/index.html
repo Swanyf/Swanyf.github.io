@@ -80,7 +80,7 @@
                         
 							
                         <li>
-                            <a href="/my-works/">杂志</a>
+                            <a href="/tags/">标签</a>
                         </li>
 							
 						
@@ -88,7 +88,7 @@
                         
 							
                         <li>
-                            <a href="/tags/">标签</a>
+                            <a href="/my-works/">杂志</a>
                         </li>
 							
 						
@@ -156,6 +156,36 @@
     <div class="row">
         <div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 post-container">
             <!-- Main Content -->
+
+
+
+<div class="post-preview " style="background-image: url('')">
+    <a href="/2019/09/25/nginx学习笔记/">
+        <h2 class="post-title">
+            nginx学习笔记
+        </h2>
+        <p class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-09-25
+        </p>
+        
+        <div class="post-content-preview">
+            <p>
+                安装nginx
+上传nginx tar 安装包，并解压
+tar -zxvf nginx安装包
+
+创建目录用于存放 nginx 文件
+mkdir -p /usr/local/nginx/
+
+下载依赖
+yum -y install gcc-c++yum install -y pcre pcre-de..
+            </p>
+        </div>
+    </a>
+
+</div>
+
+<hr>
 
 
 
@@ -334,36 +364,6 @@ JENKINS_USER="root" ..
 
 
 
-<div class="post-preview " style="background-image: url('/img/mysql优化/13p6o1.jpg')">
-    <a href="/2019/08/21/mysql优化/">
-        <h2 class="post-title">
-            mysql优化
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-08-21
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                逻辑分层
-连接层
-服务层
-引擎层
-存储层InnoDB(默认)：事务优先，适合高并发操作；行锁MyISAM：性能优先，表锁
-
-show engines \G查询数据库支持哪些引擎show variables like &#39;%storage_engine%&#39;
-sql执行顺序
-from：..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
 
 <!-- 翻页 pager -->
 
@@ -431,6 +431,10 @@ from：..
                 <div class="tags">
                     
                     
+                    <a href="/tags/#学习计划" title="学习计划" rel="1">学习计划</a>
+                    
+                    
+                    
                     <a href="/tags/#部署" title="部署" rel="3">部署</a>
                     
                     
@@ -439,15 +443,7 @@ from：..
                     
                     
                     
-                    <a href="/tags/#学习计划" title="学习计划" rel="1">学习计划</a>
-                    
-                    
-                    
                     <a href="/tags/#node.js" title="node.js" rel="1">node.js</a>
-                    
-                    
-                    
-                    <a href="/tags/#springboot" title="springboot" rel="2">springboot</a>
                     
                     
                     
@@ -455,7 +451,15 @@ from：..
                     
                     
                     
+                    <a href="/tags/#springboot" title="springboot" rel="2">springboot</a>
+                    
+                    
+                    
                     <a href="/tags/#redis" title="redis" rel="2">redis</a>
+                    
+                    
+                    
+                    <a href="/tags/#分布式" title="分布式" rel="2">分布式</a>
                     
                     
                     
@@ -464,10 +468,6 @@ from：..
                     
                     
                     <a href="/tags/#微服务" title="微服务" rel="1">微服务</a>
-                    
-                    
-                    
-                    <a href="/tags/#分布式" title="分布式" rel="2">分布式</a>
                     
                     
                     

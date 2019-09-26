@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        如何正确访问Redis中的海量数据？服务才不会挂掉！｜Swan&#39;s blog
+        nginx学习笔记｜Swan&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/2019/06/10/如何正确访问Redis中的海量数据？服务才不会挂掉！/">
+    <link rel="canonical" href="http://yoursite.com/2019/09/25/nginx学习笔记/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -135,13 +135,13 @@
 <!--only post-->
 
 
-<img class="wechat-title-img" src="null/img/sea.jpg">
+<img class="wechat-title-img" src>
 
 
 <style>
     
     header.intro-header {
-        background-image: url('/img/sea.jpg?imageView2/1/w/1400/h/400/interlace/1/q/90')
+        background-image: url('')
     }
 
     
@@ -152,17 +152,15 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>如何正确访问Redis中的海量数据？服务才不会挂掉！</h1>
+                    <h1>nginx学习笔记</h1>
                     
                     <span class="meta">
                          作者 swan
                         <span>
-                          日期 2019-06-10
+                          日期 2019-09-25
                          </span>
                     </span>
                     <div class="tags text-center">
-                        
-                        <a class="tag" href="/tags/#redis" title="redis">redis</a>
                         
                     </div>
                 </div>
@@ -171,7 +169,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            如何正确访问Redis中的海量数据？服务才不会挂掉！
+            nginx学习笔记
         </span>
     </div>
 </header>
@@ -182,46 +180,91 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有时候我们需要知道线上的Redis的使用情况，尤其需要知道一些前缀的key值，让我们怎么去查看呢？并且通常情况下Redis里的数据都是海量的，那么我们访问Redis中的海量数据？如何避免事故产生！今天就给大家分享一个小知识点，希望大家轻喷。</p>
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>因为我们的用户token缓存是采用了【user_token:userid】格式的key，保存用户的token的值。我们运维为了帮助开发小伙伴们查一下线上现在有多少登录用户。</p>
-<p>直接用了keys user_token*方式进行查询，事故就此发生了。导致Redis不可用，假死。</p>
-<h2 id="分析原因"><a href="#分析原因" class="headerlink" title="分析原因"></a>分析原因</h2><p>我们线上的登录用户有几百万，数据量比较多；keys算法是遍历算法，复杂度是O(n)，也就是数据越多，时间越高。</p>
-<p>数据量达到几百万，keys这个指令就会导致 Redis 服务卡顿，因为 Redis 是单线程程序，顺序执行所有指令，其它指令必须等到当前的 keys 指令执行完了才可以继续。</p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>那我们如何去遍历大数据量呢？这个也是面试经常问的。我们可以采用Redis的另一个命令scan。我们看一下scan的特点：</p>
-<pre><code>1.复杂度虽然也是 O(n)，但是它是通过游标分步进行的，不会阻塞线程
+                <h2 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h2><ol>
+<li><p>上传nginx tar 安装包，并解压</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -zxvf nginx安装包</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建目录用于存放 nginx 文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir -p /usr/local/nginx/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下载依赖</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y install gcc-c++</span><br><span class="line">yum install -y pcre pcre-devel</span><br><span class="line">yum install -y zlib zlib-devel</span><br><span class="line">yum install -y openssl openssl-devel</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入解压目录生成makefile文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">./configure \</span><br><span class="line">--prefix=/usr/local/nginx</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编译</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure>
 
-2.提供 count 参数，不是结果数量，是Redis单次遍历字典槽位数量(约等于)
+</li>
+</ol>
+<h2 id="nginx基本命令"><a href="#nginx基本命令" class="headerlink" title="nginx基本命令"></a>nginx基本命令</h2><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>命令</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>启动</td>
+<td>/usr/local/nginx/sbin/nginx</td>
+<td></td>
+</tr>
+<tr>
+<td>退出</td>
+<td>/usr/local/nginx/sbin/nginx -s quit</td>
+<td>正常关闭Nginx，推荐使用</td>
+</tr>
+<tr>
+<td>停止</td>
+<td>/usr/local/nginx/sbin/nginx -s stop</td>
+<td>相当于杀死Nginx进程，不推荐使用</td>
+</tr>
+<tr>
+<td>重启</td>
+<td>/usr/local/nginx/sbin/nginx -s quit <br></td>
+<td></td>
+</tr>
+<tr>
+<td>/usr/local/nginx/sbin/nginx</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>重新加载配置文件</td>
+<td>/usr/local/nginx/sbin/nginx -s reload</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="nginx分配服务器策略"><a href="#nginx分配服务器策略" class="headerlink" title="nginx分配服务器策略"></a>nginx分配服务器策略</h2><h3 id="轮询-默认"><a href="#轮询-默认" class="headerlink" title="轮询(默认)"></a>轮询(默认)</h3><p>每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器 down 掉，能自动剔除，去访问其他服务器。</p>
+<h3 id="weight"><a href="#weight" class="headerlink" title="weight"></a>weight</h3><p>weight 代表权重，默认为1，权重越高被分配的客户端越多。指定轮询几率，weight 和访问比率成正比，用于后端服务器性能不均的情况。<br>例如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">upstream myserver &#123;</span><br><span class="line">    server ip:端口1 weight=3;</span><br><span class="line">	server ip:端口2 weight=10;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-3.同 keys 一样，它也提供模式匹配功能;
+<p>则端口2的访问评率比端口1多</p>
+<h3 id="ip-hash"><a href="#ip-hash" class="headerlink" title="ip_hash"></a>ip_hash</h3><p>每个请求按访问 ip 的 hash 结果分配，这样每个访客的ip固定访问一个后端服务器，可以解决 session 的共享问题。<br>例如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">upstream myserver &#123;</span><br><span class="line">	ip_hash;</span><br><span class="line">    server ip:端口1;</span><br><span class="line">	server ip:端口2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-4.服务器不需要为游标保存状态，游标的唯一状态就是 scan 返回给客户端的游标整数;
-
-5.返回的结果可能会有重复，需要客户端去重复，这点非常重要;
-
-6.单次返回的结果是空的并不意味着遍历结束，而要看返回的游标值是否为零</code></pre><h4 id="scan命令格式"><a href="#scan命令格式" class="headerlink" title="scan命令格式"></a>scan命令格式</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">scan cursor [Match oattern] [Count count]</span><br></pre></td></tr></table></figure>
-
-<h4 id="命令解释"><a href="#命令解释" class="headerlink" title="命令解释"></a>命令解释</h4><p><font color="#EE6A50">scan 游标 MATCH &lt;返回和给定模式相匹配的元素&gt; count 每次迭代所返回的元素数量</font></p>
-<pre><code>1.SCAN命令是增量的循环，每次调用只会返回一小部分的元素。所以不会让Redis假死；
-
-2.SCAN命令返回的是一个游标，从0开始遍历，到0结束遍历；</code></pre><h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><img src="/img/微信图片_20190610094913.jpg">
-
-<p>从0开始遍历，返回了游标6，又返回了数据，继续scan遍历，就要从6开始</p>
-<img src="/img/微信图片_20190610094917.jpg">
-
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><strong>这个是面试经常会问到的</strong>，也是我们小伙伴在工作的过程经常用的，一般数据量不大的时候，不会有什么问题，但数据量多的时候，你的操作方式不对，你的绩效就会被扣哦。</p>
-
+<h3 id="fail-第三方"><a href="#fail-第三方" class="headerlink" title="fail(第三方)"></a>fail(第三方)</h3><p>按后端服务器的响应时间来分配请求，响应时间短的优先分配。<br>upstream myserver {<br>    server ip:端口1;<br>    server ip:端口2;<br>    fail;<br>}</p>
+<h2 id="动静分离"><a href="#动静分离" class="headerlink" title="动静分离"></a>动静分离</h2><p>nginx 动静分离简单来说就是把动态跟静态请求分开，不能理解成只是单纯的把动态页面和<br>静态页面物理分离。严格意义上说应该是动态请求跟静态请求分开，可以理解成使用 nginx<br>处理静态页面，tomcat 处理动态页面。</p>
+<p>动静分离从目前实现角度来讲大致分为两种。</p>
+<ul>
+<li>一种是纯粹把静态文件独立成单独的域名，放在独立的服务器上，也是目前主流推崇的方案；</li>
+<li>另一种动态跟静态文件混合在一起发布，通过 nginx 来分开</li>
+<li>通过 location 指定不同的后缀名实现不同的请求转发。通过 expires 参数设置，可以使<br>浏览器缓存过期时间，减少与服务器之前的请求和流量。具体 expires 定义：是给一个资<br>源设定一个过期时间，也就是说无需去服务端验证，直接通过浏览器自身确认是否过期即可，<br>所以不会产生额外的流量。此种方法非常适合不经常变动的资源。（如果经常更新的文件，<br>不建议使用 expires 来缓存），我这里设置 3d，表示在这 3 天之内访问这个 URL，发送<br>一个请求，比对服务器该文件最后更新时间没有变化，则不会从服务器抓取，返回状态码<br>304，如果有修改，则直接从服务器重新下载，返回状态码 200。</li>
+</ul>
+<h3 id="简单实现动静分离"><a href="#简单实现动静分离" class="headerlink" title="简单实现动静分离"></a>简单实现动静分离</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 创建俩个目录存放文件</span><br><span class="line">mkdir -p /data/img /data/page</span><br><span class="line"></span><br><span class="line"># 修改 nginx.conf 文件</span><br><span class="line">vi /usr/local/nginx/conf/nginx.conf</span><br><span class="line">server &#123;</span><br><span class="line">    listen  8060;</span><br><span class="line">    server_name  192.168.110.128;</span><br><span class="line">		</span><br><span class="line">    location /page/ &#123;</span><br><span class="line">        root  /data/;</span><br><span class="line">        autoindex on;   # 访问到page时，显示page下的所有目录文件</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location /img/ &#123;</span><br><span class="line">        root /data/;</span><br><span class="line">        autoindex on;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 重启nginx</span><br><span class="line">/usr/local/nginx/sbin/nginx -s reload</span><br></pre></td></tr></table></figure>
                 <hr>
                 
 
                 <ul class="pager">
                     
-                    <li class="previous">
-                        <a href="/2019/06/12/mysql：=和=的区别/" data-toggle="tooltip" data-placement="top" title="mysql := 和 = 的区别">&larr; Previous Post</a>
-                    </li>
-                    
                     
                     <li class="next">
-                        <a href="/2018/12/30/redis分布式锁/" data-toggle="tooltip" data-placement="top" title="redis分布式锁">Next Post &rarr;</a>
+                        <a href="/2019/09/24/docker吐血总结笔记之dockerfile/" data-toggle="tooltip" data-placement="top" title="docker吐血总结笔记之dockerfile">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -240,7 +283,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原因"><span class="toc-text">原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析原因"><span class="toc-text">分析原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#scan命令格式"><span class="toc-text">scan命令格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#命令解释"><span class="toc-text">命令解释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#举例"><span class="toc-text">举例</span></a></li></ol></li></ol><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装nginx"><span class="toc-text">安装nginx</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx基本命令"><span class="toc-text">nginx基本命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx分配服务器策略"><span class="toc-text">nginx分配服务器策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#轮询-默认"><span class="toc-text">轮询(默认)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#weight"><span class="toc-text">weight</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ip-hash"><span class="toc-text">ip_hash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fail-第三方"><span class="toc-text">fail(第三方)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动静分离"><span class="toc-text">动静分离</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简单实现动静分离"><span class="toc-text">简单实现动静分离</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
@@ -261,8 +304,6 @@
                         <a href="/tags/">FEATURED TAGS</a>
                     </h5>
                     <div class="tags">
-                        
-                        <a class="tag" href="/tags/#redis" title="redis">redis</a>
                         
                     </div>
                 </section>

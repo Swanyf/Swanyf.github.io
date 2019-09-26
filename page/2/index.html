@@ -80,7 +80,7 @@
                         
 							
                         <li>
-                            <a href="/my-works/">杂志</a>
+                            <a href="/tags/">标签</a>
                         </li>
 							
 						
@@ -88,7 +88,7 @@
                         
 							
                         <li>
-                            <a href="/tags/">标签</a>
+                            <a href="/my-works/">杂志</a>
                         </li>
 							
 						
@@ -279,6 +279,36 @@
 
 
 
+<div class="post-preview " style="background-image: url('/img/mysql优化/13p6o1.jpg')">
+    <a href="/2019/08/21/mysql优化/">
+        <h2 class="post-title">
+            mysql优化
+        </h2>
+        <p class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-08-21
+        </p>
+        
+        <div class="post-content-preview">
+            <p>
+                逻辑分层
+连接层
+服务层
+引擎层
+存储层InnoDB(默认)：事务优先，适合高并发操作；行锁MyISAM：性能优先，表锁
+
+show engines \G查询数据库支持哪些引擎show variables like &#39;%storage_engine%&#39;
+sql执行顺序
+from：..
+            </p>
+        </div>
+    </a>
+
+</div>
+
+<hr>
+
+
+
 <div class="post-preview " style="background-image: url('/img/JUC/kw1ky1.jpg')">
     <a href="/2019/08/12/JUC/">
         <h2 class="post-title">
@@ -444,29 +474,6 @@ public class ThreadDemo &#123;    public static void main(String[] args) throws 
 
 
 
-<div class="post-preview " style="background-image: url('')">
-    <a href="/2019/06/24/使用SpringBoot测试类遇到的异常/">
-        <h2 class="post-title">
-            使用SpringBoot测试类遇到的异常
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-24
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                测试类启动失败今天在测试一个方法的时候发现测试类启动报错，来看看报错的日志
-java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you need to use @ContextConfigurat..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
 
 <!-- 翻页 pager -->
 
@@ -538,6 +545,10 @@ java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you 
                 <div class="tags">
                     
                     
+                    <a href="/tags/#学习计划" title="学习计划" rel="1">学习计划</a>
+                    
+                    
+                    
                     <a href="/tags/#部署" title="部署" rel="3">部署</a>
                     
                     
@@ -546,15 +557,7 @@ java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you 
                     
                     
                     
-                    <a href="/tags/#学习计划" title="学习计划" rel="1">学习计划</a>
-                    
-                    
-                    
                     <a href="/tags/#node.js" title="node.js" rel="1">node.js</a>
-                    
-                    
-                    
-                    <a href="/tags/#springboot" title="springboot" rel="2">springboot</a>
                     
                     
                     
@@ -562,7 +565,15 @@ java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you 
                     
                     
                     
+                    <a href="/tags/#springboot" title="springboot" rel="2">springboot</a>
+                    
+                    
+                    
                     <a href="/tags/#redis" title="redis" rel="2">redis</a>
+                    
+                    
+                    
+                    <a href="/tags/#分布式" title="分布式" rel="2">分布式</a>
                     
                     
                     
@@ -571,10 +582,6 @@ java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you 
                     
                     
                     <a href="/tags/#微服务" title="微服务" rel="1">微服务</a>
-                    
-                    
-                    
-                    <a href="/tags/#分布式" title="分布式" rel="2">分布式</a>
                     
                     
                     
