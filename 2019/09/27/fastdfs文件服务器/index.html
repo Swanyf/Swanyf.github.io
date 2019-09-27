@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/pig.jpg">
+    <link rel="alternate" type="application/atom+xml" title="Swan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        fastdfs文件服务器｜Swan&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2019/09/27/fastdfs文件服务器/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('/img/pig.jpg')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="true" data-istags="false
+" data-ishome="false">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    Swan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+							
+						
+                    
+                        
+							
+                        <li>
+                            <a href="/my-works/">杂志</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img" src>
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>fastdfs文件服务器</h1>
+                    
+                    <span class="meta">
+                         作者 swan
+                        <span>
+                          日期 2019-09-27
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#分布式" title="分布式">分布式</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            fastdfs文件服务器
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><ol>
+<li>独立于应用服务器，文件本身不会在应用服务器上存储，不受应用服务器上Web应用重新部署影响。</li>
+<li>内部存储服务器有数据备份。同一个文件存储在多台不同服务器上。在FastDFS内部，同一个组内的服务器存储相同文件。同组服务器之间使用同步线程同步文件数据。 避免单点故障，对外能够提供统一的访问接口。</li>
+<li>动态扩容。tracker服务器管理storage服务器。动态增加storage，外界感觉不到。</li>
+</ol>
+<h2 id="fastdfs工作机制"><a href="#fastdfs工作机制" class="headerlink" title="fastdfs工作机制"></a>fastdfs工作机制</h2><img src="/img/fastdfs笔记/1.png">
+traker：追踪者。<font color="#045465">记录storager服务器的信息</font>。客户端使用存储服务的时候，可以询问tracker，由tracker动态分配一个健康状态好、剩余存储空间较大的storager来提供服务。
+
+<p>storager：存储者。<font color="#045465">负责存储具体的文件数据。卷内有多个storager服务器，同一个卷内的storager之间会同步数据，从而保证同一个卷内各个storager服务器上存储的文件一致，避免单点故障。</font></p>
+<p><font color="#045465">tracker和storager之间通信机制：storager主动向tracker汇报。</font></p>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><ol>
+<li>源码编译安装 <code>yum install -y gcc-c++</code></li>
+<li>安装 libevent，<code>yum install -y libeve</code></li>
+<li>安装 libfastcommon</li>
+</ol>
+<ul>
+<li>上传 libfastcommonV1.0.7.tar.gz</li>
+<li>将 libfastcommonV1.0.7.tar.gz 移动到 /opt/fastdfs 目录下</li>
+<li>解压 libfastcommonV1.0.7.tar.gz，进入 libfastcommon-1.0.7 目录</li>
+<li><code>./make.sh</code> 编译</li>
+<li><code>./make.sh install</code> 安装</li>
+<li>把 <code>/usr/lib64/libfastcommon.so</code> 文件复制到 <code>/usr/lib</code>目录下 </li>
+</ul>
+<ol start="4">
+<li>上传 fastdfs 到 /opt/fastdfs，并解压</li>
+<li>进入解压目录，编译 <code>./make.sh</code></li>
+<li>安装<code>./make.sh install</code></li>
+<li>复制配置文件，将解压目录下 <code>conf</code> 目录下的所有文件复制到 <code>/etc/fdfs</code> 目录下</li>
+</ol>
+<p>配置 tracker：</p>
+<ol>
+<li>创建 fastdfs 的家目录，<code>mkdir /home/fastdfs</code></li>
+<li>修改 <code>tracker.conf</code> 置<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/fdfs/tracker.conf</span><br><span class="line"></span><br><span class="line">22 # base_path=/home/yuqing/fastdfs</span><br><span class="line">23 base_path=/home/fastdfs</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>配置 storager</p>
+<ol>
+<li>创建文件存储目录，<code>mkdir /home/fastdfs/storage</code></li>
+<li>修改 <code>storage.conf</code> 配置<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/fdfs/storage.conf</span><br><span class="line"></span><br><span class="line">41 # base_path=/home/yuqing/fastdfs</span><br><span class="line">42 base_path=/home/fastdfs</span><br><span class="line"></span><br><span class="line">110 #store_path0=/home/yuqing/fastdfs</span><br><span class="line">111 store_path0=/home/fastdfs/storage</span><br><span class="line"></span><br><span class="line">120 # tracker_server=192.168.209.121:22122</span><br><span class="line">121 tracker_server=192.168.110.128:22122</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="上传测试"><a href="#上传测试" class="headerlink" title="上传测试"></a>上传测试</h2><p>启动 tracker</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/usr/bin/fdfs_trackerd /etc/fdfs/tracker.conf restart</span><br></pre></td></tr></table></figure>
+
+<p>启动 storager</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/usr/bin/fdfs_storaged /etc/fdfs/storage.conf restart</span><br></pre></td></tr></table></figure>
+
+<p>修改 <code>client.conf</code> 配置文件 </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/fdfs/client.conf</span><br><span class="line"></span><br><span class="line">  9 # the base path to store log files</span><br><span class="line"> 10 #base_path=/home/yuqing/fastdfs</span><br><span class="line"> 11 base_path=/home/fastdfs</span><br><span class="line"> 12 </span><br><span class="line"> 13 # tracker_server can ocur more than once, and tracker_server format is</span><br><span class="line"> 14 #  &quot;host:port&quot;, host can be hostname or ip address</span><br><span class="line"> 15 # tracker_server=192.168.0.197:22122</span><br><span class="line"> 16 tracker_server=192.168.110.128:22122</span><br></pre></td></tr></table></figure>
+
+<p>上传一张图片到 /home 文件夹，执行测试程序</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/usr/bin/fdfs_test /etc/fdfs/client.conf upload /home/ttt.jgp</span><br></pre></td></tr></table></figure>
+
+<h2 id="整合-nginx"><a href="#整合-nginx" class="headerlink" title="整合 nginx"></a>整合 nginx</h2><h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>由于 fastdfs 自己并没有提供 http 服务，无法通过 http 协议去访问上传的文件路径，所以需要将 nginx 和 fastdfs 整合</p>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
+<li><p>上传 fastdfs-nginx-module_v1.16.tar.gz 到 /opt/fastdfs 目录</p>
+</li>
+<li><p>解压，并进入 <code>fastdfs-nginx-module/src</code> 目录</p>
+</li>
+<li><p>修改 <code>config</code> 文件：把 <code>/usr/local</code> 改成<code>/usr</code>（共3处）</p>
+</li>
+<li><p><code>cp mod_fastdfs.conf /etc/fdfs/</code></p>
+</li>
+<li><p>修改 <font color="#EE6A50">&lt;/etc/fdfs/mod_fastdfs.conf&gt;/font&gt; 内容</font></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/fdfs/mod_fastdfs.conf</span><br><span class="line"></span><br><span class="line">base_path=/home/fastdfs</span><br><span class="line">tracker_server=192.168.110.128:22122</span><br><span class="line"># tracker_server=192.168.70.133:22122（多个tracker配置多行）</span><br><span class="line"></span><br><span class="line">url_have_group_name=true #URL中包含group名称</span><br><span class="line">store_path0=/home/fastdfs/storage #指定文件存储路径</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 nginx 的解压目录下重新生成 makefile</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">./configure \</span><br><span class="line">--prefix=/usr/local/nginx \ </span><br><span class="line">--add-module=/opt/fastdfs/fastdfs-nginx-module/src</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重新编译，执行 <code>make</code> 命令</p>
+</li>
+<li><p>编译后在 objs 生成新的 nginx 脚本，替换 <font color="#EE6A50">/usr/local/nginx/sbin</font> 目录下的nginx文件，保险起见备份原来的 nginx 脚本，<code>cp /usr/local/nginx/sbin/nginx /usr/local/nginx/sbin/nginx.old.bak</code>，然后用 objs 的 nginx 脚本，<code>cp objs/nginx /usr/local/nginx/sbin</code></p>
+</li>
+<li><p>在 <font color="#EE6A50">nginx.conf</font> 中加入以下配置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  192.168.110.128;</span><br><span class="line"></span><br><span class="line">    location /group1/M00/&#123;</span><br><span class="line">        ngx_fastdfs_module;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动 nginx</p>
+<img src="/img/fastdfs笔记/2.png">
+</li>
+</ol>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/09/25/nginx学习笔记/" data-toggle="tooltip" data-placement="top" title="nginx学习笔记">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#功能"><span class="toc-text">功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fastdfs工作机制"><span class="toc-text">fastdfs工作机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装步骤"><span class="toc-text">安装步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#上传测试"><span class="toc-text">上传测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#整合-nginx"><span class="toc-text">整合 nginx</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原因"><span class="toc-text">原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤"><span class="toc-text">步骤</span></a></li></ol></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#分布式" title="分布式">分布式</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <div style="margin-top: 20px;">
+                    <h5 class="text-center">FRIENDS</h5>
+                    <ul class="list-inline text-center">
+                        
+                        <li><a href="https://www.antia1.top/">ANTIA</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/Swanyf">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Swan 2019
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/微信图片_20190723103112.jpg">
+</body>
+
+</html>
