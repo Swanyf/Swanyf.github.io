@@ -247,7 +247,7 @@ traker：追踪者。<font color="#045465">记录storager服务器的信息</fon
 </li>
 <li><p><code>cp mod_fastdfs.conf /etc/fdfs/</code></p>
 </li>
-<li><p>修改 <font color="#EE6A50">&lt;/etc/fdfs/mod_fastdfs.conf&gt;/font&gt; 内容</font></p>
+<li><p>修改 <font color="#EE6A50">/etc/fdfs/mod_fastdfs.conf</font> 内容</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/fdfs/mod_fastdfs.conf</span><br><span class="line"></span><br><span class="line">base_path=/home/fastdfs</span><br><span class="line">tracker_server=192.168.110.128:22122</span><br><span class="line"># tracker_server=192.168.70.133:22122（多个tracker配置多行）</span><br><span class="line"></span><br><span class="line">url_have_group_name=true #URL中包含group名称</span><br><span class="line">store_path0=/home/fastdfs/storage #指定文件存储路径</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>在 nginx 的解压目录下重新生成 makefile</p>
@@ -262,6 +262,8 @@ traker：追踪者。<font color="#045465">记录storager服务器的信息</fon
 </li>
 <li><p>启动 nginx</p>
 <img src="/img/fastdfs笔记/2.png">
+
+
 </li>
 </ol>
 
