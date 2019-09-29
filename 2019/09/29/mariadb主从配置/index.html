@@ -191,7 +191,13 @@
 <img src="/img/mariadb/3.png">
 
 <h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>在主库上创建 test 数据库，并建立 demo 表，插入一条数据，并刷新 slave 从库<br><img src="/img/mariadb/4.png"><br>可以看到主从库的数据一致同步</p>
-<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>不允许修改从库，但是可以在 slave 从库中删除数据，<font color="red">mysql 主从会失效</font>，slave 从库只负责读取数据就是负责跟 master主库保持一致的</p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><h3 id="主从不一致"><a href="#主从不一致" class="headerlink" title="主从不一致"></a>主从不一致</h3><p>不允许修改从库，但是可以在 slave 从库中删除数据，<font color="red">mysql 主从会失效</font>，slave 从库只负责读取数据就是负责跟 master主库保持一致的</p>
+<p>会出现下图这种主从库数据不一致的情况</p>
+<img src="/img/mariadb/5.png">
+
+<h3 id="如何解决？"><a href="#如何解决？" class="headerlink" title="如何解决？"></a>如何解决？</h3><p>重新执行上面的命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CHANGE MASTER TO MASTER_HOST=&apos;192.168.110.125&apos;,MASTER_USER=&apos;slave&apos;,MASTER_PASSWORD=&apos;slave&apos;,MASTER_LOG_FILE=&apos;file&apos;,MASTER_LOG_POS=position;</span><br></pre></td></tr></table></figure>
+
 
                 <hr>
                 
@@ -219,7 +225,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#docker安装mariadb"><span class="toc-text">docker安装mariadb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置主从环境"><span class="toc-text">配置主从环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#主服务器"><span class="toc-text">主服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从服务器"><span class="toc-text">从服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试"><span class="toc-text">测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注意"><span class="toc-text">注意</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#docker安装mariadb"><span class="toc-text">docker安装mariadb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置主从环境"><span class="toc-text">配置主从环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#主服务器"><span class="toc-text">主服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从服务器"><span class="toc-text">从服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试"><span class="toc-text">测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注意"><span class="toc-text">注意</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#主从不一致"><span class="toc-text">主从不一致</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何解决？"><span class="toc-text">如何解决？</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
