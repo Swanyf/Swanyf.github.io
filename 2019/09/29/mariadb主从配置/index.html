@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        linux下jenkins安装 卸载 配置｜Swan&#39;s blog
+        mariadb主从配置｜Swan&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/2019/09/19/linux下jenkins安装 卸载 配置/">
+    <link rel="canonical" href="http://yoursite.com/2019/09/29/mariadb主从配置/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -152,17 +152,15 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>linux下jenkins安装 卸载 配置</h1>
+                    <h1>mariadb主从配置</h1>
                     
                     <span class="meta">
                          作者 swan
                         <span>
-                          日期 2019-09-19
+                          日期 2019-09-29
                          </span>
                     </span>
                     <div class="tags text-center">
-                        
-                        <a class="tag" href="/tags/#部署" title="部署">部署</a>
                         
                     </div>
                 </div>
@@ -171,7 +169,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            linux下jenkins安装 卸载 配置
+            mariadb主从配置
         </span>
     </div>
 </header>
@@ -182,40 +180,27 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>下载rpm包<br><a href="https://pkg.jenkins.io/redhat-stable/" target="_blank" rel="noopener">https://pkg.jenkins.io/redhat-stable/</a></p>
-<p>解压</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">rpm -ivh jenkins-xxx.noarch.rpm</span><br></pre></td></tr></table></figure>
+                <h2 id="docker安装mariadb"><a href="#docker安装mariadb" class="headerlink" title="docker安装mariadb"></a>docker安装mariadb</h2><p>准备俩台服务器执行同样的操作</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 拉取镜像</span><br><span class="line">docker pull mariadb</span><br><span class="line"></span><br><span class="line"># 创建容器卷</span><br><span class="line">mkdir -p /mydata/mariadb/conf</span><br><span class="line"></span><br><span class="line">docker run -di --name=mariadb mariadb</span><br><span class="line"></span><br><span class="line">docker cp mariadb:/etc/mysql/my.cnf /mydata/mariadb/conf</span><br><span class="line"></span><br><span class="line">docker rm -f mariadb</span><br><span class="line"></span><br><span class="line"># 启动mariadb</span><br><span class="line">docker run -di --name=mariadb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=rootswan -v /mydata/mariadb/conf/my.cnf:/etc/mysql/my.cnf mariadb</span><br><span class="line"></span><br><span class="line"># 修改配置</span><br><span class="line">vim /mydata/mariadb/conf/my.cnf</span><br><span class="line">server-id = 1  # 从服务器设置成2</span><br><span class="line"></span><br><span class="line">注释打开 log_bin</span><br></pre></td></tr></table></figure>
 
-<p>配置jenkins </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vi /etc/sysconfig/jenkins</span><br></pre></td></tr></table></figure>
+<h2 id="配置主从环境"><a href="#配置主从环境" class="headerlink" title="配置主从环境"></a>配置主从环境</h2><h3 id="主服务器"><a href="#主服务器" class="headerlink" title="主服务器"></a>主服务器</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 进入容器内部</span><br><span class="line">docker exec -it mariadb /bin/bash</span><br><span class="line"></span><br><span class="line"># 进入mariadb</span><br><span class="line">mysql -u root -p</span><br><span class="line"></span><br><span class="line"># 在主节点建立账户并授权Salve</span><br><span class="line">GRANT REPLICATION SALVE ON *.* TO &apos;salve&apos;@&apos;%&apos; IDENTIFIED BY &apos;salve&apos;;</span><br></pre></td></tr></table></figure>
 
-<p>修改用户和端口</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">JENKINS_USER="root" </span><br><span class="line">JENKINS_PORT="10000"</span><br></pre></td></tr></table></figure>
+<p>查看Master状态<br><img src="/img/mariadb/2.png"></p>
+<h3 id="从服务器"><a href="#从服务器" class="headerlink" title="从服务器"></a>从服务器</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 建立与Master之间的联系</span><br><span class="line">CHANGE MASTER TO MASTER_HOST=&apos;192.168.110.125&apos;,MASTER_USER=&apos;slave&apos;,MASTER_PASSWORD=&apos;slave&apos;,MASTER_LOG_FILE=&apos;上图中的FILE&apos;,MASTER_LOG_POS=上图中的postion;</span><br><span class="line"></span><br><span class="line"># 停止slave</span><br><span class="line">slave stop;</span><br><span class="line"></span><br><span class="line"># 启动</span><br><span class="line">slave start;</span><br></pre></td></tr></table></figure>
 
-<p>启动服务</p>
-<pre><code class="shell">systemctl start jenkins</code></pre>
-<p>访问链接，<a href="http://xxx.xxx.xxx.xxx:10000" target="_blank" rel="noopener">http://xxx.xxx.xxx.xxx:10000</a></p>
-<p>登录<br>从 <code>/var/lib/jenkins/secrets/initialAdminPassword</code> 中获取初始密码串，用户名为<code>admin</code></p>
-<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2><pre><code class="shell">rpm -e jenkins
+<img src="/img/mariadb/3.png">
 
-检查是否卸载成功
-rpm -ql jenkins 
-
-彻底删除残留文件
-find / -iname jenkins | xargs -n 1000 rm -rf</code></pre>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>在主库上创建 test 数据库，并建立 demo 表，插入一条数据，并刷新 slave 从库<br><img src="/img/mariadb/4.png"><br>可以看到主从库的数据一致同步</p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>不允许修改从库，但是可以在 slave 从库中删除数据，<font color="red">mysql 主从会失效</font>，slave 从库只负责读取数据就是负责跟 master主库保持一致的</p>
 
                 <hr>
                 
 
                 <ul class="pager">
                     
-                    <li class="previous">
-                        <a href="/2019/09/19/搭建springcloud体系架构/" data-toggle="tooltip" data-placement="top" title="搭建springcloud体系架构">&larr; Previous Post</a>
-                    </li>
-                    
                     
                     <li class="next">
-                        <a href="/2019/09/05/ActiveMQ的使用/" data-toggle="tooltip" data-placement="top" title="ActiveMQ的使用">Next Post &rarr;</a>
+                        <a href="/2019/09/27/fastdfs文件服务器/" data-toggle="tooltip" data-placement="top" title="fastdfs文件服务器">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -234,7 +219,7 @@ find / -iname jenkins | xargs -n 1000 rm -rf</code></pre>
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#卸载"><span class="toc-text">卸载</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#docker安装mariadb"><span class="toc-text">docker安装mariadb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置主从环境"><span class="toc-text">配置主从环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#主服务器"><span class="toc-text">主服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从服务器"><span class="toc-text">从服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试"><span class="toc-text">测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注意"><span class="toc-text">注意</span></a></li></ol>
                 </div>
             </div>
         </div>
@@ -255,8 +240,6 @@ find / -iname jenkins | xargs -n 1000 rm -rf</code></pre>
                         <a href="/tags/">FEATURED TAGS</a>
                     </h5>
                     <div class="tags">
-                        
-                        <a class="tag" href="/tags/#部署" title="部署">部署</a>
                         
                     </div>
                 </section>
