@@ -159,6 +159,32 @@
 
 
 
+<div class="post-preview " style="background-image: url('')">
+    <a href="/2018/12/30/redis分布式锁/">
+        <h2 class="post-title">
+            redis分布式锁
+        </h2>
+        <p class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2018-12-30
+        </p>
+        
+        <div class="post-content-preview">
+            <p>
+                加锁通过 setnx 命令给指定的 key 写入一个随机值，同时设置失效时间，若写值成功即加锁成功
+setnx key value nx(not exist) px(时间单位毫秒) 1000
+
+
+必须给锁设置失效时间，避免死锁。假设有A、B俩个服务，A服务操作业务给a加锁超时为 2s，若A服务出..
+            </p>
+        </div>
+    </a>
+
+</div>
+
+<hr>
+
+
+
 <div class="post-preview " style="background-image: url('/img/java8特性/rainforest_fog-wallpaper-1920x1080.jpg')">
     <a href="/2018/12/13/java8特性/">
         <h2 class="post-title">
@@ -275,15 +301,23 @@
                     
                     
                     
-                    <a href="/tags/#部署" title="部署" rel="3">部署</a>
-                    
-                    
-                    
                     <a href="/tags/#java" title="java" rel="4">java</a>
                     
                     
                     
+                    <a href="/tags/#部署" title="部署" rel="3">部署</a>
+                    
+                    
+                    
+                    <a href="/tags/#mysql" title="mysql" rel="1">mysql</a>
+                    
+                    
+                    
                     <a href="/tags/#node.js" title="node.js" rel="1">node.js</a>
+                    
+                    
+                    
+                    <a href="/tags/#springboot" title="springboot" rel="2">springboot</a>
                     
                     
                     
@@ -295,15 +329,11 @@
                     
                     
                     
-                    <a href="/tags/#mysql" title="mysql" rel="1">mysql</a>
-                    
-                    
-                    
-                    <a href="/tags/#springboot" title="springboot" rel="2">springboot</a>
-                    
-                    
-                    
                     <a href="/tags/#分布式" title="分布式" rel="3">分布式</a>
+                    
+                    
+                    
+                    <a href="/tags/#spring" title="spring" rel="1">spring</a>
                     
                     
                     

@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        Swan&#39;s blog
+        详解事务Transaction｜Swan&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/archives/2018/">
+    <link rel="canonical" href="http://yoursite.com/2019/10/10/详解事务Transaction/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -43,7 +43,7 @@
 <!-- hack iOS CSS :active style -->
 <body ontouchstart="" class="animated fadeIn">
 <!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="false" data-istags="false
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="true" data-istags="false
 " data-ishome="false">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -132,243 +132,134 @@
 
 <!-- Main Content -->
 
+<!--only post-->
 
-<!-- Page Header -->
-<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 visible-xs-block visible-sm-block">
-    <div class="row">
-        <header class="intro-header">
-            <div class="container">
-                <div class="site-heading text-center">
-                    <div class="about-me">
-                        <!--移动端头部显示-->
-                        <img src="/img/微信图片_20190723103112.jpg">
-                        <h5><a href="/about/">swan</a></h5>
-                        <p>低调做人 高调做事</p>
+
+<img class="wechat-title-img" src>
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>详解事务Transaction</h1>
+                    
+                    <span class="meta">
+                         作者 swan
+                        <span>
+                          日期 2019-10-10
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#spring" title="spring">spring</a>
+                        
                     </div>
                 </div>
             </div>
-        </header>
+        </div>
     </div>
-</div>
-<!-- Main Content -->
-<div class="container custom-haojen-container">
-    <!-- Post Container -->
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 post-container">
-            <!-- Main Content -->
+    <div class="post-title-haojen">
+        <span>
+            详解事务Transaction
+        </span>
+    </div>
+</header>
 
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p><a href="https://blog.csdn.net/xcbeyond/article/details/81235995" target="_blank" rel="noopener">传送门</a></p>
 
-
-<div class="post-preview " style="background-image: url('')">
-    <a href="/2018/12/30/redis分布式锁/">
-        <h2 class="post-title">
-            redis分布式锁
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2018-12-30
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                加锁通过 setnx 命令给指定的 key 写入一个随机值，同时设置失效时间，若写值成功即加锁成功
-setnx key value nx(not exist) px(时间单位毫秒) 1000
-
-
-必须给锁设置失效时间，避免死锁。假设有A、B俩个服务，A服务操作业务给a加锁超时为 2s，若A服务出..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
-<div class="post-preview " style="background-image: url('/img/java8特性/rainforest_fog-wallpaper-1920x1080.jpg')">
-    <a href="/2018/12/13/java8特性/">
-        <h2 class="post-title">
-            java8特性
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2018-12-13
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                介绍
-04年推出 jdk5 ，改革非常大06年推出 jdk6 ,企业中使用的最长久版本11年 推出 jdk714年 推出 jdk8  LTS版本：受商业公司支持的长期版本17年  9月份推出 jdk9，   “六个月版本升级计划”   小版本18年 3月份 推出jdk10            ..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
-<div class="post-preview " style="background-image: url('')">
-    <a href="/2018/12/12/springboot整合windows下elasticsearch/">
-        <h2 class="post-title">
-            springboot整合windows下elasticsearch
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2018-12-12
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
+                <hr>
                 
-            </p>
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/09/29/mariadb主从配置/" data-toggle="tooltip" data-placement="top" title="mariadb主从配置">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    
+                </div>
+            </div>
         </div>
-    </a>
 
-</div>
+        <div class="row">
+            <!-- Sidebar Container -->
 
-<hr>
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
 
-
-
-
-<!-- 翻页 pager -->
-
-<ul class="pager">
-    
-    
-</ul>
-
-
-        </div>
-        <!-- Sidebar Container -->
-        <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
-
-            <!-- About Me -->
-            <section class="visible-md visible-lg" style="padding: 0 18px">
-                <div class="short-about">
-                    <!--侧边栏头像-->
-                    
-                    <img src="/img/微信图片_20190723103112.jpg">
-                    
-                    <h5><a href="/about/">swan</a></h5>
-                    
-                    <p>低调做人 高调做事</p>
-                    
-                    <hr>
-                    <!-- SNS Link 社交 -->
-                    <ul class="list-inline">
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
                         
+                        <a class="tag" href="/tags/#spring" title="spring">spring</a>
                         
-                        
+                    </div>
+                </section>
+                
 
+                <!-- Friends Blog -->
+                
+                <div style="margin-top: 20px;">
+                    <h5 class="text-center">FRIENDS</h5>
+                    <ul class="list-inline text-center">
                         
-
-                        
-
-                        
-                        <li>
-                            <a target="_blank" href="https://github.com/Swanyf">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                        </span>
-                            </a>
-                        </li>
-                        
-
+                        <li><a href="https://www.antia1.top/">ANTIA</a></li>
                         
                     </ul>
                 </div>
-            </section>
-
-            <!-- Featured Tags  标签 -->
-            
-            <section>
-                <div class="tags">
-                    
-                    
-                    <a href="/tags/#学习计划" title="学习计划" rel="1">学习计划</a>
-                    
-                    
-                    
-                    <a href="/tags/#java" title="java" rel="4">java</a>
-                    
-                    
-                    
-                    <a href="/tags/#部署" title="部署" rel="3">部署</a>
-                    
-                    
-                    
-                    <a href="/tags/#mysql" title="mysql" rel="1">mysql</a>
-                    
-                    
-                    
-                    <a href="/tags/#node.js" title="node.js" rel="1">node.js</a>
-                    
-                    
-                    
-                    <a href="/tags/#springboot" title="springboot" rel="2">springboot</a>
-                    
-                    
-                    
-                    <a href="/tags/#redis" title="redis" rel="2">redis</a>
-                    
-                    
-                    
-                    <a href="/tags/#异常" title="异常" rel="1">异常</a>
-                    
-                    
-                    
-                    <a href="/tags/#分布式" title="分布式" rel="3">分布式</a>
-                    
-                    
-                    
-                    <a href="/tags/#spring" title="spring" rel="1">spring</a>
-                    
-                    
-                    
-                    <a href="/tags/#微服务" title="微服务" rel="2">微服务</a>
-                    
-                    
-                    
-                    <a href="/tags/#javascript" title="javascript" rel="1">javascript</a>
-                    
-                    
-                    
-                    <a href="/tags/#sql" title="sql" rel="1">sql</a>
-                    
-                    
-                    
-                    <a href="/tags/#vue.js" title="vue.js" rel="2">vue.js</a>
-                    
-                    
-                    
-                    <a href="/tags/#微信公众号" title="微信公众号" rel="1">微信公众号</a>
-                    
-                    
-                </div>
-            </section>
-            
-
-            
-            <hr>
-            <h5 style="text-align: center;">Friends</h5>
-            <ul class="list-inline" style="text-align: center;">
                 
-                <li><a href="https://www.antia1.top/" target="_blank">ANTIA</a></li>
-                
-            </ul>
-            
-
+            </div>
         </div>
+
     </div>
-</div>
+</article>
+
+
+
+
+
+
 
 <!-- Footer -->
 <!-- Footer -->
