@@ -87,7 +87,7 @@ pre .pi,
 pre .lisp .string,
 pre .javadoc {
   color: #93a1a1;
- /* font-style: italic;*/
+  font-style: italic;
 }
 pre .keyword,
 pre .winutils,

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/pig.jpg">
+    <link rel="alternate" type="application/atom+xml" title="Swan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        rocketMQ概念｜Swan&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2019/10/14/rocketMQ概念/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('/img/pig.jpg')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="true" data-istags="false
+" data-ishome="false">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    Swan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/my-works/">杂志</a>
+                        </li>
+							
+						
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img" src="null/img/rocketmq概念/1.png">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/img/rocketmq概念/1.png?imageView2/1/w/1400/h/400/interlace/1/q/90')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>rocketMQ概念</h1>
+                    
+                    <span class="meta">
+                         作者 swan
+                        <span>
+                          日期 2019-10-14
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#mq" title="mq">mq</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            rocketMQ概念
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ol>
+<li>强调集群无单点，可扩展，任意一点高可用，水平可扩展。</li>
+<li>海量消息堆积能力，消息堆积，写入低延迟。</li>
+<li>支持上万个队列</li>
+<li>消息失败重试机制</li>
+<li>消息可查询</li>
+<li>开源社区活跃</li>
+<li>成熟度(经过双十一考验)</li>
+</ol>
+<h2 id="包的含义"><a href="#包的含义" class="headerlink" title="包的含义"></a>包的含义</h2><table>
+<thead>
+<tr>
+<th>包名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>rocketmq-common</td>
+<td>通用的常量枚举、基类方法或者数据结构，按描述的目标来分包。通俗易懂。包名有: admin, consumer, filter, hook, message等</td>
+</tr>
+<tr>
+<td>rocketmq-remoting</td>
+<td>用Netty4写的客户端和服务端, fastjson做的序列化，自定义二进制协议</td>
+</tr>
+<tr>
+<td>rocketmq-srvutil</td>
+<td>只有一个ServerUtil类， 类注解是，只提供Server程序依赖，目的为了拆解客户端依赖，尽可能减少客户端的依赖</td>
+</tr>
+<tr>
+<td>rocketmq-store</td>
+<td>存储服务，消息存储，索引存储，commitlog存储</td>
+</tr>
+<tr>
+<td>rocketmq-client</td>
+<td>客户瑞，包念producer端和consumer端，发送消息和接收消息的过程</td>
+</tr>
+<tr>
+<td>rocketmq-filtersrv</td>
+<td>消息过滤器server</td>
+</tr>
+<tr>
+<td>rocketmq-broker</td>
+<td>对consumer 和producer来说是服务端，接收producer发来的消息并存储，同时consumer来这里拉取消息</td>
+</tr>
+<tr>
+<td>rocketmq-tools</td>
+<td>命令行工具</td>
+</tr>
+<tr>
+<td>rocketmq-namesrv</td>
+<td>NameServer, 类似SOA服务的注册中心，这里保存着消息的TopicName,队列等运行时的meta信息。一般系统分dataNodeHnameNode,这里是nameNode</td>
+</tr>
+</tbody></table>
+<h3 id="rocketmq-namesrv模块介绍"><a href="#rocketmq-namesrv模块介绍" class="headerlink" title="rocketmq-namesrv模块介绍"></a>rocketmq-namesrv模块介绍</h3><ul>
+<li>rocketmq-namesrv 扮演着nameNode角色，记录运行时消息相关的meta信息以及broker和filtersrv运行时信息，可以部署集群</li>
+<li>我们可以把namesrv理解成一个轻 量级的zookeeper,他比zookeeper性能更好，并且比zookeeper的可靠性更强</li>
+<li>rocketmq-namesrv主 要是节点之间相互进行心跳检测、数据通信、集群高可靠性、一致性、容错性等方面的核心模块</li>
+<li>rocketmq-namesrv的底层通信机制与Netty4进行联系，上层通信与各个模块产生强-致性的对应关系。当broker, producer, consumer 都运行后, namesrv-共有8类线程， 如:守护线程、定时任务线程、Netty的boss线程、NettyEventExecuter线程、DestroyJavaVM线程、Work线程、Handler线、程RemotingExecutorThread线程</li>
+</ul>
+<p>八类线程：<br>ServerHouseKeepingService<br>守护线程,本质是ChannelEventListener,监听broker的channel变化米更新本地的RouteInfo</p>
+<p>NSScheduledThread1<br>定时任务线程，定时跑2个任务，第一个是，每隔10分钟扫描出不活动的broker,然后从routelnfo中删除，第二个是，每隔10分钟定时打印config Table的信息</p>
+<p>NettyBossSelector_ 1<br>Netty的boss线程(Accept线程),这里只有一根线程</p>
+<p>NettyEventExecuter<br>一个单独的线程,监听NettyChannel状态变化来通知ChannelEventListener做响应的动作</p>
+<p>DestroyJavaVM<br>java虚拟机析构钩子，一般是当虚拟机关闭时用来清理或者释放资源</p>
+<p>NettyServerSelector_ x_ x<br>Netty的Work线程(I0线程)，这里可能有多根线程</p>
+<p>NettyServerWorkerThread_ x<br>执行ChannelHandler 方法的线程，ChannelHandler运行在该线程上,这里可能有多根线程</p>
+<p>RemotingExecutorThread_ x<br>服务端逻辑线程，这里可能有多根线程</p>
+<hr>
+<p>rocketmq-namesrv 扮演着nameNode角色，记录运行时消息相关的meta信息以及broker和fitersrv运行时信息，可以部署集群</p>
+<h3 id="rocketmq-broker模块"><a href="#rocketmq-broker模块" class="headerlink" title="rocketmq-broker模块"></a>rocketmq-broker模块</h3><p>这个是数据存储的核心，也就是真正的MQ服务器。我们所谓的消息存储、接收、拉取、推送操作都是在broker上进行的</p>
+<h3 id="rocketmq-filtersrv模块"><a href="#rocketmq-filtersrv模块" class="headerlink" title="rocketmq-filtersrv模块"></a>rocketmq-filtersrv模块</h3><p>在rocketmq中，使用独立的一个模块去对数据进行过滤，实现了真正意义上的高内聚低耦合的设计思想。</p>
+<p>我们在使用rocketmq-fitersrv模块的时候也需要启动filter服务</p>
+<h2 id="rocketmq详解"><a href="#rocketmq详解" class="headerlink" title="rocketmq详解"></a>rocketmq详解</h2><p>在RocketMQ里，可以理解为没有类似于ActiveMQ的createQueue和lcreate Topic的语法，也就是点对点和发布订阅模型。</p>
+<p>RocketMQ不遵循JMS规范，自己有一套自定义的机制，简单来说都是使用订阅主题的方式去发送和接收任务的，但是支持<code>集群</code>和<code>广播</code>两种消息模式</p>
+<ul>
+<li>集群模式:设置消费端对象属性: MessageModel.CLUSTERING，这种方式就可以达到类似于ActiveMQ水平扩展负责均衡消费消息的实现，比较特殊的是，这种行为可以支持先发送数据(也就是生产瑞先传送数据到MQ)，消费端订阅主题发生在生产端之后也可以收到数据，比较灵活</li>
+<li>广播模式:设置消费瑞对象属性: MessageModel.BROADCASTING, 这种模式就是相当于生产端发送数据到MQ,多个消费端都可以获得到数据</li>
+</ul>
+<h3 id="组的概念"><a href="#组的概念" class="headerlink" title="组的概念"></a>组的概念</h3><p>在RocketMQ里，有一个很重要的概念，就是 GroupName ,无论是生产瑞还是消费端，都必须指定一个 GroupName，这个组名称，是维护在应用系统级别上的。</p>
+<p>比如在生产端指定一个名称: ProducerGroupName, 这个名称是需要由应用系统来保证唯-一性的,一类 Producer 集合的名称，这类 Producer 通常发送一类消息，且发送逻辑一致。同理消费端也是如此</p>
+<h3 id="topic主题"><a href="#topic主题" class="headerlink" title="topic主题"></a>topic主题</h3><p>每个主题表示一个 逻辑上存储的概念，而在其MQ上，会有着与之对应的多个Queue队列，这个是物理存储的概念</p>
+<h2 id="producer详解"><a href="#producer详解" class="headerlink" title="producer详解"></a>producer详解</h2><p>对于 Producer,他可以发送消息，并且可以对多个主题去发送消息，这种设计非常的灵话。<br>而且可以通过<code>Tag</code>定义一些简单的过滤，通常已经满足我们90%的需求了，如果更复杂的过滤场景下，可能会使用 filtersv 组件</p>
+<h3 id="普通模式"><a href="#普通模式" class="headerlink" title="普通模式"></a>普通模式</h3><p>使用传统的 send 发送消息即可。这种模式下不能保证消息的顺序上致性</p>
+<h3 id="顺序模式"><a href="#顺序模式" class="headerlink" title="顺序模式"></a>顺序模式</h3><p>rocketmq可以保证严格的消息顺序进行消费。遵循全局顺序的时候使用一个queue, 局部顺序的时候可以使用多个queue并行消费</p>
+<h3 id="事务模式"><a href="#事务模式" class="headerlink" title="事务模式"></a>事务模式</h3><p>支持事务方式对消息进行提交处理，在 rocketmq 里事务分为俩个阶段。</p>
+<ol>
+<li>把消息传递给MQ只不过，消费端不可见，但是数据其实已经发送到 borker上了</li>
+<li>本地消息回调处理，如果成功的话返回 COMMIT MESSAGE，则在broker上的数据对消费端可见，失败则为ROLLBACK MESSAGE，消费端不可见</li>
+</ol>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/10/10/详解事务Transaction/" data-toggle="tooltip" data-placement="top" title="详解事务Transaction">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#包的含义"><span class="toc-text">包的含义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#rocketmq-namesrv模块介绍"><span class="toc-text">rocketmq-namesrv模块介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rocketmq-broker模块"><span class="toc-text">rocketmq-broker模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rocketmq-filtersrv模块"><span class="toc-text">rocketmq-filtersrv模块</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rocketmq详解"><span class="toc-text">rocketmq详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#组的概念"><span class="toc-text">组的概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#topic主题"><span class="toc-text">topic主题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#producer详解"><span class="toc-text">producer详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#普通模式"><span class="toc-text">普通模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#顺序模式"><span class="toc-text">顺序模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事务模式"><span class="toc-text">事务模式</span></a></li></ol></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#mq" title="mq">mq</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <div style="margin-top: 20px;">
+                    <h5 class="text-center">FRIENDS</h5>
+                    <ul class="list-inline text-center">
+                        
+                        <li><a href="https://www.antia1.top/">ANTIA</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/Swanyf">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Swan 2019
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/微信图片_20190723103112.jpg">
+</body>
+
+</html>

@@ -22,7 +22,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/tags/springboot/">
+    <link rel="canonical" href="http://yoursite.com/tags/mq/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -159,19 +159,36 @@
 
 
 
-<div class="post-preview " style="background-image: url('/img/springboot整合发送邮件/aa.png')">
-    <a href="/2019/09/20/使用springboot发送邮件/">
+<div class="post-preview " style="background-image: url('/img/rocketmq概念/1.png')">
+    <a href="/2019/10/14/rocketMQ概念/">
         <h2 class="post-title">
-            springboot整合发送邮件
+            rocketMQ概念
         </h2>
         <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-09-20
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-10-14
         </p>
         
         <div class="post-content-preview">
             <p>
-                引入 springboot 整合 javax.mail 的依赖
-&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-start..
+                优点
+强调集群无单点，可扩展，任意一点高可用，水平可扩展。
+海量消息堆积能力，消息堆积，写入低延迟。
+支持上万个队列
+消息失败重试机制
+消息可查询
+开源社区活跃
+成熟度(经过双十一考验)
+
+包的含义
+
+
+包名
+含义
+
+
+
+rocketmq-common
+通用的常量枚举、基类方法或者数据结构，按描..
             </p>
         </div>
     </a>
@@ -182,18 +199,48 @@
 
 
 
-<div class="post-preview " style="background-image: url('')">
-    <a href="/2018/12/12/springboot整合windows下elasticsearch/">
+<div class="post-preview " style="background-image: url('/img/activemq的使用/6kw5z6.jpg')">
+    <a href="/2019/09/05/ActiveMQ的使用/">
         <h2 class="post-title">
-            springboot整合windows下elasticsearch
+            ActiveMQ的使用
         </h2>
         <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2018-12-12
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-09-05
         </p>
         
         <div class="post-content-preview">
             <p>
-                
+                介绍ActiveMQ是一种消息中间件，有两种模式：
+
+一种点对点模式 发布者将发布的消息发送给服务器，等待用户监听并接受数据
+第二种订阅模式 发布者将消息发布给消息服务器，让服务器将所有的数据直接转发给再监听的用户，进行一对多通信（类似微信公众号）。ActiveMQ主要是为了降低程序间的耦合，以..
+            </p>
+        </div>
+    </a>
+
+</div>
+
+<hr>
+
+
+
+<div class="post-preview " style="background-image: url('/img/什么是消息队列/2e99dg.jpg')">
+    <a href="/2019/09/04/什么是消息队列？/">
+        <h2 class="post-title">
+            什么是消息队列？
+        </h2>
+        <p class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-09-04
+        </p>
+        
+        <div class="post-content-preview">
+            <p>
+                概述
+消息队列中间件是分布式系统中重要的组件，主要解决应用耦合，异步消息，流量削锋等问题。
+实现高性能，高可用，可伸缩和最终一致性架构。
+使用较多的消息队列有ActiveMQ，RabbitMQ，ZeroMQ，Kafka，MetaMQ，RocketMQ
+队列是一种先进先出的数据结构。
+消息队列可以..
             </p>
         </div>
     </a>
