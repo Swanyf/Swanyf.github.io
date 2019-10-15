@@ -182,7 +182,7 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <h2 id="watcher特性"><a href="#watcher特性" class="headerlink" title="watcher特性"></a>watcher特性</h2><h3 id="一次性"><a href="#一次性" class="headerlink" title="一次性"></a>一次性</h3><p>对于ZK的 watcher，只需要记住一点: zookeeper有watch事件，是一次性触发的，当 watch监视的数据发生变化时，通知设置了该watch的 client，即watcher。</p>
+                <h2 id="watch特性"><a href="#watch特性" class="headerlink" title="watch特性"></a>watch特性</h2><h3 id="一次性"><a href="#一次性" class="headerlink" title="一次性"></a>一次性</h3><p>对于ZK的 watcher，只需要记住一点: zookeeper有watch事件，是一次性触发的，当 watch监视的数据发生变化时，通知设置了该watch的 client，即watcher。</p>
 <p>由于 zookeeper 的监控都是一次性的所以 每次必须设置监控。</p>
 <h3 id="客户端串行执行"><a href="#客户端串行执行" class="headerlink" title="客户端串行执行"></a>客户端串行执行</h3><p>客户端 Watcher 回调的过程是一个串行同步的过程，这为我们保证了顺序，同时需要开发人员注意一点。</p>
 <p>千万不要因为一个 Watcher 的处理逻辑影响了整个客户端的 Watcher 回调</p>
@@ -215,7 +215,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#watcher特性"><span class="toc-text">watcher特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一次性"><span class="toc-text">一次性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#客户端串行执行"><span class="toc-text">客户端串行执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#轻量"><span class="toc-text">轻量</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#watch特性"><span class="toc-text">watch特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一次性"><span class="toc-text">一次性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#客户端串行执行"><span class="toc-text">客户端串行执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#轻量"><span class="toc-text">轻量</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
