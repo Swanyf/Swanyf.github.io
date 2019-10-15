@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        springboot整合windows下elasticsearch｜Swan&#39;s blog
+        zookeeper集群搭建｜Swan&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/2018/12/12/springboot整合windows下elasticsearch/">
+    <link rel="canonical" href="http://yoursite.com/2018/10/15/zookeeper集群搭建/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -135,13 +135,13 @@
 <!--only post-->
 
 
-<img class="wechat-title-img" src>
+<img class="wechat-title-img" src="null/img/zookeeper集群搭建/1.jpg">
 
 
 <style>
     
     header.intro-header {
-        background-image: url('')
+        background-image: url('/img/zookeeper集群搭建/1.jpg?imageView2/1/w/1400/h/400/interlace/1/q/90')
     }
 
     
@@ -152,17 +152,17 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>springboot整合windows下elasticsearch</h1>
+                    <h1>zookeeper集群搭建</h1>
                     
                     <span class="meta">
                          作者 swan
                         <span>
-                          日期 2018-12-12
+                          日期 2018-10-15
                          </span>
                     </span>
                     <div class="tags text-center">
                         
-                        <a class="tag" href="/tags/#springboot" title="springboot">springboot</a>
+                        <a class="tag" href="/tags/#分布式/微服务" title="分布式/微服务">分布式/微服务</a>
                         
                     </div>
                 </div>
@@ -171,7 +171,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            springboot整合windows下elasticsearch
+            zookeeper集群搭建
         </span>
     </div>
 </header>
@@ -182,20 +182,49 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                
+                <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>一共三个节点(zk服务器集群规模不小于3个节点)，要求服务器之间系统时间保持一致</p>
+<h2 id="上传解压"><a href="#上传解压" class="headerlink" title="上传解压"></a>上传解压</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -zxvf zookeeper-3.4.9.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改环境变量"><a href="#修改环境变量" class="headerlink" title="修改环境变量"></a>修改环境变量</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi /etc/profile</span><br><span class="line"></span><br><span class="line">export ZOOKEEPER_HOME=/opt/zookeeper-3.4.9</span><br><span class="line">export PATH=.:$HADOOP_HOME/bin:$ZOOKEERPER_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
+
+<h2 id="刷新"><a href="#刷新" class="headerlink" title="刷新"></a>刷新</h2><p>source /etc/profile</p>
+<h2 id="重命名文件"><a href="#重命名文件" class="headerlink" title="重命名文件"></a>重命名文件</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd /opt/zookeeper-3.4.9/conf</span><br><span class="line">mv zoo_sample.cfg zoo_sample.cfg.bak</span><br><span class="line">mv zoo_sample.cfg.bak zoo.cfg</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改配置，配置集群"><a href="#修改配置，配置集群" class="headerlink" title="修改配置，配置集群"></a>修改配置，配置集群</h2><p>vi zoo.cfg</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">12 dataDir=/opt/zookeeper-3.4.9/data</span><br><span class="line">server.0=192.168.110.125:2888:3888</span><br><span class="line">server.1=192.168.110.126:2888:3888</span><br><span class="line">server.2=192.168.110.128:2888:3888</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置文件zoo-cfg详解"><a href="#配置文件zoo-cfg详解" class="headerlink" title="配置文件zoo.cfg详解"></a>配置文件zoo.cfg详解</h3><p>tickTime:<br>基本事件单元，以毫秒为单位。这个时间是作为 Zookeeper 服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每隔 tickTime 时问就会发送一个心跳</p>
+<p>dataDir:<br>存储内存中数据库快照的位置，顾名思义就是 Zookeeper 保存数据的目录，默认情况下， Zookeeper 将写数据的日志文件也保存在这个目录里</p>
+<p>clientPort:<br>这个端口就是客户端连接 Zookeeper 服务器的端口，Zookeeper 会监听这个端口接受客户端的访问请求</p>
+<p>initLimit:<br>这个配置项是用来配置 Zookeeper 接受客户端初始化连接时最长能忍受多少个心跳时间间隔数，当已经超过10个心跳的时间(也就是tickTime)长度后 Zookeeper 服务器还没有收到客户端的返回信息，那么表明这个客户端连接失败。总的时间长度就是10*2000=20秒</p>
+<p>syncLimit:<br>这个配置项标识 Leader 与 Follower 之间发送消息，请求和应答时间长度，最长不能超过多少个 tickTime 的时间长度，总的时间长度就是5*2000=10秒</p>
+<p><code>server.A= B:C:D</code></p>
+<ul>
+<li>A表示这个是第几号服务器</li>
+<li>B是这个服务器的ip地址</li>
+<li>C表示的是这个服务器与集群中的 Leader 服务器交换信息的端口</li>
+<li>D表示的是万一集群中的 Leader 服务器挂了，需要一个端口来重新进行选举，选出一个新的 Leader</li>
+</ul>
+<h2 id="创建文件夹"><a href="#创建文件夹" class="headerlink" title="创建文件夹"></a>创建文件夹</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir /opt/zookeeper-3.4.9/data</span><br></pre></td></tr></table></figure>
+
+<h2 id="识别集群"><a href="#识别集群" class="headerlink" title="识别集群"></a>识别集群</h2><p>vi /opt/zookeeper-3.4.9/data/myid<br>分别指定<br>192.168.110.125的myid输入 0<br>192.168.110.126的myid输入 1<br>192.168.110.128的myid输入 2</p>
+<h2 id="启动-停止-状态"><a href="#启动-停止-状态" class="headerlink" title="启动 停止 状态"></a>启动 停止 状态</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zkServer.sh start</span><br><span class="line">zkServer.sh stop</span><br><span class="line">zkServer.sh status</span><br></pre></td></tr></table></figure>
+
+<p>主节点 status 为 leader<br>从节点为 follower</p>
+<h2 id="操作shell"><a href="#操作shell" class="headerlink" title="操作shell"></a>操作shell</h2><h3 id="进入客户端"><a href="#进入客户端" class="headerlink" title="进入客户端"></a>进入客户端</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zkCli.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><p>查找：<code>ls /</code><br>创建并赋值：<code>create /name swan</code><br>获取：<code>get /name</code><br>设值：<code>set /name jastin</code><br>递归删除节点：<code>rmr /name</code><br>删除指定节点：<code>delete /name</code></p>
+<p>创建节点有俩种类型：<br>短暂(ephemeral) 持久(persistent)</p>
+
                 <hr>
                 
 
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2018/12/13/java8特性/" data-toggle="tooltip" data-placement="top" title="java8特性">&larr; Previous Post</a>
+                        <a href="/2018/12/12/springboot整合windows下elasticsearch/" data-toggle="tooltip" data-placement="top" title="springboot整合windows下elasticsearch">&larr; Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2018/10/15/zookeeper集群搭建/" data-toggle="tooltip" data-placement="top" title="zookeeper集群搭建">Next Post &rarr;</a>
-                    </li>
                     
                 </ul>
 
@@ -213,7 +242,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备"><span class="toc-text">准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#上传解压"><span class="toc-text">上传解压</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改环境变量"><span class="toc-text">修改环境变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#刷新"><span class="toc-text">刷新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重命名文件"><span class="toc-text">重命名文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改配置，配置集群"><span class="toc-text">修改配置，配置集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#配置文件zoo-cfg详解"><span class="toc-text">配置文件zoo.cfg详解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建文件夹"><span class="toc-text">创建文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#识别集群"><span class="toc-text">识别集群</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#启动-停止-状态"><span class="toc-text">启动 停止 状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#操作shell"><span class="toc-text">操作shell</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#进入客户端"><span class="toc-text">进入客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令"><span class="toc-text">命令</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
@@ -235,7 +264,7 @@
                     </h5>
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/#springboot" title="springboot">springboot</a>
+                        <a class="tag" href="/tags/#分布式/微服务" title="分布式/微服务">分布式/微服务</a>
                         
                     </div>
                 </section>
