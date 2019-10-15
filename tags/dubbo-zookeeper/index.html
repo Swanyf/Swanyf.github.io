@@ -22,7 +22,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/tags/sql/">
+    <link rel="canonical" href="http://yoursite.com/tags/dubbo-zookeeper/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -159,49 +159,20 @@
 
 
 
-<div class="post-preview " style="background-image: url('/img/mariadb/11.png')">
-    <a href="/2019/09/29/mariadb主从配置/">
+<div class="post-preview " style="background-image: url('/img/zookeeper之watcher和watch关系/1.png')">
+    <a href="/2019/10/15/zookeeper之watcher和watch关系/">
         <h2 class="post-title">
-            mariadb主从配置
+            zookeeper之watcher和watch关系
         </h2>
         <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-09-29
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-10-15
         </p>
         
         <div class="post-content-preview">
             <p>
-                docker安装mariadb准备俩台服务器执行同样的操作
-# 拉取镜像docker pull mariadb# 创建容器卷mkdir -p /mydata/mariadb/confdocker run -di --name=mariadb mariadbdocker cp mariadb:/e..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
-<div class="post-preview " style="background-image: url('/img/mysql优化/13p6o1.jpg')">
-    <a href="/2019/08/21/mysql优化/">
-        <h2 class="post-title">
-            mysql优化
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-08-21
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                逻辑分层
-连接层
-服务层
-引擎层
-存储层InnoDB(默认)：事务优先，适合高并发操作；行锁MyISAM：性能优先，表锁
-
-show engines \G查询数据库支持哪些引擎show variables like &#39;%storage_engine%&#39;
-sql执行顺序
-from：..
+                watcher特性一次性对于ZK的 watcher，只需要记住一点: zookeeper有watch事件，是一次性触发的，当 watch监视的数据发生变化时，通知设置了该watch的 client，即watcher。
+由于 zookeeper 的监控都是一次性的所以 每次必须设置监控。
+客户端串..
             </p>
         </div>
     </a>

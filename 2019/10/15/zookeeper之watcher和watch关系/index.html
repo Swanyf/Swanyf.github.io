@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        Swan&#39;s blog
+        zookeeper之watcher和watch关系｜Swan&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/tags/sql/">
+    <link rel="canonical" href="http://yoursite.com/2019/10/15/zookeeper之watcher和watch关系/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -43,7 +43,7 @@
 <!-- hack iOS CSS :active style -->
 <body ontouchstart="" class="animated fadeIn">
 <!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="false" data-istags="true
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="true" data-istags="false
 " data-ishome="false">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -132,237 +132,139 @@
 
 <!-- Main Content -->
 
+<!--only post-->
 
-<!-- Page Header -->
-<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 visible-xs-block visible-sm-block">
-    <div class="row">
-        <header class="intro-header">
-            <div class="container">
-                <div class="site-heading text-center">
-                    <div class="about-me">
-                        <!--移动端头部显示-->
-                        <img src="/img/微信图片_20190723103112.jpg">
-                        <h5><a href="/about/">swan</a></h5>
-                        <p>低调做人 高调做事</p>
+
+<img class="wechat-title-img" src="null/img/zookeeper之watcher和watch关系/1.png">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/img/zookeeper之watcher和watch关系/1.png?imageView2/1/w/1400/h/400/interlace/1/q/90')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>zookeeper之watcher和watch关系</h1>
+                    
+                    <span class="meta">
+                         作者 swan
+                        <span>
+                          日期 2019-10-15
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#dubbo/zookeeper" title="dubbo/zookeeper">dubbo/zookeeper</a>
+                        
                     </div>
                 </div>
             </div>
-        </header>
+        </div>
     </div>
-</div>
-<!-- Main Content -->
-<div class="container custom-haojen-container">
-    <!-- Post Container -->
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 post-container">
-            <!-- Main Content -->
+    <div class="post-title-haojen">
+        <span>
+            zookeeper之watcher和watch关系
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h2 id="watcher特性"><a href="#watcher特性" class="headerlink" title="watcher特性"></a>watcher特性</h2><h3 id="一次性"><a href="#一次性" class="headerlink" title="一次性"></a>一次性</h3><p>对于ZK的 watcher，只需要记住一点: zookeeper有watch事件，是一次性触发的，当 watch监视的数据发生变化时，通知设置了该watch的 client，即watcher。</p>
+<p>由于 zookeeper 的监控都是一次性的所以 每次必须设置监控。</p>
+<h3 id="客户端串行执行"><a href="#客户端串行执行" class="headerlink" title="客户端串行执行"></a>客户端串行执行</h3><p>客户端 Watcher 回调的过程是一个串行同步的过程，这为我们保证了顺序，同时需要开发人员注意一点。</p>
+<p>千万不要因为一个 Watcher 的处理逻辑影响了整个客户端的 Watcher 回调</p>
+<h3 id="轻量"><a href="#轻量" class="headerlink" title="轻量"></a>轻量</h3><p>WatchedEvent 是 Zookeeper 整个 Watcher 通知机制的最小通知单元，整个框架结构只包含三部分：通知状态、事件类型和节点路径。也就是说 Watcher 通知非常的简单，只会告诉客户端发生了事件而不会告知其具体内容，需要客户自己去进行获取。</p>
+<p>比如 NodeDataChanged 事件，Zookeeper 只会通知客户端指定节点的数据发生了变更，而不会直接提供具体的数据内容。</p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/10/14/rocketMQ概念/" data-toggle="tooltip" data-placement="top" title="rocketMQ概念">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
 
 
+                <!--加入新的评论系统-->
+                
 
-<div class="post-preview " style="background-image: url('/img/mariadb/11.png')">
-    <a href="/2019/09/29/mariadb主从配置/">
-        <h2 class="post-title">
-            mariadb主从配置
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-09-29
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                docker安装mariadb准备俩台服务器执行同样的操作
-# 拉取镜像docker pull mariadb# 创建容器卷mkdir -p /mydata/mariadb/confdocker run -di --name=mariadb mariadbdocker cp mariadb:/e..
-            </p>
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#watcher特性"><span class="toc-text">watcher特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一次性"><span class="toc-text">一次性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#客户端串行执行"><span class="toc-text">客户端串行执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#轻量"><span class="toc-text">轻量</span></a></li></ol></li></ol>
+                </div>
+            </div>
         </div>
-    </a>
 
-</div>
+        <div class="row">
+            <!-- Sidebar Container -->
 
-<hr>
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
 
-
-
-<div class="post-preview " style="background-image: url('/img/mysql优化/13p6o1.jpg')">
-    <a href="/2019/08/21/mysql优化/">
-        <h2 class="post-title">
-            mysql优化
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-08-21
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                逻辑分层
-连接层
-服务层
-引擎层
-存储层InnoDB(默认)：事务优先，适合高并发操作；行锁MyISAM：性能优先，表锁
-
-show engines \G查询数据库支持哪些引擎show variables like &#39;%storage_engine%&#39;
-sql执行顺序
-from：..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
-
-<!-- 翻页 pager -->
-
-<ul class="pager">
-    
-    
-</ul>
-
-
-        </div>
-        <!-- Sidebar Container -->
-        <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
-
-            <!-- About Me -->
-            <section class="visible-md visible-lg" style="padding: 0 18px">
-                <div class="short-about">
-                    <!--侧边栏头像-->
-                    
-                    <img src="/img/微信图片_20190723103112.jpg">
-                    
-                    <h5><a href="/about/">swan</a></h5>
-                    
-                    <p>低调做人 高调做事</p>
-                    
-                    <hr>
-                    <!-- SNS Link 社交 -->
-                    <ul class="list-inline">
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
                         
+                        <a class="tag" href="/tags/#dubbo/zookeeper" title="dubbo/zookeeper">dubbo/zookeeper</a>
                         
-                        
+                    </div>
+                </section>
+                
 
+                <!-- Friends Blog -->
+                
+                <div style="margin-top: 20px;">
+                    <h5 class="text-center">FRIENDS</h5>
+                    <ul class="list-inline text-center">
                         
-
-                        
-
-                        
-                        <li>
-                            <a target="_blank" href="https://github.com/Swanyf">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                        </span>
-                            </a>
-                        </li>
-                        
-
+                        <li><a href="https://www.antia1.top/">ANTIA</a></li>
                         
                     </ul>
                 </div>
-            </section>
-
-            <!-- Featured Tags  标签 -->
-            
-            <section>
-                <div class="tags">
-                    
-                    
-                    <a href="/tags/#部署" title="部署" rel="3">部署</a>
-                    
-                    
-                    
-                    <a href="/tags/#学习计划" title="学习计划" rel="1">学习计划</a>
-                    
-                    
-                    
-                    <a href="/tags/#java" title="java" rel="4">java</a>
-                    
-                    
-                    
-                    <a href="/tags/#sql" title="sql" rel="2">sql</a>
-                    
-                    
-                    
-                    <a href="/tags/#node.js" title="node.js" rel="1">node.js</a>
-                    
-                    
-                    
-                    <a href="/tags/#springboot" title="springboot" rel="2">springboot</a>
-                    
-                    
-                    
-                    <a href="/tags/#mq" title="mq" rel="3">mq</a>
-                    
-                    
-                    
-                    <a href="/tags/#dubbo/zookeeper" title="dubbo/zookeeper" rel="1">dubbo/zookeeper</a>
-                    
-                    
-                    
-                    <a href="/tags/#分布式/微服务" title="分布式/微服务" rel="2">分布式/微服务</a>
-                    
-                    
-                    
-                    <a href="/tags/#mysql" title="mysql" rel="1">mysql</a>
-                    
-                    
-                    
-                    <a href="/tags/#异常" title="异常" rel="1">异常</a>
-                    
-                    
-                    
-                    <a href="/tags/#微服务" title="微服务" rel="1">微服务</a>
-                    
-                    
-                    
-                    <a href="/tags/#redis" title="redis" rel="2">redis</a>
-                    
-                    
-                    
-                    <a href="/tags/#spring" title="spring" rel="1">spring</a>
-                    
-                    
-                    
-                    <a href="/tags/#javascript" title="javascript" rel="1">javascript</a>
-                    
-                    
-                    
-                    <a href="/tags/#分布式" title="分布式" rel="1">分布式</a>
-                    
-                    
-                    
-                    <a href="/tags/#vue.js" title="vue.js" rel="2">vue.js</a>
-                    
-                    
-                    
-                    <a href="/tags/#微信公众号" title="微信公众号" rel="1">微信公众号</a>
-                    
-                    
-                </div>
-            </section>
-            
-
-            
-            <hr>
-            <h5 style="text-align: center;">Friends</h5>
-            <ul class="list-inline" style="text-align: center;">
                 
-                <li><a href="https://www.antia1.top/" target="_blank">ANTIA</a></li>
-                
-            </ul>
-            
-
+            </div>
         </div>
+
     </div>
-</div>
+</article>
+
+
+
+
+
+
 
 <!-- Footer -->
 <!-- Footer -->
