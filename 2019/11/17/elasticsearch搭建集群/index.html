@@ -378,50 +378,25 @@
 <li>新创建一个索引,定义好最新的映射</li>
 <li>将别名指向新的索引,并且取消之前索引的指向</li>
 </ol>
-<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><table>
-<thead>
-<tr>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>string(text,keyword)</td>
-<td>text文本类型，默认是索引，并且经过分词器<br>keyword关键字类型，不经过分词器</td>
-</tr>
-<tr>
-<td>number</td>
-<td>integer,long,short,byte,double,float</td>
-</tr>
-<tr>
-<td>date</td>
-<td>默认格式: strict_ date _optional _timellepoch _millis</td>
-</tr>
-<tr>
-<td>boolean</td>
-<td>true、false</td>
-</tr>
-<tr>
-<td>ip</td>
-<td>支持ipv4或ipv6</td>
-</tr>
-<tr>
-<td>geo_ point</td>
-<td>坐标</td>
-</tr>
-<tr>
-<td>nested</td>
-<td>嵌套类型</td>
-</tr>
-<tr>
-<td>object</td>
-<td>对象</td>
-</tr>
-<tr>
-<td>binary</td>
-<td>二进制</td>
-</tr>
-</tbody></table>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p><font color="#F0601F">string(text,keyword)</font><br>text 文本类型，默认是索引，并且经过分词器。<br>keyword 关键字类型，不经过分词器</p>
+<p><font color="#F0601F">number</font><br>integer,long,short,byte,double,float</p>
+<p><font color="#F0601F">date</font><br>默认格式: strict_ date _optional _timellepoch _millis<br>例如: 2017-06-12T20:30:00.000Z|1 1496055518000<br>自定义格式</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;:&#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;study_ date&quot;:&#123;</span><br><span class="line">        &quot;type&quot;:&quot; date&apos; ,</span><br><span class="line">        &quot;format&quot;: &quot;yyy-MM-dd HH:mmssl|strict_ date_ optional timellepoch _millis&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><font color="#F0601F">boolean</font><br>true、false</p>
+<p><font color="#F0601F">ip</font><br>支持ipv4或ipv6</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT my_index </span><br><span class="line">&#123; </span><br><span class="line">  &quot;mappings&quot;: &#123; </span><br><span class="line">    &quot;my_ type&quot;: &#123; </span><br><span class="line">      &quot;properties&quot;: &#123; </span><br><span class="line">        &quot;ip_ addr&quot;: &#123; </span><br><span class="line">	  &quot;type&quot; :&quot;ip&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT my_index/my_type/1 </span><br><span class="line">&#123; </span><br><span class="line">  &quot;ip_addr&quot;: &quot;192. 168. 1.1&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET my_index/_search &#123; </span><br><span class="line">  &quot;query&quot;: &#123; </span><br><span class="line">    &quot;term”: &#123; </span><br><span class="line">      &quot;ip_ addr&quot;: &quot;192. 168. 0.0/16”</span><br><span class="line">    &#125; </span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><font color="#F0601F">geo_ point坐标</font></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123; </span><br><span class="line">  &quot;mappings&quot;: &#123; </span><br><span class="line">    &quot;my_type&quot;: &#123; </span><br><span class="line">      &quot;properties&quot;: &#123; </span><br><span class="line">        &quot;location&quot;: &#123; </span><br><span class="line">	  &quot;type&quot;: &quot;geo_point&quot; </span><br><span class="line">	&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 比如lon(经度)-71.34 , lat(纬度)41.12 ,支持以下格式输入</span><br><span class="line">object : &#123;&quot;lat&quot; : 41.12, &quot;lon&quot; : -71.34 &#125;</span><br><span class="line">string : &quot;41.12,-71.34&quot;    # lat,lon</span><br><span class="line">array : [-71.34, 41.12]    # [lon,lat]</span><br></pre></td></tr></table></figure>
+
+<p><font color="#F0601F">nested|嵌套类型</font></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;users&quot; :[</span><br><span class="line">  &#123;&quot;age&quot;: 25, &quot;name&quot;: &quot;zhangsan”&#125;，</span><br><span class="line">  &#123;&quot;age&quot;: 26, &quot;name&apos;: &quot;lisi&quot;&#125;</span><br><span class="line"></span><br><span class="line"># 在ES中会扁平化存储为:</span><br><span class="line">&#123;</span><br><span class="line">  &quot;users.age&quot;: [25, 26],</span><br><span class="line">  &quot;users.name&quot;: [&quot;zhangsan&quot;,,&quot;lisi&quot;]</span><br><span class="line">&#125;</span><br><span class="line"># 在此时搜索age=25 and name=zhangsan的时候，lisi也会搜索出来。因为都在同一组中</span><br></pre></td></tr></table></figure>
+
+<p><font color="#F0601F">object对象</font></p>
+<p><font color="#F0601F">binary|二进制</font><br>可以存储Base64编码的字符串。默认不能进行搜索。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT my_ index</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;my_ type&quot;: &#123;</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;name&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;text&apos;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;blob&quot;: &#123;</span><br><span class="line">          type&quot; :&quot;binary&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT my_ _index/my_ type/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Some binary blob&quot;,</span><br><span class="line">  &quot;blob&quot;: &quot;U29tZSBi aW5hcnkgYmxvYg==”</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><p>根据关键词查找对应的文档<br>works|a|b|c<br>-|-|-|-<br>fish|x|-|x<br>dog|-|x|x<br>cat|-|-|x<br>pig|x|x|-</p>
 <h3 id="Doc-values"><a href="#Doc-values" class="headerlink" title="Doc values"></a>Doc values</h3><p>可以用于聚合、排序、访问字段值的脚本,父子关系处理等。( 任何需要查<br>找某个文档包含的值的操作)<br>doc|words<br>-|-<br>a|fish,pig<br>b|dog<br>c|fish,dog,cat</p>
 
