@@ -364,7 +364,7 @@
 
 </li>
 </ul>
-<p>文档在写入时，检测到该索引中没有的字段时，动态映射可以根据写入的json类型自动转<br>换该字段的类型，并加入到mapping映射。<br>JSON datatype|es datatype<br>-|-|<br>null|No field is added.<br>true or false|boolean field<br>floating point number|float field<br>integer|long field<br>object|obiect field<br>array|Depends on the first non-null value in the array.<br>string|Either a date field (if the value passes date detection),<br>a double or longfield (if the value passes numeric detection or <br>a text field, with a kewwordsub-field,</p>
+<p>文档在写入时，检测到该索引中没有的字段时，动态映射可以根据写入的json类型自动转<br>换该字段的类型，并加入到mapping映射。<br>JSON datatype|es datatype<br>-|-|-<br>null|No field is added.<br>true or false|boolean field<br>floating point number|float field<br>integer|long field<br>object|obiect field<br>array|Depends on the first non-null value in the array.<br>string|Either a date field (if the value passes date detection),<br>a double or longfield (if the value passes numeric detection or <br>a text field, with a kewwordsub-field,</p>
 <h3 id="更新修改映射"><a href="#更新修改映射" class="headerlink" title="更新修改映射"></a>更新修改映射</h3><p>mapping 创建完成后，可以新增字段定义类型，不能修改已有的字段映射。</p>
 <h3 id="修改已有映射"><a href="#修改已有映射" class="headerlink" title="修改已有映射"></a>修改已有映射</h3><ol>
 <li>重新建立一个索引,然后重新定义映射</li>
@@ -378,7 +378,52 @@
 <li>新创建一个索引,定义好最新的映射</li>
 <li>将别名指向新的索引,并且取消之前索引的指向</li>
 </ol>
-<h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><p>根据关键词查找对应的文档<br>works|a|b|c<br>-|-|-|-<br>fish|x||x<br>dog||x|x<br>cat|||x<br>pig|x|x|</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>string(text,keyword)</td>
+<td>text文本类型，默认是索引，并且经过分词器<br>keyword关键字类型，不经过分词器</td>
+</tr>
+<tr>
+<td>number</td>
+<td>integer,long,short,byte,double,float</td>
+</tr>
+<tr>
+<td>date</td>
+<td>默认格式: strict_ date _optional _timellepoch _millis</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>true、false</td>
+</tr>
+<tr>
+<td>ip</td>
+<td>支持ipv4或ipv6</td>
+</tr>
+<tr>
+<td>geo_ point</td>
+<td>坐标</td>
+</tr>
+<tr>
+<td>nested</td>
+<td>嵌套类型</td>
+</tr>
+<tr>
+<td>object</td>
+<td>对象</td>
+</tr>
+<tr>
+<td>binary</td>
+<td>二进制</td>
+</tr>
+</tbody></table>
+<h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><p>根据关键词查找对应的文档<br>works|a|b|c<br>-|-|-|-<br>fish|x|-|x<br>dog|-|x|x<br>cat|-|-|x<br>pig|x|x|-</p>
+<h3 id="Doc-values"><a href="#Doc-values" class="headerlink" title="Doc values"></a>Doc values</h3><p>可以用于聚合、排序、访问字段值的脚本,父子关系处理等。( 任何需要查<br>找某个文档包含的值的操作)<br>doc|words<br>-|-<br>a|fish,pig<br>b|dog<br>c|fish,dog,cat</p>
 
                 <hr>
                 
@@ -406,7 +451,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#elasticsearch名词解释"><span class="toc-text">elasticsearch名词解释</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cluster集群"><span class="toc-text">cluster集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node节点"><span class="toc-text">node节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#index索引"><span class="toc-text">index索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type类型"><span class="toc-text">type类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#document文档"><span class="toc-text">document文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#field列"><span class="toc-text">field列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shard分片"><span class="toc-text">shard分片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#replicas复制"><span class="toc-text">replicas复制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#与DB的关系"><span class="toc-text">与DB的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装配置"><span class="toc-text">安装配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#elasticsearch-yml"><span class="toc-text">elasticsearch.yml</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装header可视化工具插件"><span class="toc-text">安装header可视化工具插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装分词器kibana"><span class="toc-text">安装分词器kibana</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#elasticsearch-REST接口"><span class="toc-text">elasticsearch-REST接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cluster-api"><span class="toc-text">cluster api</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#document-api"><span class="toc-text">document api</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#search-api"><span class="toc-text">search api</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#elasticsearch-api-CRUD"><span class="toc-text">elasticsearch api CRUD</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#PUT-创建-插入文档"><span class="toc-text">PUT 创建/插入文档</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#POST-更新-插入"><span class="toc-text">POST 更新/插入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GET-检索数据"><span class="toc-text">GET 检索数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DELETE-删除"><span class="toc-text">DELETE 删除</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#检查是否存在"><span class="toc-text">检查是否存在</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#通过脚本更新"><span class="toc-text">通过脚本更新</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bulk-api-批量操作"><span class="toc-text">bulk api 批量操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#搜索多索引、多类型"><span class="toc-text">搜索多索引、多类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分页搜索"><span class="toc-text">分页搜索</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#分页参数"><span class="toc-text">分页参数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#并发控制"><span class="toc-text">并发控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#悲观并发控制"><span class="toc-text">悲观并发控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#乐观并发控制"><span class="toc-text">乐观并发控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#案例"><span class="toc-text">案例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#查看集群健康状态api"><span class="toc-text">查看集群健康状态api</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据映射"><span class="toc-text">数据映射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#映射类型"><span class="toc-text">映射类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更新修改映射"><span class="toc-text">更新修改映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改已有映射"><span class="toc-text">修改已有映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用别名-进行平滑过渡"><span class="toc-text">使用别名,进行平滑过渡:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#倒排索引"><span class="toc-text">倒排索引</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#elasticsearch名词解释"><span class="toc-text">elasticsearch名词解释</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cluster集群"><span class="toc-text">cluster集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node节点"><span class="toc-text">node节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#index索引"><span class="toc-text">index索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type类型"><span class="toc-text">type类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#document文档"><span class="toc-text">document文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#field列"><span class="toc-text">field列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shard分片"><span class="toc-text">shard分片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#replicas复制"><span class="toc-text">replicas复制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#与DB的关系"><span class="toc-text">与DB的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装配置"><span class="toc-text">安装配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#elasticsearch-yml"><span class="toc-text">elasticsearch.yml</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装header可视化工具插件"><span class="toc-text">安装header可视化工具插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装分词器kibana"><span class="toc-text">安装分词器kibana</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#elasticsearch-REST接口"><span class="toc-text">elasticsearch-REST接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cluster-api"><span class="toc-text">cluster api</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#document-api"><span class="toc-text">document api</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#search-api"><span class="toc-text">search api</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#elasticsearch-api-CRUD"><span class="toc-text">elasticsearch api CRUD</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#PUT-创建-插入文档"><span class="toc-text">PUT 创建/插入文档</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#POST-更新-插入"><span class="toc-text">POST 更新/插入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GET-检索数据"><span class="toc-text">GET 检索数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DELETE-删除"><span class="toc-text">DELETE 删除</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#检查是否存在"><span class="toc-text">检查是否存在</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#通过脚本更新"><span class="toc-text">通过脚本更新</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bulk-api-批量操作"><span class="toc-text">bulk api 批量操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#搜索多索引、多类型"><span class="toc-text">搜索多索引、多类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分页搜索"><span class="toc-text">分页搜索</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#分页参数"><span class="toc-text">分页参数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#并发控制"><span class="toc-text">并发控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#悲观并发控制"><span class="toc-text">悲观并发控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#乐观并发控制"><span class="toc-text">乐观并发控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#案例"><span class="toc-text">案例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#查看集群健康状态api"><span class="toc-text">查看集群健康状态api</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据映射"><span class="toc-text">数据映射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#映射类型"><span class="toc-text">映射类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更新修改映射"><span class="toc-text">更新修改映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改已有映射"><span class="toc-text">修改已有映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用别名-进行平滑过渡"><span class="toc-text">使用别名,进行平滑过渡:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据类型"><span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#倒排索引"><span class="toc-text">倒排索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Doc-values"><span class="toc-text">Doc values</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
