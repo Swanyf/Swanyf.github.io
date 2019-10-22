@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/pig.jpg">
+    <link rel="alternate" type="application/atom+xml" title="Swan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        elasticsearch之搜索查询｜Swan&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2019/10/22/elasticsearch之搜索查询/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('/img/pig.jpg')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="true" data-istags="false
+" data-ishome="false">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    Swan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/my-works/">杂志</a>
+                        </li>
+							
+						
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img" src="null/img/elasticsearch/6.png">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/img/elasticsearch/6.png?imageView2/1/w/1400/h/400/interlace/1/q/90')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>elasticsearch之搜索查询</h1>
+                    
+                    <span class="meta">
+                         作者 swan
+                        <span>
+                          日期 2019-10-22
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#elasticsearch" title="elasticsearch">elasticsearch</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            elasticsearch之搜索查询
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h2 id="全文查询"><a href="#全文查询" class="headerlink" title="全文查询"></a>全文查询</h2><ul>
+<li>如果查询日期( date)或整数( integer )字段,它们会将查询字符串分别作为日期或整数对待。</li>
+<li>如果查询一个( not analyzed )未分析的精确值字符串字段，它们会将整个查询字符串作为单个词项对待。</li>
+<li>但如果要查询一个( analyzed )已分析的全文字段，它们会先将查询字符串传递到一个合适的分析器，然后生成一个供查询的词项列表。</li>
+</ul>
+<h3 id="query-string-query"><a href="#query-string-query" class="headerlink" title="query_string query"></a>query_string query</h3><p>支持紧凑的Lucene查询字符串语法</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 全文检索:</span><br><span class="line">GET /school/_search?q=zhangsan</span><br><span class="line"></span><br><span class="line"># 单字段全文检索:</span><br><span class="line">GET /school/_search?q=name:zhangsan</span><br><span class="line"></span><br><span class="line"># 单字段精确检索:</span><br><span class="line">GET /school/_search?q=mark:&quot;good day&quot;</span><br><span class="line"></span><br><span class="line">多个检索条件的组合:</span><br><span class="line">GET /school/_search?q=name:(&quot;zhangsan&quot; OR &quot;lisi&quot;) AND NOT course:spring</span><br><span class="line"></span><br><span class="line">字段是否存在:</span><br><span class="line">GET /school/_search?q=_exists_:mark</span><br><span class="line">GET /school/_search?q=NOT _exists_:mark</span><br><span class="line"></span><br><span class="line"># 通配符:</span><br><span class="line"># 用?表示单字母, *表示任意个字母</span><br><span class="line">GET /school/_search?q= name:zh???san</span><br><span class="line">GET /school/_search?q=name:zh*san</span><br><span class="line"></span><br><span class="line">#正则搜索:</span><br><span class="line"># 用/ /包裹，ES中正则性能不高，尽量不要使用</span><br><span class="line"># 保留字符:.? + *|&#123;&#125;[]()&quot;\# @&amp;&lt; &gt; ~</span><br><span class="line"># 转义字符用\，例如:\*\\</span><br><span class="line">GET /school/_search?q=name:/zh.*san/	# ‘.’表示一个字符</span><br><span class="line">GET /school/_search?q=name:/zh..san/</span><br></pre></td></tr></table></figure>
+
+<h3 id="match-query"><a href="#match-query" class="headerlink" title="match query"></a>match query</h3><p>用于执行全文查询的标准查询,包括模糊匹配和短语或邻近查询。</p>
+<h4 id="执行步骤"><a href="#执行步骤" class="headerlink" title="执行步骤"></a>执行步骤</h4><ol>
+<li>检查字段类型</li>
+<li>分析查询字符串</li>
+<li>查找匹配文档</li>
+<li>为每个文档评分<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 1. 空查询，查询该索引下的所有的文档</span><br><span class="line">GET school/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;				</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 2. match匹配查询:</span><br><span class="line">GET school/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">	&quot;match&quot;: &#123;</span><br><span class="line">	  &quot;mark&quot;: &quot;Day&quot;    # 字段名和值</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 3. 多词匹配</span><br><span class="line">GET school/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">	&quot;match: &#123;</span><br><span class="line">	  &quot;mark&quot; : &quot;good day&quot;    # 含有 good 或者 day 词</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 提高精度</span><br><span class="line">GET school/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">	match&quot;: &#123;</span><br><span class="line">	  &quot;mark&quot;: &#123;</span><br><span class="line">		&quot;query&quot;: &quot;good day&quot;,    # 含有 good 和 day 词</span><br><span class="line">		&quot;operator&quot;: &quot;and&quot;</span><br><span class="line">	  &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#控制精度</span><br><span class="line">GET school/_search</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">	&quot;match&quot;: &#123;</span><br><span class="line">	  &quot;mark&quot;: &#123;</span><br><span class="line">		&quot;query&quot;: &quot;good happy day&quot;,</span><br><span class="line">	    &quot;minimun_should_match&quot;: &quot;2&quot;    # 有俩个包含三个词的就返回</span><br><span class="line">	  &#125;</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">							</span><br><span class="line"># 不匹配任何文档</span><br><span class="line">GET school/_search</span><br><span class="line">  &quot;query&quot;:&#123;</span><br><span class="line">	&quot;match_ none&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="match-phrase-query"><a href="#match-phrase-query" class="headerlink" title="match_phrase query"></a>match_phrase query</h3><p>像匹配查询一样，但用于匹配确切的短语或单词接近度匹配。</p>
+<h4 id="执行步骤-1"><a href="#执行步骤-1" class="headerlink" title="执行步骤"></a>执行步骤</h4><ul>
+<li>分析查询字符串，分解成词项</li>
+<li>查找匹配文档</li>
+<li>只保留包含全部词项的文档，并且词项位置也相同</li>
+<li><code>slop</code> 指定词项间隔离的范围<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET school/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">	&quot;match_phrase: &#123;</span><br><span class="line">	  &quot;mark&quot; : &quot;good day&quot;    # 含有 good day 这一个词</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET school/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">	&quot;match_phrase: &#123;</span><br><span class="line">	  &quot;mark&quot; : &#123;</span><br><span class="line">	    &quot;query&quot;: &quot;good day&quot;,</span><br><span class="line">		&quot;slop&quot;: 1</span><br><span class="line">	  &#125;</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="match-phrase-prefix-query"><a href="#match-phrase-prefix-query" class="headerlink" title="match_phrase_prefix query"></a>match_phrase_prefix query</h3><p>像match phrase查询样,但是对最后一个单词进行通配符搜索。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET school/_ search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">	&quot;match_phrase_prefix&quot;: &#123;</span><br><span class="line">	  &quot;mark&quot;: &#123;</span><br><span class="line">		&quot;query&quot;: &quot;t&quot;,</span><br><span class="line">		&quot;slop&quot;: 1,</span><br><span class="line">		&quot;max_ expansions&quot;: 50</span><br><span class="line">	  &#125;</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 执行步骤：</span><br><span class="line"># 分析查询字符串，查找前50个前缀是t的词项</span><br><span class="line"># 只保留包含全部词项的文档，并且词项位置也相同</span><br></pre></td></tr></table></figure>
+
+<h3 id="multi-match-query"><a href="#multi-match-query" class="headerlink" title="multi_match query"></a>multi_match query</h3><p>多字段版本的匹配查询，字段名可以写通配符</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET school/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;multi_ match&quot;: &#123;</span><br><span class="line">	  &quot;query&quot;: &quot;elasticsearch&quot;,    # 查询内容</span><br><span class="line">	  &quot;fields&quot;: [&quot;mark&quot;,&quot;co*&quot;]    # 查询字段名</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="term精确查询"><a href="#term精确查询" class="headerlink" title="term精确查询"></a>term精确查询</h3><ul>
+<li>term查询被用于精确值匹配，这些精确值可以是数字(number)、日期(date)、布尔值(bool)、<font color="#F0601F">未经过分析的字符串(keyword)</font></li>
+<li>term查询对于输入的文本不分析，所以它将给定的值进行精确查询。</li>
+</ul>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2019/11/17/elasticsearch搭建集群/" data-toggle="tooltip" data-placement="top" title="elasticsearch搭建集群">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/10/22/elasticsearch之索引的原理/" data-toggle="tooltip" data-placement="top" title="elasticsearch之索引的原理">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#全文查询"><span class="toc-text">全文查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#query-string-query"><span class="toc-text">query_string query</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#match-query"><span class="toc-text">match query</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#执行步骤"><span class="toc-text">执行步骤</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#match-phrase-query"><span class="toc-text">match_phrase query</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#执行步骤-1"><span class="toc-text">执行步骤</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#match-phrase-prefix-query"><span class="toc-text">match_phrase_prefix query</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#multi-match-query"><span class="toc-text">multi_match query</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#term精确查询"><span class="toc-text">term精确查询</span></a></li></ol></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#elasticsearch" title="elasticsearch">elasticsearch</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <div style="margin-top: 20px;">
+                    <h5 class="text-center">FRIENDS</h5>
+                    <ul class="list-inline text-center">
+                        
+                        <li><a href="https://www.antia1.top/">ANTIA</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/Swanyf">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Swan 2019
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/微信图片_20190723103112.jpg">
+</body>
+
+</html>

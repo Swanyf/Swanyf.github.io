@@ -135,13 +135,13 @@
 <!--only post-->
 
 
-<img class="wechat-title-img" src>
+<img class="wechat-title-img" src="null/img/elasticsearch/2.png">
 
 
 <style>
     
     header.intro-header {
-        background-image: url('')
+        background-image: url('/img/elasticsearch/2.png?imageView2/1/w/1400/h/400/interlace/1/q/90')
     }
 
     
@@ -161,6 +161,8 @@
                          </span>
                     </span>
                     <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#elasticsearch" title="elasticsearch">elasticsearch</a>
                         
                     </div>
                 </div>
@@ -297,30 +299,14 @@
 <td>fish,dog,cat</td>
 </tr>
 </tbody></table>
-<h2 id="分词器"><a href="#分词器" class="headerlink" title="分词器"></a>分词器</h2><p>内置标准分词器</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;standard&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;I&apos;m a teacher 666.中华人民&quot;   # 中文一个字一个词</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>内置简单分词器</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;simple&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;I&apos;m a teacher 666.中华人民&quot;   # 中华人民为一个词</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>内置停止分词器</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;stop&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;I&apos;m a teacher 666.中华人民&quot;   # 底层自动去掉无用的词</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>测试自定义组合分词器</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT profession</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;analyzer&quot;: &#123;</span><br><span class="line">        &quot;my_analyzer&quot;: &#123;    # 分词器名字</span><br><span class="line">          &quot;type&quot;: &quot;doctor&quot;,</span><br><span class="line">          &quot;tokenizer&quot;: &quot;standard&quot;,    # 标准分词器</span><br><span class="line">          &quot;char_filter&quot;: &quot;html_strip&quot;,    # 过滤html标签</span><br><span class="line">          &quot;filter&quot;: [&quot;lowercase&quot;,&quot;stop&quot;]    # 二次过滤</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">POST profession/_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;my_analyzer&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;i&apos;m a &lt;a&gt;teacher&lt;/a&gt;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>设置 mapping 时为字段指定分词器</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT my_index</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">	&quot;analysis&quot;; &#123;</span><br><span class="line">	  &quot;analyzer&quot;: &#123;</span><br><span class="line">		&quot;std_english&quot;: &#123;</span><br><span class="line">		  &quot;type&quot;: &quot;standard&quot; ,</span><br><span class="line">		  &quot;stopwords&quot;: &quot;_english_&quot;</span><br><span class="line">		&#125;</span><br><span class="line">	  &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;mappings&quot;; &#123;</span><br><span class="line">    &quot;my_type&quot;: &#123;</span><br><span class="line">	  &quot;properties&quot;: &#123; I</span><br><span class="line">		&quot;my_text&quot;: &#123;</span><br><span class="line">		  &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">		  &quot;analyzer&quot;: &quot;standard&quot;,</span><br><span class="line">		  &quot;fields&quot;: &#123;</span><br><span class="line">			&quot;stop&quot;: &#123;</span><br><span class="line">			  &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">			  &quot;analyzer&quot;: &quot;std_english”</span><br><span class="line">			&#125;</span><br><span class="line">		  &#125;</span><br><span class="line">		&#125;</span><br><span class="line">	  &#125;</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>动态更新分词器</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">POST /school/_close</span><br><span class="line"></span><br><span class="line">PUT /school/_settings</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analysis&quot;: &#123;</span><br><span class="line">	&quot;analyzer&quot;: &#123;</span><br><span class="line">	  &quot;content&quot;: &#123;</span><br><span class="line">		&quot;type&quot;: &quot;custom&quot;,</span><br><span class="line">		&quot;tokenizer&quot;: &quot;whitespace&quot;</span><br><span class="line">	  &#125;</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">POST /school/_open</span><br></pre></td></tr></table></figure>
                 <hr>
                 
 
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2019/11/17/elasticsearch搭建集群/" data-toggle="tooltip" data-placement="top" title="elasticsearch搭建集群">&larr; Previous Post</a>
+                        <a href="/2019/10/22/elasticsearch之索引的原理/" data-toggle="tooltip" data-placement="top" title="elasticsearch之索引的原理">&larr; Previous Post</a>
                     </li>
                     
                     
@@ -344,7 +330,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据映射"><span class="toc-text">数据映射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#获取索引的映射信息"><span class="toc-text">获取索引的映射信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#静态映射"><span class="toc-text">静态映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态映射"><span class="toc-text">动态映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模板生成-mapping-结构"><span class="toc-text">模板生成 mapping 结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#静态模板-指定索引"><span class="toc-text">静态模板(指定索引)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#动态模板-指定索引"><span class="toc-text">动态模板(指定索引)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#多个索引mapping模板"><span class="toc-text">多个索引mapping模板</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#模板优先级"><span class="toc-text">模板优先级</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#获取、删除模板"><span class="toc-text">获取、删除模板</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#索引别名"><span class="toc-text">索引别名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更新修改映射"><span class="toc-text">更新修改映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改已有映射"><span class="toc-text">修改已有映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用别名-进行平滑过渡"><span class="toc-text">使用别名,进行平滑过渡:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#倒排索引"><span class="toc-text">倒排索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Doc-values"><span class="toc-text">Doc values</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分词器"><span class="toc-text">分词器</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据映射"><span class="toc-text">数据映射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#获取索引的映射信息"><span class="toc-text">获取索引的映射信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#静态映射"><span class="toc-text">静态映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态映射"><span class="toc-text">动态映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模板生成-mapping-结构"><span class="toc-text">模板生成 mapping 结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#静态模板-指定索引"><span class="toc-text">静态模板(指定索引)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#动态模板-指定索引"><span class="toc-text">动态模板(指定索引)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#多个索引mapping模板"><span class="toc-text">多个索引mapping模板</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#模板优先级"><span class="toc-text">模板优先级</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#获取、删除模板"><span class="toc-text">获取、删除模板</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#索引别名"><span class="toc-text">索引别名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更新修改映射"><span class="toc-text">更新修改映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改已有映射"><span class="toc-text">修改已有映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用别名-进行平滑过渡"><span class="toc-text">使用别名,进行平滑过渡:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#倒排索引"><span class="toc-text">倒排索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Doc-values"><span class="toc-text">Doc values</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
@@ -365,6 +351,8 @@
                         <a href="/tags/">FEATURED TAGS</a>
                     </h5>
                     <div class="tags">
+                        
+                        <a class="tag" href="/tags/#elasticsearch" title="elasticsearch">elasticsearch</a>
                         
                     </div>
                 </section>

@@ -22,7 +22,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/tags/redis/">
+    <link rel="canonical" href="http://yoursite.com/tags/elasticsearch/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -159,19 +159,18 @@
 
 
 
-<div class="post-preview " style="background-image: url('/img/sea.jpg')">
-    <a href="/2019/06/10/如何正确访问Redis中的海量数据？服务才不会挂掉！/">
+<div class="post-preview " style="background-image: url('/img/elasticsearch/1.png')">
+    <a href="/2019/11/17/elasticsearch搭建集群/">
         <h2 class="post-title">
-            如何正确访问Redis中的海量数据？服务才不会挂掉！
+            elasticsearch搭建集群
         </h2>
         <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-06-10
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-11-17
         </p>
         
         <div class="post-content-preview">
             <p>
-                前言有时候我们需要知道线上的Redis的使用情况，尤其需要知道一些前缀的key值，让我们怎么去查看呢？并且通常情况下Redis里的数据都是海量的，那么我们访问Redis中的海量数据？如何避免事故产生！今天就给大家分享一个小知识点，希望大家轻喷。
-原因因为我们的用户token缓存是采用了【user..
+                安装配置elasticsearch.yml#---------------------------------- Cluster -----------------------------------## 具有相同的cluster.name才可以配置集群#cluster.name: my-app..
             </p>
         </div>
     </a>
@@ -182,22 +181,116 @@
 
 
 
-<div class="post-preview " style="background-image: url('')">
-    <a href="/2018/12/30/redis分布式锁/">
+<div class="post-preview " style="background-image: url('/img/elasticsearch/6.png')">
+    <a href="/2019/10/22/elasticsearch之搜索查询/">
         <h2 class="post-title">
-            redis分布式锁
+            elasticsearch之搜索查询
         </h2>
         <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2018-12-30
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-10-22
         </p>
         
         <div class="post-content-preview">
             <p>
-                加锁通过 setnx 命令给指定的 key 写入一个随机值，同时设置失效时间，若写值成功即加锁成功
-setnx key value nx(not exist) px(时间单位毫秒) 1000
+                全文查询
+如果查询日期( date)或整数( integer )字段,它们会将查询字符串分别作为日期或整数对待。
+如果查询一个( not analyzed )未分析的精确值字符串字段，它们会将整个查询字符串作为单个词项对待。
+但如果要查询一个( analyzed )已分析的全文字段，它们会先将查..
+            </p>
+        </div>
+    </a>
+
+</div>
+
+<hr>
 
 
-必须给锁设置失效时间，避免死锁。假设有A、B俩个服务，A服务操作业务给a加锁超时为 2s，若A服务出..
+
+<div class="post-preview " style="background-image: url('/img/elasticsearch/5.png')">
+    <a href="/2019/10/22/elasticsearch之索引的原理/">
+        <h2 class="post-title">
+            elasticsearch之索引的原理
+        </h2>
+        <p class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-10-22
+        </p>
+        
+        <div class="post-content-preview">
+            <p>
+                elasticsearch名词解释cluster集群一个集群就是由一个或多个 node 组织在一起，共同工作共同分享整个数据具有负载均衡功能的集群。
+node节点单个的装有 elasticsearch 服务并且提供故障转移和扩展的服务器。
+index索引索引就是一个拥有几分相似特征的文档的集合。..
+            </p>
+        </div>
+    </a>
+
+</div>
+
+<hr>
+
+
+
+<div class="post-preview " style="background-image: url('/img/elasticsearch/2.png')">
+    <a href="/2019/10/22/elasticsearch之mapping数据映射/">
+        <h2 class="post-title">
+            elasticsearch之mapping数据映射
+        </h2>
+        <p class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-10-22
+        </p>
+        
+        <div class="post-content-preview">
+            <p>
+                数据映射创建索引之前,可以预先定义索引字段的类型以及相关属性。让索引建立得更加的标准，为之后的搜索和分析做准备工作。
+获取索引的映射信息# *号匹配所有GET pro[*][,xxx]/_mapping/GET pro[*]/_mapping/stu[*]    # 获取 type 下的映射信息..
+            </p>
+        </div>
+    </a>
+
+</div>
+
+<hr>
+
+
+
+<div class="post-preview " style="background-image: url('/img/elasticsearch/3.png')">
+    <a href="/2019/10/22/elasticsearch之简单API的使用/">
+        <h2 class="post-title">
+            elasticsearch之简单API的使用
+        </h2>
+        <p class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-10-22
+        </p>
+        
+        <div class="post-content-preview">
+            <p>
+                elasticsearch-REST接口cluster api
+_cluster/health、_cluster/state、_cluster/stats、_cluster/reroute、_cluster/settings
+_nodes/、_nodes/stats、_tasks、_nodes/..
+            </p>
+        </div>
+    </a>
+
+</div>
+
+<hr>
+
+
+
+<div class="post-preview " style="background-image: url('/img/elasticsearch/4.png')">
+    <a href="/2019/10/22/elasticsearch之数据类型/">
+        <h2 class="post-title">
+            elasticsearch之数据类型
+        </h2>
+        <p class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-10-22
+        </p>
+        
+        <div class="post-content-preview">
+            <p>
+                数据类型string(text,keyword)text 文本类型，默认是索引，并且经过分词器。keyword 关键字类型，不经过分词器
+numberinteger,long,short,byte,double,float
+date默认格式: strict_date_optional_time(..
             </p>
         </div>
     </a>

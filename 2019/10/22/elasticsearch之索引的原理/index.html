@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/pig.jpg">
+    <link rel="alternate" type="application/atom+xml" title="Swan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        elasticsearch之索引的原理｜Swan&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2019/10/22/elasticsearch之索引的原理/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('/img/pig.jpg')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="true" data-istags="false
+" data-ishome="false">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    Swan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/my-works/">杂志</a>
+                        </li>
+							
+						
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img" src="null/img/elasticsearch/5.png">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/img/elasticsearch/5.png?imageView2/1/w/1400/h/400/interlace/1/q/90')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>elasticsearch之索引的原理</h1>
+                    
+                    <span class="meta">
+                         作者 swan
+                        <span>
+                          日期 2019-10-22
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#elasticsearch" title="elasticsearch">elasticsearch</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            elasticsearch之索引的原理
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h2 id="elasticsearch名词解释"><a href="#elasticsearch名词解释" class="headerlink" title="elasticsearch名词解释"></a>elasticsearch名词解释</h2><h3 id="cluster集群"><a href="#cluster集群" class="headerlink" title="cluster集群"></a>cluster集群</h3><p>一个集群就是由一个或多个 node 组织在一起，共同工作共同分享整个数据具有负载均衡功能的集群。</p>
+<h3 id="node节点"><a href="#node节点" class="headerlink" title="node节点"></a>node节点</h3><p>单个的装有 elasticsearch 服务并且提供故障转移和扩展的服务器。</p>
+<h3 id="index索引"><a href="#index索引" class="headerlink" title="index索引"></a>index索引</h3><p>索引就是一个拥有几分相似特征的文档的集合。<font color="#F0601F">相当于数据库</font></p>
+<h3 id="type类型"><a href="#type类型" class="headerlink" title="type类型"></a>type类型</h3><p>一个索引中,你可以定义一种或多种类型。<font color="#F0601F">相当于表</font></p>
+<h3 id="document文档"><a href="#document文档" class="headerlink" title="document文档"></a>document文档</h3><p>一个文档是一个可被索引的基础信息单元。<font color="#F0601F">相当于表的行</font></p>
+<h3 id="field列"><a href="#field列" class="headerlink" title="field列"></a>field列</h3><p>field 是 elasticsearch的最小单位，相当于数据的某一列。</p>
+<h3 id="shard分片"><a href="#shard分片" class="headerlink" title="shard分片"></a>shard分片</h3><p>elasticsearch将索引分成若干份，每个部分就是一个shard。</p>
+<h3 id="replicas复制"><a href="#replicas复制" class="headerlink" title="replicas复制"></a>replicas复制</h3><p>replicas是索引一份或多份拷贝（副本）。</p>
+<h2 id="与DB的关系"><a href="#与DB的关系" class="headerlink" title="与DB的关系"></a>与DB的关系</h2><table>
+<thead>
+<tr>
+<th>关系型数据库</th>
+<th>elasticsearch</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DB</td>
+<td>索引 index</td>
+</tr>
+<tr>
+<td>table</td>
+<td>类型 type</td>
+</tr>
+<tr>
+<td>数据行 row</td>
+<td>文档 document</td>
+</tr>
+<tr>
+<td>column</td>
+<td>字段 field</td>
+</tr>
+<tr>
+<td>schema</td>
+<td>映射 mapping</td>
+</tr>
+<tr>
+<td>select</td>
+<td>Rest GET</td>
+</tr>
+<tr>
+<td>insert</td>
+<td>REST PUT</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>REST DELETE</td>
+</tr>
+<tr>
+<td>update</td>
+<td>REST POST</td>
+</tr>
+</tbody></table>
+<h2 id="索引的原理"><a href="#索引的原理" class="headerlink" title="索引的原理"></a>索引的原理</h2><p>推荐博客：<br><a href="https://www.cnblogs.com/wenBlog/p/8489197.html" target="_blank" rel="noopener">https://www.cnblogs.com/wenBlog/p/8489197.html</a><br><a href="https://www.cnblogs.com/jajian/p/10737373.html" target="_blank" rel="noopener">https://www.cnblogs.com/jajian/p/10737373.html</a><br><a href="https://blog.csdn.net/qq_41333582/article/details/83926397s" target="_blank" rel="noopener">https://blog.csdn.net/qq_41333582/article/details/83926397s</a></p>
+<h3 id="索引分片"><a href="#索引分片" class="headerlink" title="索引分片"></a>索引分片</h3><p>主分片读写，副本分片只用于同步数据</p>
+<h4 id="水平扩展"><a href="#水平扩展" class="headerlink" title="水平扩展"></a>水平扩展</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 三个主分片，一个副本分片</span><br><span class="line">------ node1 MASTER ------</span><br><span class="line">     |m0|  |m1|  |m2|           </span><br><span class="line"></span><br><span class="line">	 </span><br><span class="line"># 此时 node2 存储全部的副本分片</span><br><span class="line">------ node1 MASTER ------   ------ node2 CLUSTER ------     </span><br><span class="line">     |m0|  |m1|  |m2|              |c0|  |c1|  |c2|       </span><br><span class="line">         </span><br><span class="line"></span><br><span class="line"># 三台机器均匀分配主副分片，如果有一台机器宕机，不影响数据的丢失		 </span><br><span class="line">------ node1 MASTER ------   ------ node2 CLUSTER ------   ------ node3 CLUSTER ------</span><br><span class="line">           |m1|  |m2|              |c0|  |c1|                   |m0|        |c2|  </span><br><span class="line">		   </span><br><span class="line">		   </span><br><span class="line"># 三个主分片，俩个副本分片，如果有俩台机器宕机，不影响数据的丢失</span><br><span class="line"># 最多分配的就是每个机器只有一个片，如果有4个(多个)机器那么它是空闲状态的，因为已经分配均匀</span><br><span class="line">------ node1 MASTER ------   ------ node2 CLUSTER ------   ------ node3 CLUSTER ------</span><br><span class="line">     |c1| |m1|  |m2|               |c0|  |c1|   |c2|            |m0|    |c0|    |c2|</span><br></pre></td></tr></table></figure>
+
+<h4 id="应对故障"><a href="#应对故障" class="headerlink" title="应对故障"></a>应对故障</h4><p>如果MASTER挂掉主分片数据没了，那么会重新选举MASTER副本分片会提升为主分片。<br>宕机后的MSATER节点恢复时，其他节点会将分片数据再复制给宕机恢复后的节点</p>
+<h3 id="文档路由策略"><a href="#文档路由策略" class="headerlink" title="文档路由策略"></a>文档路由策略</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">------ node1 MASTER ------   ------ node2 CLUSTER ------   ------ node3 CLUSTER ------</span><br><span class="line">     |c1| |m1|  |m2|               |c0|  |c1|   |c2|            |m0|    |c0|    |c2|</span><br></pre></td></tr></table></figure>
+
+<p><font color="red">思考</font>：写主分片数据时，什么样的数据写到 1号分片，什么样的写入到 2号分片….<br>不可能随机去写，如果按照 _id 搜索，那么每个分片都要去检索 _id 存不存在。<br><font color="#F0601F">路由公式</font>：
+shard = hash(routing) % number_of_primary_shards</p>
+<ul>
+<li>结果对应相应的分片，当通过 _id 检索数据时，不用去每个分片去查找</li>
+<li>默认的routing值是_id，也可以手工指定<br><font color="#F0601F">确定好主分片的数量，永远不会改变</font></li>
+</ul>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2019/10/22/elasticsearch之搜索查询/" data-toggle="tooltip" data-placement="top" title="elasticsearch之搜索查询">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/10/22/elasticsearch之mapping数据映射/" data-toggle="tooltip" data-placement="top" title="elasticsearch之mapping数据映射">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#elasticsearch名词解释"><span class="toc-text">elasticsearch名词解释</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cluster集群"><span class="toc-text">cluster集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node节点"><span class="toc-text">node节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#index索引"><span class="toc-text">index索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type类型"><span class="toc-text">type类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#document文档"><span class="toc-text">document文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#field列"><span class="toc-text">field列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shard分片"><span class="toc-text">shard分片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#replicas复制"><span class="toc-text">replicas复制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#与DB的关系"><span class="toc-text">与DB的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引的原理"><span class="toc-text">索引的原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#索引分片"><span class="toc-text">索引分片</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#水平扩展"><span class="toc-text">水平扩展</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#应对故障"><span class="toc-text">应对故障</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文档路由策略"><span class="toc-text">文档路由策略</span></a></li></ol></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#elasticsearch" title="elasticsearch">elasticsearch</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <div style="margin-top: 20px;">
+                    <h5 class="text-center">FRIENDS</h5>
+                    <ul class="list-inline text-center">
+                        
+                        <li><a href="https://www.antia1.top/">ANTIA</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/Swanyf">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Swan 2019
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/微信图片_20190723103112.jpg">
+</body>
+
+</html>
