@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="/img/pig.jpg">
+    <link rel="alternate" type="application/atom+xml" title="Swan" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        elasticsearch之mapping数据映射｜Swan&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2019/10/22/elasticsearch之mapping数据映射/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('/img/pig.jpg')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost="true" data-istags="false
+" data-ishome="false">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    Swan
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/my-works/">杂志</a>
+                        </li>
+							
+						
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img" src>
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>elasticsearch之mapping数据映射</h1>
+                    
+                    <span class="meta">
+                         作者 swan
+                        <span>
+                          日期 2019-10-22
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            elasticsearch之mapping数据映射
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h2 id="数据映射"><a href="#数据映射" class="headerlink" title="数据映射"></a>数据映射</h2><p>创建索引之前,可以预先定义索引字段的类型以及相关属性。<font color="#F0601F">让索引建立得更加的标准，为之后的搜索和分析做准备工作。</font></p>
+<h3 id="获取索引的映射信息"><a href="#获取索引的映射信息" class="headerlink" title="获取索引的映射信息"></a>获取索引的映射信息</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># *号匹配所有</span><br><span class="line">GET pro[*][,xxx]/_mapping/</span><br><span class="line"></span><br><span class="line">GET pro[*]/_mapping/stu[*]    # 获取 type 下的映射信息</span><br><span class="line"></span><br><span class="line">GET pro[*]/_mapping/stu[*]/field/name[,age]    # 获取一个、多个字段的~</span><br><span class="line"></span><br><span class="line">GET _all/_mapping/[stu1,stu2]    # 获取集群内多个 type 映射信息</span><br></pre></td></tr></table></figure>
+
+<h3 id="静态映射"><a href="#静态映射" class="headerlink" title="静态映射"></a>静态映射</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 创建索引结构</span><br><span class="line">PUT /profession</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;:5,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;mappings&quot;: &#123;    # 构建索引结构，相当创建表结构</span><br><span class="line">    &quot;student&quot;: &#123;    # 索引类型</span><br><span class="line">      &quot;properties&quot;: &#123;    # 属性字段</span><br><span class="line">        &quot;name&quot;: &#123;&quot;type&quot;: &quot;keyword&quot;&#125;,</span><br><span class="line">        &quot;age&quot;: &#123;&quot;type&quot;: &quot;long&quot;&#125;,</span><br><span class="line">        &quot;course&quot;: &#123;&quot;type&quot;: &quot;text&quot;&#125;,</span><br><span class="line">        &quot;birthday&quot;: &#123;&quot;type&quot;: &quot;date&quot;, &quot;format&quot;: &quot;yyyy-MM-dd&quot;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 写入数据，若日期格式不对无法写入</span><br><span class="line">PUT /profession/student/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;swan&quot;,</span><br><span class="line">  &quot;age&quot;: 20,</span><br><span class="line">  &quot;course&quot;: &quot;计算机&quot;,</span><br><span class="line">  &quot;birthday&quot;: &quot;2018-09-06&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="动态映射"><a href="#动态映射" class="headerlink" title="动态映射"></a>动态映射</h3><p>可以通过 <code>dynamic</code> 属性进行控制</p>
+<ul>
+<li><code>true</code>：默认值，动态添加字段; </li>
+<li><code>false</code>：忽略新字段; </li>
+<li><code>strict</code>：固定索引结构。强制使用当前mapping设置，遇到陌生字段，抛出异常<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT /profession</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;student&quot;: &#123;</span><br><span class="line">    &quot;dynamic&quot;: &quot;strict&quot;,</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;name&quot;: &#123;&quot;type&quot;: &quot;keyword&quot;&#125;,</span><br><span class="line">        &quot;age&quot;: &#123;&quot;type&quot;: &quot;long&quot;&#125;,</span><br><span class="line">        &quot;course&quot;: &#123;&quot;type&quot;: &quot;text&quot;&#125;,</span><br><span class="line">        &quot;birthday&quot;: &#123;&quot;type&quot;: &quot;date&quot;, &quot;format&quot;: &quot;yyyy-MM-dd&quot;&#125;,</span><br><span class="line">        &quot;other&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;object&quot;,</span><br><span class="line">          &quot;properties&quot;: &#123;</span><br><span class="line">            &quot;doing&quot;: &#123;&quot;type&quot;: &quot;keyword&quot;&#125;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;dynamic&quot;: &quot;true&quot;   </span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 写入数据</span><br><span class="line">POST /profession/student    # 错误方式</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;swan&quot;,</span><br><span class="line">  &quot;age&quot;: 20,</span><br><span class="line">  &quot;sex&quot;: &quot;nan&quot;    # 若设置未定义的字段，会返回400错误</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">POST /profession/student</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;swan&quot;,</span><br><span class="line">  &quot;age&quot;: 20,</span><br><span class="line">  &quot;other&quot;: &#123;</span><br><span class="line">    &quot;doing&quot;: &quot;playing games&quot;,</span><br><span class="line">    &quot;eating&quot;: true    # 可以添加新的字段</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><font color="red">注意</font>：mapping结构不允许修改，但是可以新增字段类型<br>在已建立索引下添加字段</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT profession/_mapping/student</span><br><span class="line">&#123;</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;score&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;keyword&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 查看mapping结构可以看到多出了新的字段</span><br><span class="line">GET profession/_mapping/student</span><br></pre></td></tr></table></figure>
+
+<p>在已建立索引下，给 mappings 添加 type(表) 类型。<br><font color="red">注意</font>: 不同的 type 下相同的字段名要保持一致！否则返回400</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT profession/_mapping/doctor</span><br><span class="line">&#123;</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;keyword&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在已建立索引下，给 student 类型添加一个 object 类型字段的 mapping</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT profession/_mapping/student</span><br><span class="line">&#123;</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;hobby&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;object&quot;, </span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;name&quot;: &#123;&quot;type&quot;: &quot;keyword&quot;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改当前索引字段的 mapping，增加 <font color="#F0601F">ignore_above</font>(只有 keyword 类型拥有该属性)，表示只需要前 100 个字符</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT profession/_mapping/doctor</span><br><span class="line">&#123;</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">      &quot;ignore_above&quot;: 100</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>文档在写入时，检测到该索引中没有的字段时，动态映射可以根据写入的json类型自动转<br>换该字段的类型，并加入到mapping映射。<br>JSON datatype|es datatype<br>-|-|-<br>null|No field is added.<br>true or false|boolean field<br>floating point number|float field<br>integer|long field<br>object|obiect field<br>array|Depends on the first non-null value in the array.<br>string|Either a date field (if the value passes date detection),<br>a double or longfield (if the value passes numeric detection or <br>a text field, with a kewwordsub-field,</p>
+<h3 id="模板生成-mapping-结构"><a href="#模板生成-mapping-结构" class="headerlink" title="模板生成 mapping 结构"></a>模板生成 mapping 结构</h3><h4 id="静态模板-指定索引"><a href="#静态模板-指定索引" class="headerlink" title="静态模板(指定索引)"></a>静态模板(指定索引)</h4><p>默认mapping属性</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT profession</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;_default_&quot;: &#123;</span><br><span class="line">      &quot;_source&quot;: &#123;</span><br><span class="line">        &quot;enabled&quot;: true    </span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">	&quot;student&quot;: &#123;</span><br><span class="line">	  &quot;_source&quot; : &#123;</span><br><span class="line">	    &quot;enabled&quot;: false    # 设置当前 mapping 结构不启用 _source，可以覆盖上面设置的 true</span><br><span class="line">	  &#125;,</span><br><span class="line">	  &quot;properties&quot;: &#123;</span><br><span class="line">	    &quot;name&quot;: &#123;</span><br><span class="line">		  &quot;type&quot;: &quot;text&quot;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;age&quot;: &#123;</span><br><span class="line">		  &quot;type&quot;: &quot;long&quot;</span><br><span class="line">		&#125;</span><br><span class="line">	  &#125;</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT profession/student/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;swan&quot;,</span><br><span class="line">  &quot;age&quot;: 20</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET profession/student/1</span><br><span class="line"></span><br><span class="line">## 不启用 _source 的查询结果</span><br><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;profession&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;student&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot;: 1,</span><br><span class="line">  &quot;found&quot;: true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="动态模板-指定索引"><a href="#动态模板-指定索引" class="headerlink" title="动态模板(指定索引)"></a>动态模板(指定索引)</h4><p>动态设置字段类型</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT profession</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;_default_&quot;: &#123;</span><br><span class="line">      &quot;dynamic_templates&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;message_field&quot;: &#123;    # 动态模板名，随便写</span><br><span class="line">            &quot;mapping&quot;: &#123;</span><br><span class="line">              &quot;store&quot;: false,</span><br><span class="line">              &quot;type&quot;: &quot;text&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;match&quot;: &quot;*msg&quot;,</span><br><span class="line">            &quot;match_mapping_type&quot;: &quot;string&quot;     # 给包含 msg 并且是 string 类型的字段			                                   #</span><br><span class="line">          &#125;									   # 设置mapping属性</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;string_fields&quot;: &#123;</span><br><span class="line">            &quot;mapping&quot;: &#123;</span><br><span class="line">              &quot;ignore_above&quot;: 200,</span><br><span class="line">              &quot;store&quot;: false,</span><br><span class="line">              &quot;type&quot;: &quot;keyword&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;match&quot;: &quot;*&quot;,</span><br><span class="line">            &quot;match_mapping_type&quot;: &quot;string&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">	  &quot;properties&quot;: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 设置值</span><br><span class="line">PUT profession/student/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;swan&quot;,</span><br><span class="line">  &quot;age&quot;: 20,</span><br><span class="line">  &quot;msg&quot;: &quot;more messages...&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 查看映射关系</span><br><span class="line">GET profession/_mapping</span><br></pre></td></tr></table></figure>
+
+<h4 id="多个索引mapping模板"><a href="#多个索引mapping模板" class="headerlink" title="多个索引mapping模板"></a>多个索引mapping模板</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT _template/student_template</span><br><span class="line">&#123; </span><br><span class="line">  &quot;template&quot;: &quot;my*&quot;,    # 匹配 my 开头的索引</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 5,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;student&quot;: &#123;</span><br><span class="line">      &quot;_source&quot;: &#123;</span><br><span class="line">        &quot;enabled&quot;: false</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;name&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;age&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT my_profession/student/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;swan&quot;,</span><br><span class="line">  &quot;age&quot;: 20</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 查看映射和设置</span><br><span class="line">GET my_profession/_mapping,_settings</span><br></pre></td></tr></table></figure>
+
+<h4 id="模板优先级"><a href="#模板优先级" class="headerlink" title="模板优先级"></a>模板优先级</h4><p>执行优先级大的模板</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT _template/student_template1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;template&quot;: &quot;*&quot;,</span><br><span class="line">  &quot;order&quot;: 0,</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 4,</span><br><span class="line">    &quot;number_of_replicas&quot;: 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT _template/student_template2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;template&quot;: &quot;my*&quot;,</span><br><span class="line">  &quot;order&quot;: 1,</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;number_of_shards&quot;: 2,</span><br><span class="line">    &quot;number_of_replicas&quot;: 2</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT my_profession/student/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;swan&quot;,</span><br><span class="line">  &quot;age&quot;: 20</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET my_profession/_mapping,_settings</span><br></pre></td></tr></table></figure>
+
+<h4 id="获取、删除模板"><a href="#获取、删除模板" class="headerlink" title="获取、删除模板"></a>获取、删除模板</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">DELETE _template/student_template</span><br><span class="line">GET _template/student_template</span><br></pre></td></tr></table></figure>
+
+<h3 id="索引别名"><a href="#索引别名" class="headerlink" title="索引别名"></a>索引别名</h3><p>创建别名，可以多个索引指定同一个别名</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT profession/_alias/pro</span><br><span class="line"></span><br><span class="line">GET pro/_mapping</span><br></pre></td></tr></table></figure>
+
+<p>查看别名</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看全部别名</span><br><span class="line">GET _alias</span><br><span class="line"></span><br><span class="line"># 查看索引下的别名</span><br><span class="line">GET profession/_alias</span><br></pre></td></tr></table></figure>
+
+<p>添加移除别名，可以做到版本切换。<font color="#F0601F">原子性操作，要么同时成功，要么同时失败</font></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT new_profession</span><br><span class="line">POST /_aliases</span><br><span class="line">&#123;</span><br><span class="line">  &quot;actions&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;remove&quot;: &#123;</span><br><span class="line">        &quot;index&quot;: &quot;profession&quot;,</span><br><span class="line">        &quot;alias&quot;: &quot;pro&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;add&quot;: &#123;</span><br><span class="line">        &quot;index&quot;: &quot;new_profession&quot;,</span><br><span class="line">        &quot;alias&quot;: &quot;pro&quot;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="更新修改映射"><a href="#更新修改映射" class="headerlink" title="更新修改映射"></a>更新修改映射</h3><p>mapping 创建完成后，可以新增字段定义类型，不能修改已有的字段映射。</p>
+<h3 id="修改已有映射"><a href="#修改已有映射" class="headerlink" title="修改已有映射"></a>修改已有映射</h3><ol>
+<li>重新建立一个索引,然后重新定义映射</li>
+<li>把旧索引里的数据导入到新建立的索引中</li>
+</ol>
+<h3 id="使用别名-进行平滑过渡"><a href="#使用别名-进行平滑过渡" class="headerlink" title="使用别名,进行平滑过渡:"></a>使用别名,进行平滑过渡:</h3><p>比如在生产环境时，如果当前的索引已经存在，但是发现某些字段或类型定义错了，想要进行修改，但是应用又在使用，这时我们可以惊醒以下操作</p>
+<ol>
+<li>将当前的索引定义别名,并指向这个别名</li>
+<li>PUT /现有索引/_alias/别名</li>
+<li>应用程序用别名访问索引信息</li>
+<li>新创建一个索引,定义好最新的映射</li>
+<li>将别名指向新的索引,并且取消之前索引的指向</li>
+</ol>
+<h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><p>根据关键词查找对应的文档</p>
+<table>
+<thead>
+<tr>
+<th>works</th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>fish</td>
+<td>x</td>
+<td>-</td>
+<td>x</td>
+</tr>
+<tr>
+<td>dog</td>
+<td>-</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>cat</td>
+<td>-</td>
+<td>-</td>
+<td>x</td>
+</tr>
+<tr>
+<td>pig</td>
+<td>x</td>
+<td>x</td>
+<td>-</td>
+</tr>
+</tbody></table>
+<h3 id="Doc-values"><a href="#Doc-values" class="headerlink" title="Doc values"></a>Doc values</h3><p>可以用于聚合、排序、访问字段值的脚本,父子关系处理等。( 任何需要查<br>找某个文档包含的值的操作)</p>
+<table>
+<thead>
+<tr>
+<th>doc</th>
+<th>words</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a</td>
+<td>fish,pig</td>
+</tr>
+<tr>
+<td>b</td>
+<td>dog</td>
+</tr>
+<tr>
+<td>c</td>
+<td>fish,dog,cat</td>
+</tr>
+</tbody></table>
+<h2 id="分词器"><a href="#分词器" class="headerlink" title="分词器"></a>分词器</h2><p>内置标准分词器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;standard&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;I&apos;m a teacher 666.中华人民&quot;   # 中文一个字一个词</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>内置简单分词器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;simple&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;I&apos;m a teacher 666.中华人民&quot;   # 中华人民为一个词</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>内置停止分词器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;stop&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;I&apos;m a teacher 666.中华人民&quot;   # 底层自动去掉无用的词</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试自定义组合分词器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT profession</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;analyzer&quot;: &#123;</span><br><span class="line">        &quot;my_analyzer&quot;: &#123;    # 分词器名字</span><br><span class="line">          &quot;type&quot;: &quot;doctor&quot;,</span><br><span class="line">          &quot;tokenizer&quot;: &quot;standard&quot;,    # 标准分词器</span><br><span class="line">          &quot;char_filter&quot;: &quot;html_strip&quot;,    # 过滤html标签</span><br><span class="line">          &quot;filter&quot;: [&quot;lowercase&quot;,&quot;stop&quot;]    # 二次过滤</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">POST profession/_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;my_analyzer&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;i&apos;m a &lt;a&gt;teacher&lt;/a&gt;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>设置 mapping 时为字段指定分词器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT my_index</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">	&quot;analysis&quot;; &#123;</span><br><span class="line">	  &quot;analyzer&quot;: &#123;</span><br><span class="line">		&quot;std_english&quot;: &#123;</span><br><span class="line">		  &quot;type&quot;: &quot;standard&quot; ,</span><br><span class="line">		  &quot;stopwords&quot;: &quot;_english_&quot;</span><br><span class="line">		&#125;</span><br><span class="line">	  &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;mappings&quot;; &#123;</span><br><span class="line">    &quot;my_type&quot;: &#123;</span><br><span class="line">	  &quot;properties&quot;: &#123; I</span><br><span class="line">		&quot;my_text&quot;: &#123;</span><br><span class="line">		  &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">		  &quot;analyzer&quot;: &quot;standard&quot;,</span><br><span class="line">		  &quot;fields&quot;: &#123;</span><br><span class="line">			&quot;stop&quot;: &#123;</span><br><span class="line">			  &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">			  &quot;analyzer&quot;: &quot;std_english”</span><br><span class="line">			&#125;</span><br><span class="line">		  &#125;</span><br><span class="line">		&#125;</span><br><span class="line">	  &#125;</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>动态更新分词器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">POST /school/_close</span><br><span class="line"></span><br><span class="line">PUT /school/_settings</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analysis&quot;: &#123;</span><br><span class="line">	&quot;analyzer&quot;: &#123;</span><br><span class="line">	  &quot;content&quot;: &#123;</span><br><span class="line">		&quot;type&quot;: &quot;custom&quot;,</span><br><span class="line">		&quot;tokenizer&quot;: &quot;whitespace&quot;</span><br><span class="line">	  &#125;</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">POST /school/_open</span><br></pre></td></tr></table></figure>
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2019/11/17/elasticsearch搭建集群/" data-toggle="tooltip" data-placement="top" title="elasticsearch搭建集群">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/10/22/elasticsearch之简单API的使用/" data-toggle="tooltip" data-placement="top" title="elasticsearch之简单API的使用">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据映射"><span class="toc-text">数据映射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#获取索引的映射信息"><span class="toc-text">获取索引的映射信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#静态映射"><span class="toc-text">静态映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态映射"><span class="toc-text">动态映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模板生成-mapping-结构"><span class="toc-text">模板生成 mapping 结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#静态模板-指定索引"><span class="toc-text">静态模板(指定索引)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#动态模板-指定索引"><span class="toc-text">动态模板(指定索引)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#多个索引mapping模板"><span class="toc-text">多个索引mapping模板</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#模板优先级"><span class="toc-text">模板优先级</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#获取、删除模板"><span class="toc-text">获取、删除模板</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#索引别名"><span class="toc-text">索引别名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更新修改映射"><span class="toc-text">更新修改映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改已有映射"><span class="toc-text">修改已有映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用别名-进行平滑过渡"><span class="toc-text">使用别名,进行平滑过渡:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#倒排索引"><span class="toc-text">倒排索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Doc-values"><span class="toc-text">Doc values</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分词器"><span class="toc-text">分词器</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <div style="margin-top: 20px;">
+                    <h5 class="text-center">FRIENDS</h5>
+                    <ul class="list-inline text-center">
+                        
+                        <li><a href="https://www.antia1.top/">ANTIA</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/Swanyf">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Swan 2019
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/微信图片_20190723103112.jpg">
+</body>
+
+</html>
