@@ -221,6 +221,26 @@
 
 <p>运行</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/opt/elasticsearch/kibana-5.6.8-linux-x86_64/bin/kibana</span><br></pre></td></tr></table></figure>
+
+<h2 id="集群管理"><a href="#集群管理" class="headerlink" title="集群管理"></a>集群管理</h2><h3 id="查看集群信息api"><a href="#查看集群信息api" class="headerlink" title="查看集群信息api"></a>查看集群信息api</h3><p>查看集群健康api：<br>ip:port/_cluster/health?pretty</p>
+<p>查看集群状态api：<br>ip:port/_cluster/state?pretty</p>
+<p>查看集群统计信息api：<br>ip:port/_cluster/stats?human&amp;pretty</p>
+<p>查看集群待更新元数据任务api：<br>ip:port/_cluster/pending_tasks?pretty</p>
+<h3 id="动态修改集群参数"><a href="#动态修改集群参数" class="headerlink" title="动态修改集群参数"></a>动态修改集群参数</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 举例</span><br><span class="line">PUT /_ cluster/settings</span><br><span class="line">&#123;</span><br><span class="line">  &quot;transient&quot; :&#123;    # 临时更改</span><br><span class="line">    &quot;indices.recovery.max_bytes_per_sec&quot;: &quot;50mb&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;persistent&quot;:&#123;    # 持久更改</span><br><span class="line">    &quot;discovery.zenminimum_master_nodes: 2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="备份和恢复"><a href="#备份和恢复" class="headerlink" title="备份和恢复"></a>备份和恢复</h2><h3 id="查询和创建备份仓库"><a href="#查询和创建备份仓库" class="headerlink" title="查询和创建备份仓库"></a>查询和创建备份仓库</h3><p>创建备份仓库：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT /_snapshot/my_backup</span><br><span class="line">  &quot;type&quot;: &quot;fs&quot;,</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">	&quot;location&quot;: &quot;/mnt/elastic_backup&quot;,</span><br><span class="line">	  &quot;compress&quot;: true</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查询当前仓库：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET /_snapshot/</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看和快照备份"><a href="#查看和快照备份" class="headerlink" title="查看和快照备份"></a>查看和快照备份</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PUT /snapshot/my_backup/snapshot_1?wait_for_completion=true    # 参数表示快照拍摄完成之后，返回信息</span><br><span class="line">  &quot;indices&quot;: &quot;index_1, index_2&quot;,  # 索引名</span><br><span class="line">  &quot;ignore_unavailable: true,    # 忽略不可用(不存在)的索引，防止快照过程中失败</span><br><span class="line">  &quot;include_global_state&quot;: false    # 包含全局的元数据</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看快照</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET /_snapshot/my_backup/_all?pretty=true</span><br></pre></td></tr></table></figure>
+
+<p>快照恢复</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># _restore恢复接口</span><br><span class="line">POST /snapshot/my_backup/snapshot_1/_restore</span><br><span class="line">&#123;</span><br><span class="line">  &quot;indices&quot;: &quot;index_1, index_2&quot;,</span><br><span class="line">  &quot;ignore_unavailable&quot;: true,</span><br><span class="line">  &quot;include_global_state&quot;: false,</span><br><span class="line">  &quot;rename_pattern&quot;: &quot;index_(.+)&quot;,    # 重命名的正则</span><br><span class="line">  &quot;rename_replacement&quot;: &quot;restored_index_$1&quot;,</span><br><span class="line">  &quot;index_settings&quot;: &#123;    </span><br><span class="line">	&quot;index.number_of_replicas&quot;: 0    # 定义恢复的新索引没有副本</span><br><span class="line">  &#125;</span><br><span class="line">  &quot;ignore_index_settings&quot; : [</span><br><span class="line">	&quot;index.refresh_interval&quot;,</span><br><span class="line">	&quot;index.routing.allocation.include._ip&quot;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
                 <hr>
                 
 
@@ -228,7 +248,7 @@
                     
                     
                     <li class="next">
-                        <a href="/2019/10/22/elasticsearch之搜索查询/" data-toggle="tooltip" data-placement="top" title="elasticsearch之搜索查询">Next Post &rarr;</a>
+                        <a href="/2019/10/28/阿波罗动态集成yml配置文件与swaggerAPI/" data-toggle="tooltip" data-placement="top" title="阿波罗动态集成yml配置文件与swaggerAPI">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -247,7 +267,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装配置"><span class="toc-text">安装配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#elasticsearch-yml"><span class="toc-text">elasticsearch.yml</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装header可视化工具插件"><span class="toc-text">安装header可视化工具插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装分词器kibana"><span class="toc-text">安装分词器kibana</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装配置"><span class="toc-text">安装配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#elasticsearch-yml"><span class="toc-text">elasticsearch.yml</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装header可视化工具插件"><span class="toc-text">安装header可视化工具插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装分词器kibana"><span class="toc-text">安装分词器kibana</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集群管理"><span class="toc-text">集群管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#查看集群信息api"><span class="toc-text">查看集群信息api</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态修改集群参数"><span class="toc-text">动态修改集群参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#备份和恢复"><span class="toc-text">备份和恢复</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#查询和创建备份仓库"><span class="toc-text">查询和创建备份仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看和快照备份"><span class="toc-text">查看和快照备份</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
