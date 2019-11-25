@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        如何正确访问Redis中的海量数据？服务才不会挂掉！｜Swan&#39;s blog
+        策略模式实现避免多重if判断｜Swan&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/2019/06/10/如何正确访问Redis中的海量数据？服务才不会挂掉！/">
+    <link rel="canonical" href="http://yoursite.com/2019/10/25/策略模式实现避免多重if判断/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -135,13 +135,13 @@
 <!--only post-->
 
 
-<img class="wechat-title-img" src="null/img/sea.jpg">
+<img class="wechat-title-img" src="null/img/设计模式/1.png">
 
 
 <style>
     
     header.intro-header {
-        background-image: url('/img/sea.jpg?imageView2/1/w/1400/h/400/interlace/1/q/90')
+        background-image: url('/img/设计模式/1.png?imageView2/1/w/1400/h/400/interlace/1/q/90')
     }
 
     
@@ -152,17 +152,17 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>如何正确访问Redis中的海量数据？服务才不会挂掉！</h1>
+                    <h1>策略模式实现避免多重if判断</h1>
                     
                     <span class="meta">
                          作者 swan
                         <span>
-                          日期 2019-06-10
+                          日期 2019-10-25
                          </span>
                     </span>
                     <div class="tags text-center">
                         
-                        <a class="tag" href="/tags/#redis" title="redis">redis</a>
+                        <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
                         
                     </div>
                 </div>
@@ -171,7 +171,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            如何正确访问Redis中的海量数据？服务才不会挂掉！
+            策略模式实现避免多重if判断
         </span>
     </div>
 </header>
@@ -182,33 +182,44 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有时候我们需要知道线上的Redis的使用情况，尤其需要知道一些前缀的key值，让我们怎么去查看呢？并且通常情况下Redis里的数据都是海量的，那么我们访问Redis中的海量数据？如何避免事故产生！今天就给大家分享一个小知识点，希望大家轻喷。</p>
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>因为我们的用户token缓存是采用了【user_token:userid】格式的key，保存用户的token的值。我们运维为了帮助开发小伙伴们查一下线上现在有多少登录用户。</p>
-<p>直接用了keys user_token*方式进行查询，事故就此发生了。导致Redis不可用，假死。</p>
-<h2 id="分析原因"><a href="#分析原因" class="headerlink" title="分析原因"></a>分析原因</h2><p>我们线上的登录用户有几百万，数据量比较多；keys算法是遍历算法，复杂度是O(n)，也就是数据越多，时间越高。</p>
-<p>数据量达到几百万，keys这个指令就会导致 Redis 服务卡顿，因为 Redis 是单线程程序，顺序执行所有指令，其它指令必须等到当前的 keys 指令执行完了才可以继续。</p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>那我们如何去遍历大数据量呢？这个也是面试经常问的。我们可以采用Redis的另一个命令scan。我们看一下scan的特点：</p>
-<pre><code>1.复杂度虽然也是 O(n)，但是它是通过游标分步进行的，不会阻塞线程
+                <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>策略这个词应该怎么理解，打个比方说，我们出门的时候会选择不同的出行方式，比如骑自行车、坐公交、坐火车、坐飞机、坐火箭等等，这些出行方式，每一种都是一个策略。</p>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>优点： </p>
+<ol>
+<li>算法可以自由切换。 </li>
+<li>避免使用多重条件判断。 </li>
+<li>扩展性良好。</li>
+</ol>
+<p>缺点： </p>
+<ol>
+<li>策略类会增多。</li>
+<li>所有策略类都需要对外暴露。</li>
+</ol>
+<p>注意事项：如果一个系统的策略多于四个，就需要考虑使用混合模式，解决策略类膨胀的问题。</p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><ul>
+<li>如果在一个系统里面有许多类，它们之间的区别仅在于它们的行为，那么使用策略模式可以动态地让一个对象在许多行为中选择一种行为</li>
+<li>一个系统需要动态地在几种算法中选择一种</li>
+<li>如果一个对象有很多的行为，如果不用恰当的模式，这些行为就只好使用多重的条件选择语句来实现。</li>
+</ul>
+<h2 id="通过反射实现各种支付方式的策略模式"><a href="#通过反射实现各种支付方式的策略模式" class="headerlink" title="通过反射实现各种支付方式的策略模式"></a>通过反射实现各种支付方式的策略模式</h2><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
+<li>创建一个定义活动的 Strategy 接口和实现了 Strategy 接口的实体策略类。</li>
+<li>Context 是一个使用了某种策略的类。</li>
+<li>根据反射具体的支付实体策略类来实现没种策略的业务逻辑</li>
+</ol>
+<h3 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 支付渠道</span><br><span class="line"> */</span><br><span class="line">public enum PaymentChannelEnum &#123;</span><br><span class="line"></span><br><span class="line">    UNION_PAY(&quot;银联支付&quot;, &quot;0001&quot;, &quot;test03_design_mode.stargety_pattern.UnionPayStragetyImpl&quot;),</span><br><span class="line">    ALI_PAY(&quot;支付宝支付&quot;, &quot;0002&quot;, &quot;test03_design_mode.stargety_pattern.AliPayStragetyImpl&quot;);</span><br><span class="line"></span><br><span class="line">    private String channelName;</span><br><span class="line">    private String channelId;</span><br><span class="line">    private String classAddres;     // 支付策略具体实现类</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 提交的订单信息</span><br><span class="line"> */</span><br><span class="line"> public class PaymentInfo &#123;</span><br><span class="line"></span><br><span class="line">    private Long id;</span><br><span class="line">     // 支付金额</span><br><span class="line">    private Long payAmount;</span><br><span class="line">     // 支付状态;0待支付1已经支付2支付超时3支付失败</span><br><span class="line">    private Integer paymentStatus;</span><br><span class="line">     // 用户ID</span><br><span class="line">    private String userId;</span><br><span class="line">     // 订单号码</span><br><span class="line">    private String orderId;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-2.提供 count 参数，不是结果数量，是Redis单次遍历字典槽位数量(约等于)
+<p>PayStrategy 策略类接口</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 前往支付回调页面</span><br><span class="line"> */</span><br><span class="line">String toPayHtml(PaymentChannel paymentChannel)</span><br></pre></td></tr></table></figure>
 
-3.同 keys 一样，它也提供模式匹配功能;
+<p>反射策略类</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 反射支付策略具体实现类</span><br><span class="line"> */</span><br><span class="line">public class ReflectStragety &#123;</span><br><span class="line"></span><br><span class="line">    public static Map&lt;String, PayStrategy&gt; payStrategyMap = new ConcurrentHashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    public static PayStrategy getPayStragety(String classAddress) &#123;</span><br><span class="line">        PayStrategy payStrategy = payStrategyMap.get(classAddress);</span><br><span class="line">        if (payStrategy == null) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                Class&lt;?&gt; clazz = Class.forName(classAddress);</span><br><span class="line">                PayStrategy payStrategyBean = (PayStrategy) clazz.newInstance();</span><br><span class="line">                payStrategyMap.put(classAddress, payStrategyBean);</span><br><span class="line">                return payStrategyBean;</span><br><span class="line">            &#125;  catch (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return payStrategy;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-4.服务器不需要为游标保存状态，游标的唯一状态就是 scan 返回给客户端的游标整数;
+<p>策略具体实现类</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class AliPayStragetyImpl implements PayStrategy &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String toHtml(String channelId, PaymentInfo paymentInfo) &#123;</span><br><span class="line">        return &quot;前往支付宝支付页面&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class UnionPayStragetyImpl implements PayStrategy &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String toHtml(String channelId, PaymentInfo paymentInfo) &#123;</span><br><span class="line">        return &quot;前往银联支付页面&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-5.返回的结果可能会有重复，需要客户端去重复，这点非常重要;
+<p>使用策略 PayContext.class</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class PayContext &#123;</span><br><span class="line"></span><br><span class="line">    PaymentInfo paymentInfo = new PaymentInfo(1l,2000l,0,&quot;1001&quot;,&quot;123456789&quot;);</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void unionPay() &#123;</span><br><span class="line">        PayStrategy unionPayStragety = ReflectStragety.getPayStragety(PaymentChannelEnum.ALI_PAY.getClassAddres());</span><br><span class="line">        String html = unionPayStragety.toHtml(PaymentChannelEnum.ALI_PAY.getChannelId(), paymentInfo);</span><br><span class="line">        System.out.println(html);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">输出结果：前往支付宝支付页面</span><br></pre></td></tr></table></figure>
 
-6.单次返回的结果是空的并不意味着遍历结束，而要看返回的游标值是否为零</code></pre><h4 id="scan命令格式"><a href="#scan命令格式" class="headerlink" title="scan命令格式"></a>scan命令格式</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">scan cursor [Match oattern] [Count count]</span><br></pre></td></tr></table></figure>
-
-<h4 id="命令解释"><a href="#命令解释" class="headerlink" title="命令解释"></a>命令解释</h4><p><font color="#EE6A50">scan 游标 MATCH &lt;返回和给定模式相匹配的元素&gt; count 每次迭代所返回的元素数量</font></p>
-<pre><code>1.SCAN命令是增量的循环，每次调用只会返回一小部分的元素。所以不会让Redis假死；
-
-2.SCAN命令返回的是一个游标，从0开始遍历，到0结束遍历；</code></pre><h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><img src="/img/微信图片_20190610094913.jpg">
-
-<p>从0开始遍历，返回了游标6，又返回了数据，继续scan遍历，就要从6开始</p>
-<img src="/img/微信图片_20190610094917.jpg">
-
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><strong>这个是面试经常会问到的</strong>，也是我们小伙伴在工作的过程经常用的，一般数据量不大的时候，不会有什么问题，但数据量多的时候，你的操作方式不对，你的绩效就会被扣哦。</p>
+<p>以上示例就实现了使用策略模式避免多重if的判断！</p>
 
                 <hr>
                 
@@ -216,12 +227,12 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2019/06/12/mysql：=和=的区别/" data-toggle="tooltip" data-placement="top" title="mysql := 和 = 的区别">&larr; Previous Post</a>
+                        <a href="/2019/10/28/阿波罗动态集成yml配置文件与swaggerAPI/" data-toggle="tooltip" data-placement="top" title="阿波罗动态集成yml配置文件与swaggerAPI">&larr; Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2018/12/30/redis分布式锁/" data-toggle="tooltip" data-placement="top" title="redis分布式锁">Next Post &rarr;</a>
+                        <a href="/2019/10/23/elasticsearch之搜索与聚合/" data-toggle="tooltip" data-placement="top" title="elasticsearch之搜索与聚合">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -240,7 +251,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原因"><span class="toc-text">原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析原因"><span class="toc-text">分析原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#scan命令格式"><span class="toc-text">scan命令格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#命令解释"><span class="toc-text">命令解释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#举例"><span class="toc-text">举例</span></a></li></ol></li></ol><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优缺点"><span class="toc-text">优缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用场景"><span class="toc-text">使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过反射实现各种支付方式的策略模式"><span class="toc-text">通过反射实现各种支付方式的策略模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#思路"><span class="toc-text">思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#示例代码"><span class="toc-text">示例代码</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
@@ -262,7 +273,7 @@
                     </h5>
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/#redis" title="redis">redis</a>
+                        <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
                         
                     </div>
                 </section>
