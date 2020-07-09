@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        详解事务Transaction｜Swan&#39;s blog
+        xxl-job任务调度中心｜Swan&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/2019/10/10/详解事务Transaction/">
+    <link rel="canonical" href="http://yoursite.com/2019/11/26/xxl-job任务调度中心/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -135,13 +135,13 @@
 <!--only post-->
 
 
-<img class="wechat-title-img" src>
+<img class="wechat-title-img" src="null/img/xxl-job/1.png">
 
 
 <style>
     
     header.intro-header {
-        background-image: url('')
+        background-image: url('/img/xxl-job/1.png?imageView2/1/w/1400/h/400/interlace/1/q/90')
     }
 
     
@@ -152,17 +152,15 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>详解事务Transaction</h1>
+                    <h1>xxl-job任务调度中心</h1>
                     
                     <span class="meta">
                          作者 swan
                         <span>
-                          日期 2019-10-10
+                          日期 2019-11-26
                          </span>
                     </span>
                     <div class="tags text-center">
-                        
-                        <a class="tag" href="/tags/#spring" title="spring">spring</a>
                         
                     </div>
                 </div>
@@ -171,7 +169,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            详解事务Transaction
+            xxl-job任务调度中心
         </span>
     </div>
 </header>
@@ -182,20 +180,20 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p><a href="https://blog.csdn.net/xcbeyond/article/details/81235995" target="_blank" rel="noopener">传送门</a></p>
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>XXL-JOB是一个轻量级分布式任务调度框架，其核心设计目标是开发迅速、学习简单、轻量级、易拓展。代码开源，目前已接入多家公司线上产品，比较典型的有大众点评，优信二手车，一加手机等。</p>
+<h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><blockquote>
+<p>简单：支持通过Web页面对任务进行CRUD操作，操作简单；<br>动态：支持动态修改任务状态、暂停/恢复任务，以及终止运行中任务，即时生效；<br>调度中心HA：调度采用中心式设计，“调度中心”基于集群Quartz实现，可保证调度中心HA；<br>执行器HA（分布式）：任务分布式执行，任务“执行器”支持集群部署，可保证任务执行HA；<br>任务Failover:执行器集群部署时，任务路由策略选择“故障转移”情况下调度失败时将会平滑切换执行器进行Failover；<br>一致性:“调度中心”通过DB锁保证集群分布式调度的一致性，一次任务调度只会触发一次执行；<br>自定义任务参数：支持在线配置调度任务入参，即时生效；<br>调度线程池：调度系统多线程触发调度运行，确保调度精确执行，不被堵塞；<br>弹性扩容缩容：一旦有新执行器上线或者下线，下次调度时将会重新分配任务；<br>邮件报警：任务失败时支持邮件报警，支持配置多邮件地址群发报警邮件；<br>状态监控：支持实时监控任务进度；<br>Rolling执行日志：支持在线查看调度结果，并且支持以Rolling方式实时查看执行器输出的完整的执行日志；<br>GLUE：提供Web IDE，支持在线开发任务逻辑代码，动态发布，实时编译生效，省略部署上线的过程。支持30个版本的历史版本回溯；<br>数据加密：调度中心和执行器之间的通讯进行数据加密，提升调度信息安全性；<br>任务依赖：支持配置子任务依赖，当父任务执行结束且执行成功后将会主动触发一次子任务的执行，多个子任务用逗号分隔；<br>推送maven中央仓库：将会把最新稳定版推送到maven中央仓库，方便用户接入和使用；<br>任务注册：执行器会周期性自动注册任务，调度中心将会自动发现注册的任务并触发执行。同时，也支持手动录入执行器地址；<br>路由策略：执行器集群部署时提供丰富的路由策略，包括：第一个、最后一个、轮询、随机、一致性Hash、最不经常使用、最近最久未使用、故障转移、忙碌转移等；</p>
+</blockquote>
+<h2 id="源码仓库地址"><a href="#源码仓库地址" class="headerlink" title="源码仓库地址"></a>源码仓库地址</h2><p><a href="https://github.com/xuxueli/xxl-jobDownload" target="_blank" rel="noopener">https://github.com/xuxueli/xxl-jobDownload</a></p>
 
                 <hr>
                 
 
                 <ul class="pager">
                     
-                    <li class="previous">
-                        <a href="/2019/10/14/rocketMQ概念/" data-toggle="tooltip" data-placement="top" title="rocketMQ概念">&larr; Previous Post</a>
-                    </li>
-                    
                     
                     <li class="next">
-                        <a href="/2019/09/29/mariadb主从配置/" data-toggle="tooltip" data-placement="top" title="mariadb主从配置">Next Post &rarr;</a>
+                        <a href="/2019/11/17/elasticsearch搭建集群/" data-toggle="tooltip" data-placement="top" title="elasticsearch搭建集群">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -214,7 +212,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特性"><span class="toc-text">特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源码仓库地址"><span class="toc-text">源码仓库地址</span></a></li></ol>
                 </div>
             </div>
         </div>
@@ -235,8 +233,6 @@
                         <a href="/tags/">FEATURED TAGS</a>
                     </h5>
                     <div class="tags">
-                        
-                        <a class="tag" href="/tags/#spring" title="spring">spring</a>
                         
                     </div>
                 </section>
